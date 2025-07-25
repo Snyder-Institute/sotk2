@@ -2,42 +2,46 @@
 
 ## About
 ### What is Spatial Omics Toolkit (SOTK)?
- * The SOTK is an R package containing a comprehensive set of functions to identify overrepresented biological modules from spatial transcriptomics profiles. Multiple profiles across different cohorts or platforms can be analyzed by constructing a single correlation network with the deconvoluted outputs using the community search algorithm as an integrative method. Additionally, SOTK allows users to select the optimal rank (latent factor) from multiple NMF runs, i.e., ranks, in a data-driven way by identifying the minimum rank that encompasses the majority, if not all, of the communities grouped by community search algorithms. It was initially developed to analyze Nanostring GeoMx Digital Spatial Profiler (DSP) data, and SOTK is particularly well-suited for cases where multiple segments, e.g., cell types, are independently collected and profiled from the same tissue samples, allowing for the incorporation of numerous segment profiles per sample/patient.
+ * The Spatial Omics Toolkit (SOTK) is an R package that offers a comprehensive suite of functions for identifying biologically meaningful modules from spatial transcriptomics data. It enables integrative analysis across multiple cohorts or platforms by constructing a unified correlation network based on deconvoluted outputs, leveraging community detection algorithms to uncover overrepresented biological patterns.
+ * SOTK also facilitates optimal rank selection from multiple non-negative matrix factorization (NMF) runs. Specifically, it identifies the minimal rank that captures the majority—if not all—of the communities identified via community search algorithms, providing a data-driven criterion for selecting latent factors.
+ * Originally developed for Nanostring GeoMx Digital Spatial Profiler (DSP) data in 2021, SOTK is especially effective when multiple spatial segments (e.g., cell types) are independently profiled from the same tissue sample. This design allows users to incorporate and analyze numerous segment-level profiles per sample or patient.
  
 ### Features
- * Able to find representative latent factors that are biologically meaningful after deconvolution.
- * Optimized for the systematic exploration of each cell type/segment.
- * Helpful in evaluating and exploring a set of genes in a spatio-temporal manner.
- * Integrative analysis of spatial-omics data from multiple cohorts.
+ * Identifies biologically meaningful latent factors from deconvoluted spatial transcriptomics data
+ * Data-driven rank selection across multiple NMF runs
+ * Optimized for systematic exploration of specific cell types or tissue segments
+ * Enables spatio-temporal analysis of gene sets
+ * Supports integrative, cross-cohort spatial omics analysis
 
 ## Installation
 ### Requirement
-  * R > 4.3.0
-  * Dependencies (alphabetical order):
-    * corrr
-    * grid
-    * igraph
-    * methods
-    * NMF
-    * RColorBrewer
-    * stringr
+ * R > 4.3.0
+ * Dependencies (alphabetical order):
+   * corrr
+   * grid
+   * igraph
+   * methods
+   * NMF
+   * RColorBrewer
+   * stringr
 
 ### Install via GitHub
 ```
 install.packages("devtools")
-devtools::install_github("UC-ASOC/SOTK")
+devtools::install_github("lootpiz/SOTK")
 ```
 
 ## How-to
 ### Workflow
-  1. Unsupervised deconvolution: NMF (non-negative matrix factorization)
-  2. Identification of the biological modules, i.e, a set of metagenes:
-    A. Calculate the pairwise correlation coefficients of the metagenes across ranks
-    B. Include metagenes with positive correlations and construct a correlation network
-    C. Identify communities on the correlation network using the fast greedy algorithm
-    D. Select the minimum rank that covers the most communities, i.e., biological modules, at a given rank
-    E. Assign AOIs/samples to each metagene based on coefficient values
+ *	Unsupervised deconvolution
+    -	Perform non-negative matrix factorization (NMF) across multiple ranks.  
+ *	Identification of biological modules (i.e., sets of metagenes)
+    1. Compute pairwise correlation coefficients of metagenes across all ranks.
+    2. Construct a correlation network using only positively correlated metagenes.
+    3. Apply the fast greedy community detection algorithm to identify modules within the network.
+    4. Select the minimum rank that captures the largest number of communities (biological modules).
+    5. Assign AOIs or samples to each metagene based on NMF coefficient values.
 
 ### Demonstration
-  * SOTK has also been implemented on ShinyApp to demonstrate how to analyze the GeoMx DSP data and please visit [https://shinyapps.ucalgary.ca/SOTK](https://shinyapps.ucalgary.ca/SOTK)
+  * SOTK is also available as an interactive ShinyApp for exploring GeoMx DSP data. You can try it here: [https://shinyapps.ucalgary.ca/SOTK](https://shinyapps.ucalgary.ca/SOTK)
 
