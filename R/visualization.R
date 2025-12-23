@@ -281,6 +281,11 @@ plotCommNetwork.SOTK <- function(object, vertexInfo,
                 vertexSize <- vertexInfo[["vertexSize"]]
                 vertexPie <- vertexInfo[["vertexPie"]]
                 legend <- vertexInfo[["legend"]]
+                if (!is.null(vertexInfo[["legendLbl"]])) {
+                        legendLbl <- vertexInfo[["legendLbl"]]
+                } else {
+                        legendLbl <- legend
+                }                
                 legendCol <- vertexInfo[["legendCol"]]
 
                 vertexPieCol <- list()
@@ -316,7 +321,7 @@ plotCommNetwork.SOTK <- function(object, vertexInfo,
                         vertex.pie.color = vertexPieCol,
                         edge.width = igraph::E(graph)$weight
                 )
-                legend("topleft", legend = legend, fill = legendCol, bty="n")
+                legend("topleft", legend = legendLbl, fill = legendCol, bty="n")
 
                 if (!is.null(filename)) dev.off()
         }
@@ -444,7 +449,7 @@ statComm.SOTK <- function(object, filename = "stats.pdf", width = 10, height = 1
 #' Generate community network stats
 #'
 #' @param object A \code{SOTK} object
-#' @param filename \code{character} Output file name
+#' @param filename \code{character} Export stacked bar plot to a file, stdout if NULL
 #' @param width \code{numeric} Width size for output PDF
 #' @param height \code{numeric} Height size for output PDF
 #'
@@ -455,7 +460,7 @@ statComm.SOTK <- function(object, filename = "stats.pdf", width = 10, height = 1
 #' @rdname statComm
 #'
 #' @examples
-#' statComm(object = SOTK)
+#' statComm(object = soObj)
 #'
 #' @export
 #'

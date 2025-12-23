@@ -61,28 +61,28 @@ setClass(
 #'
 SOSet <- function(NMFobjL, NMFrankL = NULL, dataCol = NULL, corMet = "spearman", corUse = "pairwise.complete.obs") {
         if (is.null(NMFobjL) || length(NMFobjL) == 0) {
-                stop("ERROR::Provide at least one NMF object in list.")
+                stop("\nERROR::Provide at least one NMF object in list.")
         } else {
                 message(paste0(length(NMFobjL), " dataset(s) found in the list: ", paste(names(NMFobjL), collapse = ", "), "\n"))
         }
 
         if (is.null(NMFrankL)) {
-                message("WARNING::No NMFrankL provided - all ranks will be included.\n")
+                message("\nWARNING::No NMFrankL provided - all ranks will be included.\n")
                 NMFrankL <- sapply(NMFobjL, .getRank)
         } else {
                 if (all(names(NMFobjL) %in% names(NMFrankL))) {
                         NMFrankL <- NMFrankL[which(names(NMFrankL) %in% names(NMFobjL))] 
                 } else {
-                        stop("ERROR::Check the names in NMFrankL whether they match with the names in NMFobjL.")
+                        stop("\nERROR::Check the names in NMFrankL whether they match with the names in NMFobjL.")
                 }
         }
 
         if (!(corMet %in% c("pearson", "kendall", "spearman"))) {
-                stop("ERROR::Provide either pearson, spearman, or kendall.")
+                stop("\nERROR::Provide either pearson, spearman, or kendall.")
         }
 
         if (!(corUse %in% c("everything", "all.obs", "complete.obs", "na.or.complete", "pairwise.complete.obs"))) {
-                stop("ERROR::Please provide either pairwise.complete.obs, everything, all.obs, complete.obs, or na.or.complete.")
+                stop("\nERROR::Please provide either pairwise.complete.obs, everything, all.obs, complete.obs, or na.or.complete.")
         }
 
         flags <- sapply(seq_along(NMFobjL), function(idx) {
@@ -90,7 +90,7 @@ SOSet <- function(NMFobjL, NMFrankL = NULL, dataCol = NULL, corMet = "spearman",
                 dataName <- names(NMFobjL)[idx]
                 flag <- FALSE
                 if (class(data) != "NMF.rank") {
-                        stop(paste0("ERROR::", dataName, " is not in NMF.rank class. You can use the importCNMF or mergeNMFruns function to create a NMF object."))
+                        stop(paste0("\nERROR::", dataName, " is not in NMF.rank class. You can use the importCNMF or mergeNMFruns function to create a NMF object."))
                 } else {
                         flag <- TRUE
                 }
@@ -101,7 +101,7 @@ SOSet <- function(NMFobjL, NMFrankL = NULL, dataCol = NULL, corMet = "spearman",
                 basisMatL <- lapply(seq_along(NMFobjL), .getBasis, data = NMFobjL, rank = NMFrankL)
 
                 if (any(length(Reduce(intersect, lapply(basisMatL, rownames))) < sapply(basisMatL, nrow))) {
-                        message("WARNING::Number of genes are different across datasets.\n")
+                        message("\nWARNING::Number of genes are different across datasets.\n")
                         bMat <- as.data.frame(cbind(rownames(basisMatL[[1]]), basisMatL[[1]]))
                         colnames(bMat)[1] <- "Gene"
                         if (length(basisMatL) > 1) {
@@ -114,7 +114,7 @@ SOSet <- function(NMFobjL, NMFrankL = NULL, dataCol = NULL, corMet = "spearman",
                         rownames(basisMat) <- bMat[, 1]
                         colnames(basisMat) <- colnames(bMat)[2:ncol(bMat)]
                 } else {
-                        message("Number of genes are the same across datasets.\n")
+                        message("\nNumber of genes are the same across datasets.\n")
                         basisMat <- do.call(cbind, basisMatL)
                 }
 
@@ -122,20 +122,20 @@ SOSet <- function(NMFobjL, NMFrankL = NULL, dataCol = NULL, corMet = "spearman",
 
                 if (!is.null(dataCol)) {
                         if (!all(names(NMFobjL) %in% names(dataCol))) {
-                                stop("ERROR::Please provide right names for the colours.")
+                                stop("\nERROR::Please provide right names for the colours.")
                         } else {
                                 message("\nAssigned color(s):")
                                 dataCol <- sapply(seq_along(NMFobjL), function(idx) {
                                         cohort <- names(NMFobjL)[idx]
                                         dCol <- dataCol[cohort]
                                         names(dCol) <- cohort
-                                        message(paste0(cohort), ": ", dataCol[cohort])
+                                        message(" > ", paste0(cohort), ": ", dataCol[cohort])
                                         return(dCol)
                                 })
                                 message("\n")
                         }
                 } else {
-                        message("WARNING::Rainbow colors will be assigned to the datasets.\n")
+                        message("\nWARNING::Rainbow colors will be assigned to the datasets.\n")
                         dataCol <- rainbow(length(NMFobjL))
                         names(dataCol) <- names(NMFobjL)
                 }
