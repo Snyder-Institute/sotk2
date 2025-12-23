@@ -1,22 +1,27 @@
 ---
-title: "Sptial Omics Toolkit"
-author: Heewon Seo
-date: "`r format(Sys.Date(), '%m/%d/%Y')`"
+title: "sotk"
+date: "October 07, 2024"
+author:
+- name: Heewon Seo
 abstract: >
-  The Spatial Omics Toolkit (SOTK) is an R package containing a comprehensive set of functions to identify biological modules from spatial transcriptomics profiles. Multiple profiles across different cohorts or platforms can be analyzed by constructing a correlation network with the deconvoluted outputs using the community search algorithm as an integrative method. Additionally, SOTK allows users to select the optimal rank (latent factor) from multiple NMF runs in a data-driven way by identifying the minimum rank that encompasses the majority, if not all, of the communities grouped by community search algorithms. It was initially developed to analyze Nanostring GeoMx Digital Spatial Profiler (DSP) data, and SOTK is particularly well-suited for cases where multiple segments (e.g., cell types) are independently profiled from the same tissue samples, allowing for the incorporation of numerous segment profiles per sample/patient.
+    The Spatial Omics Toolkit (SOTK) is an R package containing a comprehensive set of functions to identify biological modules from spatial transcriptomics profiles. Multiple profiles across different cohorts or platforms can be analyzed by constructing a correlation network with the deconvoluted outputs using the community search algorithm as an integrative method. Additionally, SOTK allows users to select the optimal rank (latent factor) from multiple NMF runs in a data-driven way by identifying the minimum rank that encompasses the majority, if not all, of the communities grouped by community search algorithms. It was initially developed to analyze Nanostring GeoMx Digital Spatial Profiler (DSP) data, and SOTK is particularly well-suited for cases where multiple segments (e.g., cell types) are independently profiled from the same tissue samples, allowing for the incorporation of numerous segment profiles per sample/patient.
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{SOTK}
+  %\VignetteIndexEntry{sotk2}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
-
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+options(rmarkdown.html_vignette.check_title = FALSE)
 ```
+
+# This vignette was originally prepared for sotk1 in October 2024
+  * While _sotk1_ focused on selecting the optimal number of latent factors from spatial transcriptomics data in a data-driven manner, _sotk2_ extends this framework to enable integrative analysis across heterogeneous omics datasets through biologically informed module integration.
+  * _sotk2_ is available at <a href="https://github.com/Snyder-Institute/sotk2" target="_blank">https://github.com/Snyder-Institute/sotk2</a>
 
 ## 0. Data preparation
 Users can use either [NMF](https://github.com/renozao/NMF) or [cNMF](https://github.com/dylkot/cNMF) to deconvolute transcriptomics profiles to obtain metagenes/GEPs (gene expression programs).
@@ -102,10 +107,14 @@ The following set of code is to run SOTK with the Nanostring GeoMx DSP data in m
 
 ### Load the package and parameter settings
 ```{r preparation}
-library(SOTK)
+library(sotk2)
 
 ## Load the NMF object
-pvNmfObj <- readRDS("../inst/testdata/PV.RDS")
+pvObjFile <- system.file(
+        "testdata", "PV.RDS",
+        package = "sotk2"
+)
+pvNmfObj <- readRDS(pvObjFile)
 
 ## Parameter settings
 dataL <- list(PV = pvNmfObj)

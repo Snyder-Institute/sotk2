@@ -1,0 +1,21 @@
+---
+title: "sotk2"
+date: "`r format(Sys.Date(), '%B %d, %Y')`"
+author:
+- name: Heewon Seo
+abstract: >
+  Spatial and multimodal omics technologies generate rich molecular profiles but pose significant challenges for data integration across cohorts, platforms, and modalities. We present Spatial Omics Toolkit 2 (SOTK2), a deconvolution-driven framework for integrative analysis of spatial and multimodal omics data. SOTK2 builds on non-negative matrix factorization by concatenating latent factors across ranks and datasets to construct a unified, correlation-based network of gene expression programs. Community detection is then used to identify biologically coherent modules that are conserved across datasets or specific to individual studies, enabling robust integration while mitigating batch effects through flexible correlation thresholds.
+  SOTK2 retains the data-driven rank selection capability of the original Spatial Omics Toolkit and extends its applicability beyond spatial transcriptomics to bulk RNA sequencing, single-cell RNA sequencing, and protein expression data. By integrating data at the level of biological modules rather than raw features, SOTK2 provides an interpretable and scalable approach for cross-platform analysis and comparative biological discovery.
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{sotk2}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
