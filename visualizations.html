@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Visualizations - sotk2</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Visualizations";
+        var mkdocs_page_input_path = "visualizations.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="index.html" class="icon icon-home"> sotk2
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="vignettes.html">Vignettes</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Visualizations</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#directory-settings">Directory settings</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#load-the-spatial-omics-object">Load the spatial omics object</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#correlation-coefficient-density">Correlation coefficient density</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#visualization-parameters">Visualization parameters</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#correlation-network-plots">Correlation-network plots</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#community-network-properties">Community network properties</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#community-level-network-layout">Community-level network layout</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="annotations.html">Annotations</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="signature.html">Signature</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sotk2</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html" class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Visualizations</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="introduction">Introduction</h1>
+<ul>
+<li>This demo script demonstrates how to visualize the Spatial Omics Set
+  (<code>soSet</code>) to facilitate interpretation of the derived metagene
+  structure and cross-cohort relationships.</li>
+<li>Each figure generated below is accompanied by a detailed explanation
+  describing its rationale, key features, and guidance for
+  interpretation.</li>
+</ul>
+<h2 id="directory-settings">Directory settings</h2>
+<ul>
+<li>This block defines the working directory used throughout the demo to
+  store downloaded inputs and generated outputs.</li>
+</ul>
+<pre><code class="language-r"># If you want to use a user-defined output directory, 
+# uncomment and set the download_dir parameter.
+
+# download_dir &lt;- &quot;/path/to/download&quot; # where soObj.RDS is located
+
+if (exists(&quot;download_dir&quot;) &amp;&amp; is.character(download_dir) &amp;&amp; length(download_dir) == 1 &amp;&amp; 
+        nzchar(download_dir)) {
+        download_dir &lt;- download_dir
+} else {
+        download_dir &lt;- tools::R_user_dir(&quot;sotk2&quot;, &quot;data&quot;)
+}
+</code></pre>
+<h2 id="load-the-spatial-omics-object">Load the spatial omics object</h2>
+<ul>
+<li>We load the previously generated <code>soObj</code> object, which contains the
+  correlation network and community detection results produced in the
+  earlier steps of the workflow.</li>
+<li>The script first attaches the <code>sotk2</code> package and then checks whether
+  <code>soObj.RDS</code> is present in <code>download_dir</code>.</li>
+</ul>
+<pre><code class="language-r">library(sotk2)
+
+if (file.exists(file.path(download_dir, &quot;soObj.RDS&quot;))) {
+        soObj &lt;- readRDS(file.path(download_dir, &quot;soObj.RDS&quot;))
+} else {
+        stop(&quot;ERROR: the soObj.RDS file not found.&quot;)
+}
+</code></pre>
+<h2 id="correlation-coefficient-density">Correlation coefficient density</h2>
+<ul>
+<li>This panel summarizes the distribution of pairwise correlation
+  coefficients within and between datasets using a matrix-style layout.</li>
+<li>For three datasets, the figure comprises six histograms corresponding
+  to all dataset pairs.<ol>
+<li>The diagonal panels display within-dataset correlation
+distributions.</li>
+<li>The lower-left panels show between-dataset correlation distributions
+for each dataset pair, whereas the upper-right panels provide the
+corresponding overall coefficient distributions as a reference for
+comparison.</li>
+</ol>
+</li>
+<li>The <code>filename</code> argument controls output: setting <code>filename = NULL</code>
+  prints to the active graphics device, whereas providing a path writes
+  the figure to disk.</li>
+</ul>
+<pre><code class="language-r">plotCorrDensity(soObj@SOSet, filename = NULL)
+</code></pre>
+<p><img alt="" src="img/01_Stats_correlation_density.png" /></p>
+<h2 id="visualization-parameters">Visualization parameters</h2>
+<ul>
+<li>This section defines core visualization parameters that control the
+  appearance and readability of the network plots.</li>
+<li>Specifically, <code>nodeSize</code> and <code>nodeLabelSize</code> determine the size of
+  nodes and the corresponding label text, respectively, while
+  <code>edgeAlpha</code> sets the transparency of edges to reduce visual clutter in
+  dense networks and to emphasize higher-level structure.</li>
+</ul>
+<pre><code class="language-r">nodeSize        &lt;- 10
+nodeLabelSize   &lt;- 2
+edgeAlpha       &lt;- 0.8
+</code></pre>
+<h2 id="correlation-network-plots">Correlation-network plots</h2>
+<ul>
+<li>In this section, we generate network visualizations derived from the
+  correlation graph stored in <code>soObj</code>.</li>
+<li>The plotting function supports flexible display options, allowing
+  users to</li>
+<li>Toggle vertex labels (<code>label = TRUE/FALSE</code>)</li>
+<li>Color or annotate nodes by cohort membership (<code>annot = "cohort"</code>)
+      or by inferred community assignment (<code>annot = "community"</code>)</li>
+<li>Render either an unweighted network (<code>weighted = FALSE</code>) or a
+      weighted network (<code>weighted = TRUE</code>, where edge widths reflect
+      correlation strength)</li>
+</ul>
+<pre><code class="language-r">plotNetwork(soObj, label = FALSE, annot = &quot;cohort&quot;, weighted = FALSE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+</code></pre>
+<p><img alt="" src="img/02_Network_Unweighted.png" /></p>
+<pre><code class="language-r">plotNetwork(soObj, label = TRUE, annot = &quot;cohort&quot;, weighted = FALSE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize) 
+</code></pre>
+<p><img alt="" src="img/03_Network_Unweighted_lbl.png" /></p>
+<pre><code class="language-r">plotNetwork(soObj, label = FALSE, annot = &quot;community&quot;, weighted = FALSE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+</code></pre>
+<p><img alt="" src="img/04_Network_Unweighted_Comm.png" /></p>
+<pre><code class="language-r">plotNetwork(soObj, label = TRUE, annot = &quot;community&quot;, weighted = FALSE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+</code></pre>
+<p><img alt="" src="img/05_Network_Unweighted_Comm_lbl.png" /></p>
+<pre><code class="language-r">plotNetwork(soObj, label = FALSE, annot = &quot;community&quot;, weighted = TRUE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+</code></pre>
+<p><img alt="" src="img/06_Network_Community.png" /></p>
+<pre><code class="language-r">plotNetwork(soObj, label = TRUE, annot = &quot;community&quot;, weighted = TRUE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+</code></pre>
+<p><img alt="" src="img/07_Network_Community_lbl.png" /></p>
+<pre><code class="language-r">plotNetwork(soObj, label = FALSE, annot = &quot;cohort&quot;, weighted = TRUE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+</code></pre>
+<p><img alt="" src="img/08_Network_Weighted.png" /></p>
+<pre><code class="language-r">plotNetwork(soObj, label = TRUE, annot = &quot;cohort&quot;, weighted = TRUE, edgeAlpha = edgeAlpha, filename = NULL, vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+</code></pre>
+<p><img alt="" src="img/09_Network_Weighted_lbl.png" /></p>
+<h2 id="community-network-properties">Community network properties</h2>
+<ul>
+<li>The following plot summarizes community composition by reporting the
+  number of metagenes assigned to each detected community, stratified by
+  dataset.<ol>
+<li>This visualization provides a compact overview of how communities are
+  supported across cohorts and highlights communities that are
+  cohort-specific versus broadly shared.</li>
+<li>Metagenes derived from higher-rank factorizations often capture increasingly sample-specific patterns rather than broadly conserved biological programs. Consequently, communities dominated by high-rank metagenes may reflect cohort- or sample-idiosyncratic structure and may be less likely to represent generalizable biological signals that are reproducibly observed across datasets.</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-r">statComm(soObj, filename = NULL)
+</code></pre>
+<p><img alt="" src="img/10_Number_of_GEPs_in_each_community_page_1.png" />
+<img alt="" src="img/10_Number_of_GEPs_in_each_community_page_2.png" />
+<img alt="" src="img/10_Number_of_GEPs_in_each_community_page_3.png" /></p>
+<h2 id="community-level-network-layout">Community-level network layout</h2>
+<ul>
+<li>This step generates a community-level network in which each node
+  represents a detected community.</li>
+<li>Node size reflects the number of metagenes (GEPs) assigned to the
+  community, and edge thickness summarizes the extent of connectivity
+  between communities (that is, the number of inter-community edges in
+  the underlying metagene network).</li>
+<li>In subsequent sections, this community-level layout will be augmented
+  with sample-level annotations to support biological interpretation of
+  the inferred modules.</li>
+</ul>
+<pre><code class="language-r">plotCommNetwork(soObj, vertexInfo = NULL, filename = NULL)
+</code></pre>
+<p><img alt="" src="img/11_community_network_layout.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="vignettes.html" class="btn btn-neutral float-left" title="Vignettes"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="annotations.html" class="btn btn-neutral float-right" title="Annotations">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>&copy; 2025-2026 | <a href='https://Bioinformatics.ucalgary.ca/' target='_blank'>Bioinformatics Hub</a> | All Rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="vignettes.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="annotations.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

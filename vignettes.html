@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Vignettes - sotk2</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Vignettes";
+        var mkdocs_page_input_path = "vignettes.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="index.html" class="icon icon-home"> sotk2
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Vignettes</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#data-download-to-run-the-demos">Data download to run the demos</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#directory-settings">Directory settings</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#load-the-sotk2-library">Load the sotk2 library</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#load-cnmf-objects">Load cNMF objects</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#calculate-pairwise-correlations">Calculate pairwise correlations</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#generate-a-correlation-network">Generate a correlation network</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#save-the-object-for-reuse">Save the object for reuse</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="visualizations.html">Visualizations</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="annotations.html">Annotations</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="signature.html">Signature</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sotk2</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html" class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Vignettes</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="introduction">Introduction</h1>
+<ul>
+<li>This demo script illustrates the use of the <code>sotk2</code> package through a
+  step-by-step workflow:<ol>
+<li>It demonstrates how to construct a Spatial Omics Set (<code>soSet</code>) by
+  integrating (i) NMF-derived outputs as inputs and (ii) an
+  all-pairs correlation matrix as the primary output.</li>
+<li>The workflow then proceeds to create a spatial omics object
+  (<code>soObj</code>), in which a metagene network is inferred by thresholding
+  correlation strengths (for example, Spearman's rho &gt; 0.5).</li>
+<li>A community detection algorithm is subsequently applied to the
+  resulting network to identify metagene communities, which can be
+  interpreted as candidate biological modules.</li>
+<li>Following community detection, each community can be
+  systematically annotated using sample-level metadata (for example,
+  molecular subtype labels such as the Verhaak classification) to
+  facilitate biological interpretation.</li>
+<li>Users may also incorporate external annotations or
+  project-specific features onto the network to support tailored
+  interpretation and downstream analyses.</li>
+</ol>
+</li>
+</ul>
+<h2 id="data-download-to-run-the-demos">Data download to run the demos</h2>
+<ul>
+<li>Demo data are available from Zenodo (<a href="https://doi.org/10.5281/zenodo.18063318" target="_blank" rel="noopener noreferrer">https://doi.org/10.5281/zenodo.18063318</a>).</li>
+<li>You may download the files directly from the Zenodo record or use the
+  provided helper script to retrieve them programmatically.</li>
+<li>Two data bundles are provided: <strong>core</strong> and <strong>full</strong><ol>
+<li>The <strong>core</strong> bundle contains five files comprising cNMF outputs for
+the GLASS, IVYGAP, and HEILAND datasets, along with the GLASS cohort
+expression matrix and sample-level annotation metadata.</li>
+<li>The <strong>full</strong> bundle includes two additional files; however,
+<code>UKF269_T_Visium.RDS</code> (which contains Visium v1 slide image) is
+approximately 542 MB. Because of its size, we recommend downloading
+the core bundle first to begin running the demos, and downloading
+<code>UKF269_T_Visium.RDS</code> in the background. This Visium object is
+required for the visualization steps later in the workflow.</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-r"># The script below downloads the files to a local directory;
+# uncomment and set download_dir to your preferred destination.
+
+# download_dir &lt;- &quot;/path/to/download&quot;
+
+.demo_data_manifest &lt;- function(set = c(&quot;core&quot;, &quot;full&quot;)) {
+        set &lt;- match.arg(set)
+
+        manifest_full &lt;- data.frame(
+                file = c(
+                        &quot;annot_GLASS.RDS&quot;,      # core,  25 KB
+                        &quot;expr_GLASS.RDS&quot;,       # core,  34 MB
+                        &quot;nmfRes_GLASS.RDS&quot;,     # core,  13 MB
+                        &quot;nmfRes_HEILAND.RDS&quot;,   # core,  57 MB
+                        &quot;nmfRes_IVYGAP.RDS&quot;,    # core,  14 MB
+                        &quot;UKF269_T_spots.RDS&quot;,   # full,  20 KB
+                        &quot;UKF269_T_Visium.RDS&quot;.  # full, 542 MB (Visium v1 slide image)
+                ),
+                url = c(
+                        &quot;https://zenodo.org/records/18063318/files/annot_GLASS.RDS&quot;,
+                        &quot;https://zenodo.org/records/18063318/files/expr_GLASS.RDS&quot;,
+                        &quot;https://zenodo.org/records/18063318/files/nmfRes_GLASS.RDS&quot;,
+                        &quot;https://zenodo.org/records/18063318/files/nmfRes_HEILAND.RDS&quot;,
+                        &quot;https://zenodo.org/records/18063318/files/nmfRes_IVYGAP.RDS&quot;,
+                        &quot;https://zenodo.org/records/18063318/files/UKF269_T_spots.RDS&quot;,
+                        &quot;https://zenodo.org/records/18063318/files/UKF269_T_Visium.RDS&quot;
+                ),
+                md5 = c(
+                        &quot;484c9d3637912c683a685182d6303d15&quot;,
+                        &quot;f270145499efdc1da08aac39ae4f4c78&quot;,
+                        &quot;269dc92869c8efad5ae539fe10cee9cb&quot;,
+                        &quot;016612979539a409fdf74c0692d97ffa&quot;,
+                        &quot;a12613ef9a08fc3328169ed7cbe83229&quot;,
+                        &quot;d2312d01b19695f5ec58bdeef231ea24&quot;,
+                        &quot;fad3a540e1280bbd9ee68fffc8df78d6&quot;
+                ),
+                stringsAsFactors = FALSE
+        )
+
+        if (set == &quot;full&quot;) {
+                manifest &lt;- manifest_full
+        } else {
+                manifest &lt;- manifest_full[!grepl(&quot;^UKF269_T_&quot;, 
+                        manifest_full$file), , drop = FALSE]
+        }
+
+        return(manifest)
+}
+
+.verify_md5 &lt;- function(path, expected_md5) {
+        if (is.na(expected_md5) || expected_md5 == &quot;&quot;) {
+                return(TRUE)
+        }
+        actual &lt;- tools::md5sum(path)
+        isTRUE(unname(actual) == expected_md5)
+}
+
+download_demo_data &lt;- function(
+        set = c(&quot;core&quot;, &quot;full&quot;),
+        download_dir = tools::R_user_dir(&quot;sotk2&quot;, &quot;data&quot;),
+        overwrite = FALSE) {
+
+        set &lt;- match.arg(set)
+
+        if (!dir.exists(download_dir)) {
+                dir.create(download_dir, recursive = TRUE)
+        }
+
+        manifest &lt;- .demo_data_manifest(set = set)
+        paths &lt;- file.path(download_dir, manifest$file)
+
+        message(&quot;Checking demo data files... (set = &quot;, set, &quot;)&quot;)
+
+        for (i in seq_len(nrow(manifest))) {
+                needs_download &lt;- overwrite || !file.exists(paths[i])
+
+                if (!needs_download) {
+                        if (!.verify_md5(paths[i], manifest$md5[i])) {
+                                message(sprintf(
+                                        &quot;Checksum mismatch for %s; re-downloading.&quot;,
+                                        manifest$file[i]
+                                ))
+                                needs_download &lt;- TRUE
+                        }
+                }
+
+                if (needs_download) {
+                        message(sprintf(&quot;Downloading %s&quot;, manifest$file[i]))
+                        download.file(
+                                url = manifest$url[i],
+                                destfile = paths[i],
+                                mode = &quot;wb&quot;,
+                                quiet = TRUE
+                        )
+
+                        if (!.verify_md5(paths[i], manifest$md5[i])) {
+                                stop(sprintf(
+                                        &quot;Checksum verification failed for %s&quot;,
+                                        manifest$file[i]
+                                ))
+                        }
+                }
+        }
+
+        stats::setNames(paths, manifest$file)
+}
+
+options(timeout = max(1200, getOption(&quot;timeout&quot;))) # 20 minutes
+if (exists(&quot;download_dir&quot;) &amp;&amp; is.character(download_dir) &amp;&amp; length(download_dir) == 1 
+        &amp;&amp; nzchar(download_dir)) {
+        paths &lt;- download_demo_data(set = &quot;core&quot;, download_dir = download_dir)
+} else {
+        paths &lt;- download_demo_data(set = &quot;core&quot;)
+}
+</code></pre>
+<pre><code>## Checking demo data files... (set = core)
+</code></pre>
+<h2 id="directory-settings">Directory settings</h2>
+<ul>
+<li>This block defines the working directory used throughout the demo to
+  store downloaded inputs and generated outputs.</li>
+<li>If a valid <code>download_dir</code> variable already exists in the current R
+  session, the script reuses that user-specified location.</li>
+<li>Otherwise, it defaults to a standard, package-specific data directory
+  returned by <code>tools::R_user_dir("sotk2", "data")</code>, which provides a
+  consistent and user-writable storage path across platforms.</li>
+</ul>
+<pre><code class="language-r">if (exists(&quot;download_dir&quot;) &amp;&amp; is.character(download_dir) &amp;&amp; length(download_dir) == 1 
+        &amp;&amp; nzchar(download_dir)) {
+        download_dir &lt;- download_dir
+} else {
+        download_dir &lt;- tools::R_user_dir(&quot;sotk2&quot;, &quot;data&quot;)
+}
+</code></pre>
+<h2 id="load-the-sotk2-library">Load the sotk2 library</h2>
+<ul>
+<li>If <code>sotk2</code> is not yet installed, please refer to the project
+  repository for installation instructions: <a href="https://github.com/Snyder-Institute/sotk2" target="_blank" rel="noopener noreferrer">https://github.com/Snyder-Institute/sotk2</a>.</li>
+<li>After loading <code>sotk2</code>, its required dependencies (including <code>igraph</code>,
+  <code>methods</code>, <code>NMF</code>, <code>RColorBrewer</code>, and <code>stringr</code>) are loaded to support
+  the full demonstration workflow.</li>
+</ul>
+<pre><code class="language-r"># install.packages(&quot;devtools&quot;)
+# devtools::install_github(&quot;Snyder-Institute/sotk2&quot;)
+
+library(sotk2)
+</code></pre>
+<h2 id="load-cnmf-objects">Load cNMF objects</h2>
+<ul>
+<li>In this section, we load the precomputed cNMF result objects for three
+  cohorts (GLASS, IVYGAP, and HEILAND) from the downloaded demo files.</li>
+<li>These cohort-specific objects are then assembled into a single named
+  list (<code>dataL</code>), which serves as the primary input for subsequent
+  <code>sotk2</code> workflows.</li>
+<li>We additionally define:<ol>
+<li>The candidate factorization ranks to consider for each cohort
+  (<code>rankL</code>)</li>
+<li>A cohort-specific color palette (<code>dataCol</code>) to ensure consistent
+  visualization across figures</li>
+<li>The correlation method (<code>corMethod</code>) used to quantify metagene
+  similarity during the downstream integration and
+  network-construction steps</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-r">glass     &lt;- readRDS(file.path(download_dir, &quot;nmfRes_GLASS.RDS&quot;))
+ivygap    &lt;- readRDS(file.path(download_dir, &quot;nmfRes_IVYGAP.RDS&quot;))
+heiland   &lt;- readRDS(file.path(download_dir, &quot;nmfRes_HEILAND.RDS&quot;))
+
+dataL     &lt;- list(
+                     GLASS = glass, 
+                     IVYGAP = ivygap, 
+                     HEILAND = heiland
+             )
+rankL     &lt;- list(
+                     GLASS = c(3:10, 15, 20), 
+                     IVYGAP = c(3:10, 15, 20), 
+                     HEILAND = seq(5, 30, 5)
+             )
+dataCol   &lt;- c(
+                     &quot;GLASS&quot; = &quot;cyan3&quot;, 
+                     &quot;IVYGAP&quot; = &quot;chartreuse1&quot;, 
+                     &quot;HEILAND&quot; = &quot;magenta&quot;
+             )
+corMethod &lt;- &quot;spearman&quot;
+</code></pre>
+<h2 id="calculate-pairwise-correlations">Calculate pairwise correlations</h2>
+<ul>
+<li>In this section, we construct a Spatial Omics Set (<code>soSet</code>) by
+  integrating the cohort-specific cNMF objects and the corresponding
+  rank specifications.</li>
+<li>Internally, <code>SOSet()</code> concatenates the metagene loading matrices (the
+  <em>W</em> matrices) across cohorts and selected ranks, thereby placing all
+  metagenes into a common representation suitable for cross-dataset
+  comparison.</li>
+<li>It then computes an all-pairs correlation matrix across the
+  concatenated metagenes using the specified correlation metric
+  (<code>corMet</code>; here, Spearman).</li>
+<li>The resulting <code>soSet</code> object stores the inputs, cohort metadata
+  (including visualization colors), and the computed correlation
+  structure, which serves as the basis for downstream network inference
+  and community detection.</li>
+</ul>
+<pre><code class="language-r">soSet &lt;- SOSet(
+        NMFobjL = dataL, 
+        NMFrankL = rankL, 
+        dataCol = dataCol, 
+        corMet = corMethod
+)
+</code></pre>
+<pre><code>## 3 dataset(s) found in the list: GLASS, IVYGAP, HEILAND
+
+## Loading: GLASS [Rank: 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
+## Loading: IVYGAP [Rank: 3, 4, 5, 6, 7, 8, 9, 10, 15, 20]
+## Loading: HEILAND [Rank: 5, 10, 15, 20, 25, 30]
+
+## WARNING::Number of genes are different across datasets.
+
+## Calculating: all pairwise correlation coefficients.
+
+## Correlation computed with
+## • Method: 'spearman'
+## • Missing treated using: 'pairwise.complete.obs'
+## 
+## Assigned color(s):
+##  &gt; GLASS: cyan3
+##  &gt; IVYGAP: chartreuse1
+##  &gt; HEILAND: magenta
+</code></pre>
+<pre><code class="language-r">soSet
+</code></pre>
+<pre><code>## Dataset(s): 
+##   GLASS (cyan3)
+##   IVYGAP (chartreuse1)
+##   HEILAND (magenta)
+## Select rank(s): 
+##   GLASS: 3, 4, 5, 6, 7, 8, 9, 10, 15, 20
+##   IVYGAP: 3, 4, 5, 6, 7, 8, 9, 10, 15, 20
+##   HEILAND: 5, 10, 15, 20, 25, 30
+## Basis (W) matrices: 
+##   #Genes     : 26316
+##   #Metagenes : 279
+## Correlation method: 
+##   spearman (pairwise.complete.obs)
+## Correlation matrix: 
+##   Symmetric matrix with 279 columns X 279 rows.
+</code></pre>
+<h2 id="generate-a-correlation-network">Generate a correlation network</h2>
+<ul>
+<li>This section converts the correlation structure stored in <code>soSet</code> into
+  a metagene similarity network and performs community detection under
+  user-defined settings.<ol>
+<li>First, a correlation threshold (<code>coefThre</code>) is applied to retain only
+  sufficiently strong metagene-metagene associations (here,
+  correlations ≥ 0.3), yielding a sparse graph representation.</li>
+<li>Community detection is then run with a fixed random seed (<code>seed</code>) to
+  ensure reproducibility and a specified number of iterations (<code>niter</code>)
+  to stabilize the optimization.</li>
+<li>The parameters <code>commWeight</code> and <code>cohortWeight</code> are <em>not</em> used during 
+the community detection step. Instead, they are applied after communities 
+have been identified to rewire or reweight edges for visualization, 
+thereby influencing the spatial arrangement of nodes in network layouts.
+Specifically, <code>cohortWeight</code> increases the tendency for metagenes from 
+the same cohort (dataset) to cluster together, which is useful when 
+cohort-specific structure is a primary interpretive focus. In contrast, 
+<code>commWeight</code> increases the tendency for metagenes assigned to the same 
+community to cluster, which is preferable when emphasizing community-level 
+modular organization. By tuning these weights, users can generate 
+complementary visual representations of the same inferred communities 
+without altering the underlying community assignments.</li>
+<li>The resulting <code>soObj</code> stores the inferred network and the identified
+  communities for downstream annotation and visualization.</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-r">corrCoefThre &lt;- 0.3
+seed         &lt;- 1234
+niter        &lt;- 1000
+commWeight   &lt;- 100
+cohortWeight &lt;- 10
+
+soObj &lt;- SOTK(
+        SOSet = soSet, 
+        coefThre = corrCoefThre, 
+        seed = seed, 
+        niter = niter, 
+        commWeight = commWeight, 
+        cohortWeight = cohortWeight
+)
+</code></pre>
+<pre><code>## Seed: 1234
+
+## Community search algorithm:
+##  Fast Greedy
+
+## Updating weights for
+##  Community #1
+##  Community #2
+##  Community #3
+##  Community #4
+##  Community #5
+##  Community #6
+##  Community #7
+##  Community #8
+
+## Updating weights for
+##  Data: GLASS
+##  Data: IVYGAP
+##  Data: HEILAND
+
+## Calculating new layout based on new weights.
+
+## Community-level network generated.
+</code></pre>
+<pre><code class="language-r">soObj
+</code></pre>
+<pre><code>## Correlation network:
+##   Nodes       : 279
+##   Communities : 8 identified
+## Parameters:
+##   coefThre    : 0.3
+##   seed        : 1234
+##   niter       : 1000
+##   drop        : FALSE
+##   searchMet   : greedy
+##   commWeight  : 100
+##   cohortWeight: 10
+</code></pre>
+<h2 id="save-the-object-for-reuse">Save the object for reuse</h2>
+<ul>
+<li>To avoid repeating computationally intensive steps in later parts of
+  the demo, we serialize the resulting <code>soObj</code> object to disk as an
+  <code>.RDS</code> file.</li>
+<li>This saved object can be reloaded in downstream sections to reproduce
+  the same network and community assignments without rerunning the
+  correlation-network construction and community detection.</li>
+</ul>
+<pre><code class="language-r">saveRDS(soObj, file.path(download_dir, &quot;soObj.RDS&quot;))
+message(&quot;soObj.RDS was created.&quot;)
+</code></pre>
+<pre><code>## soObj.RDS was created.
+</code></pre>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="index.html" class="btn btn-neutral float-left" title="Home"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="visualizations.html" class="btn btn-neutral float-right" title="Visualizations">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>&copy; 2025-2026 | <a href='https://Bioinformatics.ucalgary.ca/' target='_blank'>Bioinformatics Hub</a> | All Rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="index.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="visualizations.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>

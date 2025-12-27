@@ -1,0 +1,244 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="description" content="None" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>sotk2</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Home";
+        var mkdocs_page_input_path = "index.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="index.html" class="icon icon-home"> sotk2
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Home</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#what-is-sotk2">What is sotk2</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#features">Features</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#concepts">Concepts</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#key-differences-between-sotk-and-sotk2">Key differences between SOTK and sotk2</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="vignettes.html">Vignettes</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="visualizations.html">Visualizations</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="annotations.html">Annotations</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="signature.html">Signature</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sotk2</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html" class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Home</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="spatial-omics-toolkit-2-sotk2">Spatial Omics Toolkit 2 (sotk2)</h1>
+<ul>
+<li>Last updated: December 27, 2025</li>
+</ul>
+<hr />
+<h2 id="what-is-sotk2">What is sotk2</h2>
+<p><strong>sotk2</strong> is an R package for integrating omics datasets using modules derived from non-negative matrix factorization (NMF) or consensus NMF (cNMF). The core idea is to treat each gene expression program (metagene) as a comparable unit across datasets, then integrate programs through a correlation-based network followed by community detection.</p>
+<p><strong>sotk2</strong> is designed to be self-contained and independent: it does not require any prior packages or objects outside this repository. Inputs may come from any platform or modality (for example, bulk RNA-seq, single-cell RNA-seq, spatial transcriptomics, or protein abundance), as long as NMF/cNMF outputs are available (or can be imported).</p>
+<h3 id="features">Features</h3>
+<ul>
+<li>Identification of biologically meaningful latent factors from deconvoluted omics data</li>
+<li>Data-driven rank selection across multiple NMF or cNMF runs</li>
+<li>Correlation-based integration of biological modules across datasets and platforms</li>
+<li>Support for spatial, bulk, single-cell, and protein-level omics data</li>
+<li>Community abstraction and network-level visualization for large integrative analyses</li>
+<li>Assessing sample-type enrichment using Pearson residuals (observed vs expected counts; Chi-squared framework)</li>
+<li>Consistent network layouts for comparative, cross-dataset interpretation</li>
+</ul>
+<h2 id="concepts">Concepts</h2>
+<p><strong>sotk2</strong> organizes analysis into two primary objects:</p>
+<ul>
+<li>
+<p><strong>SpatialOmicsSet</strong></p>
+<ul>
+<li>Stores per-dataset NMF results (as <code>NMF.rank</code> objects)</li>
+<li>Concatenates basis (W) matrices across ranks/datasets</li>
+<li>Computes the metagene–metagene correlation matrix</li>
+</ul>
+</li>
+<li>
+<p><strong>MetageneCorrelationNetwork</strong></p>
+<ul>
+<li>Thresholds correlations and builds a metagene graph</li>
+<li>Detects communities and stores community membership</li>
+<li>Computes layouts for plotting and creates an optional community-level aggregated network</li>
+</ul>
+</li>
+</ul>
+<h3 id="key-differences-between-sotk-and-sotk2">Key differences between SOTK and sotk2</h3>
+<p><strong>sotk2</strong> extends the original SOTK workflow from “rank selection within a dataset” to <strong>cross-dataset, cross-platform module integration</strong>. The emphasis shifts from choosing an optimal <em>k</em> in a single analysis to building a comparable module space across datasets and extracting communities that persist across ranks and cohorts.</p>
+<table>
+<thead>
+<tr>
+<th>Feature</th>
+<th>sotk2</th>
+<th>SOTK</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Primary goal</td>
+<td>Cross-dataset and cross-modality integration using deconvolution-derived modules</td>
+<td>Data-driven selection of an optimal latent factor number within a dataset</td>
+</tr>
+<tr>
+<td>Input data types</td>
+<td>Any modality with NMF/cNMF outputs (bulk, single-cell, spatial transcriptomics, protein abundance)</td>
+<td>Spatial transcriptomics–focused</td>
+</tr>
+<tr>
+<td>Integration scope</td>
+<td>Across datasets, cohorts, platforms, and modalities via correlation networks</td>
+<td>Within dataset (single platform)</td>
+</tr>
+<tr>
+<td>Network representation</td>
+<td>Metagene-level networks plus <strong>community-level abstraction</strong> to scale integration and interpretation</td>
+<td>Metagene-level networks</td>
+</tr>
+<tr>
+<td>Composition assessment</td>
+<td><strong>Residual-based overrepresentation</strong> to summarize sample-type composition at the community level</td>
+<td>Limited or dataset-specific</td>
+</tr>
+<tr>
+<td>Comparative visualization</td>
+<td>Consistent-layout community networks to support direct cross-dataset comparison</td>
+<td>Basic plotting</td>
+</tr>
+<tr>
+<td>Gene interpretation</td>
+<td>Built-in extraction of <strong>metagene-associated genes (MAGs)</strong> and selection of <strong>contributing community genes</strong> for annotation</td>
+<td>Metagene genes (limited)</td>
+</tr>
+<tr>
+<td>Intended outcome</td>
+<td>Identify robust communities/modules and compare their presence and composition across datasets</td>
+<td>Choose <em>k</em> and interpret metagenes</td>
+</tr>
+</tbody>
+</table>
+<h2 id="citation">Citation</h2>
+<p>If you use <strong>sotk2</strong> in your work, please cite the associated manuscript: <em>to be added</em></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="vignettes.html" class="btn btn-neutral float-right" title="Vignettes">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>&copy; 2025-2026 | <a href='https://Bioinformatics.ucalgary.ca/' target='_blank'>Bioinformatics Hub</a> | All Rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+    
+      <span><a href="vignettes.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
+
+<!--
+MkDocs version : 1.6.1
+Build Date UTC : 2025-12-27 18:53:17.534379+00:00
+-->

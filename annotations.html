@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+      <link rel="shortcut icon" href="img/favicon.ico" />
+    <title>Annotations - sotk2</title>
+    <link rel="stylesheet" href="css/theme.css" />
+    <link rel="stylesheet" href="css/theme_extra.css" />
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/styles/github.min.css" />
+    
+      <script>
+        // Current page data
+        var mkdocs_page_name = "Annotations";
+        var mkdocs_page_input_path = "annotations.md";
+        var mkdocs_page_url = null;
+      </script>
+    
+    <!--[if lt IE 9]>
+      <script src="js/html5shiv.min.js"></script>
+    <![endif]-->
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.8.0/highlight.min.js"></script>
+      <script>hljs.highlightAll();</script> 
+</head>
+
+<body class="wy-body-for-nav" role="document">
+
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side stickynav">
+    <div class="wy-side-scroll">
+      <div class="wy-side-nav-search">
+          <a href="index.html" class="icon icon-home"> sotk2
+        </a><div role="search">
+  <form id ="rtd-search-form" class="wy-form" action="./search.html" method="get">
+      <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" title="Type search term here" />
+  </form>
+</div>
+      </div>
+
+      <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="vignettes.html">Vignettes</a>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="visualizations.html">Visualizations</a>
+                </li>
+              </ul>
+              <ul class="current">
+                <li class="toctree-l1 current"><a class="reference internal current" href="#">Annotations</a>
+    <ul class="current">
+    <li class="toctree-l2"><a class="reference internal" href="#directory-settings">Directory settings</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#load-the-spatial-omics-object">Load the spatial omics object</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#annotation-colors">Annotation colors</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#user-defined-functions">User-defined functions</a>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#community-annotation">Community annotation</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#glass-primary-vs-recurrence">[GLASS] Primary vs. Recurrence</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#glass-molecular-subtypes">[GLASS] Molecular subtypes</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ivygap-anatomical-features">[IVYGAP] Anatomical features</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#community-level-nmf-usages">Community-level NMF usages</a>
+        <ul>
+    <li class="toctree-l3"><a class="reference internal" href="#glass">GLASS</a>
+    </li>
+    <li class="toctree-l3"><a class="reference internal" href="#ivygap">IVYGAP</a>
+    </li>
+        </ul>
+    </li>
+    <li class="toctree-l2"><a class="reference internal" href="#community-assigned-visium-spots">Community-assigned Visium spots</a>
+    </li>
+    </ul>
+                </li>
+              </ul>
+              <ul>
+                <li class="toctree-l1"><a class="reference internal" href="signature.html">Signature</a>
+                </li>
+              </ul>
+      </div>
+    </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <nav class="wy-nav-top" role="navigation" aria-label="Mobile navigation menu">
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">sotk2</a>
+        
+      </nav>
+      <div class="wy-nav-content">
+        <div class="rst-content"><div role="navigation" aria-label="breadcrumbs navigation">
+  <ul class="wy-breadcrumbs">
+    <li><a href="index.html" class="icon icon-home" aria-label="Docs"></a></li>
+      <li class="breadcrumb-item active">Annotations</li>
+    <li class="wy-breadcrumbs-aside">
+    </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+            <div class="section" itemprop="articleBody">
+              
+                <h1 id="introduction">Introduction</h1>
+<ul>
+<li>The workflows presented here annotate the community-level network
+  using existing sample annotations.</li>
+<li>When users have expression profiles without accompanying labels, the
+  resulting network annotations can still provide an interpretive
+  framework by supporting inference based on established molecular
+  markers (for example, Verhaak subtype signatures), clinical context
+  (for example, primary versus recurrence status), and anatomical
+  features (for example, tumor core versus edge), leveraging communities
+  that have already been annotated in reference cohorts.</li>
+<li>The scripts in this section are not intended to be fully
+  generalizable, because sample identifiers and available annotations
+  can differ substantially across cohorts. For example, in the GLASS
+  cohort, sample identifiers are de-identified barcodes and must be
+  linked to external metadata to enable annotation. In contrast, the
+  IVYGAP dataset encodes anatomical context directly in sample names,
+  such that certain anatomical features may be inferred without an
+  additional metadata table. </li>
+<li>Accordingly, the scripts below are
+  <strong>cohort-specific</strong> and should be adapted as needed for other datasets
+  and naming conventions.</li>
+</ul>
+<h2 id="directory-settings">Directory settings</h2>
+<ul>
+<li>This block defines the working directory used throughout the demo to
+  store downloaded inputs and generated outputs.</li>
+</ul>
+<pre><code class="language-r"># If you want to use a user-defined output directory,
+# uncomment and set the download_dir parameter.
+
+# download_dir &lt;- &quot;/path/to/download&quot; # where soObj.RDS is located
+
+if (exists(&quot;download_dir&quot;) &amp;&amp; is.character(download_dir) &amp;&amp; length(download_dir) == 1 &amp;&amp; 
+        nzchar(download_dir)) {
+        download_dir &lt;- download_dir
+} else {
+        download_dir &lt;- tools::R_user_dir(&quot;sotk2&quot;, &quot;data&quot;)
+}
+
+if (!dir.exists(download_dir)) {
+        dir.create(download_dir, recursive = TRUE)
+        message(download_dir, &quot; created.&quot;)
+}
+</code></pre>
+<h2 id="load-the-spatial-omics-object">Load the spatial omics object</h2>
+<ul>
+<li>We load the previously generated <code>soObj</code> object, which contains the
+  correlation network and community detection results produced in the
+  earlier steps of the workflow.</li>
+<li>The script first attaches the <code>sotk2</code> package and then checks whether
+  <code>soObj.RDS</code> is present in <code>download_dir</code>.</li>
+</ul>
+<pre><code class="language-r">library(sotk2)
+
+if (file.exists(file.path(download_dir, &quot;soObj.RDS&quot;))) {
+        soObj &lt;- readRDS(file.path(download_dir, &quot;soObj.RDS&quot;))
+} else {
+        stop(&quot;ERROR: the soObj.RDS file not found.&quot;)
+}
+</code></pre>
+<h2 id="annotation-colors">Annotation colors</h2>
+<ul>
+<li>This section defines a cohort-specific color map used to standardize
+  visual annotations across figures.</li>
+<li>The object <code>pieColors</code> specifies<ol>
+<li>A named color palette for IVYGAP anatomical features</li>
+<li>Nested palettes for GLASS sample-level metadata, including
+  <code>sampleType</code> (for example, Primary versus Recurrence) and
+  <code>molecularSubtype</code> (for example, Classical, Mesenchymal, and
+  Proneural).</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-r">pieColors &lt;- list(
+        IVYGAP = c(
+                &quot;CT&quot; = &quot;red&quot;,              # cellular tumor
+                &quot;IT&quot; = &quot;orange&quot;,           # infiltrating tumor     
+                &quot;LE&quot; = &quot;gold&quot;,             # tumor’s leading edge 
+                &quot;MVP&quot; = &quot;darkslategray4&quot;,  # microvascular proliferations
+                &quot;PAN&quot; = &quot;burlywood4&quot;       # palisading cells around necrosis
+        ),
+        GLASS = list(
+                &quot;sampleType&quot; = c(
+                        &quot;Primary&quot; = &quot;chartreuse1&quot;, 
+                        &quot;Recurrence&quot; = &quot;darkgreen&quot;
+                ),
+                &quot;molecularSubtype&quot; = c(
+                        &quot;Classical&quot; = &quot;deepskyblue2&quot;, 
+                        &quot;Mesenchymal&quot; = &quot;deeppink3&quot;, 
+                        &quot;Proneural&quot; = &quot;coral3&quot;
+                )
+        )
+)
+</code></pre>
+<h2 id="user-defined-functions">User-defined functions</h2>
+<ul>
+<li>This section defines helper functions that translate cohort-specific
+  sample identifiers into index sets used for downstream annotation and
+  visualization. Because naming conventions and available metadata
+  differ by cohort, these utilities provide a reproducible way to map
+  samples to biologically meaningful groups.<ol>
+<li><code>.getIVYGAPidx()</code> parses IVYGAP sample identifiers to extract
+  abbreviated anatomical region labels (for example, CT, IT, LE,
+  MVP, PAN) based on the encoded naming pattern, and returns indices
+  for each region class.</li>
+<li><code>.getGLASSidx()</code> maps GLASS sample identifiers to phenotype
+  categories using an external metadata table (<code>db</code>), returning
+  indices for sample type (Primary versus Recurrence) and molecular
+  subtype (Classical, Mesenchymal, Proneural).</li>
+<li><code>geoMean()</code> computes the geometric mean and can be used to
+  summarize metagene usage (or other positive-valued quantities) at
+  the sample, community, or cohort level. This summary is often
+  useful for comparing relative activity across communities while
+  reducing sensitivity to extreme values.</li>
+</ol>
+</li>
+</ul>
+<pre><code class="language-r">.getIVYGAPidx &lt;- function(x) {
+        ctIdx &lt;- c(); itIdx &lt;- c(); leIdx &lt;- c(); mvpIdx &lt;- c(); panIdx &lt;- c()
+
+        if (!is.null(x)) {
+                region &lt;- stringr::str_sub(
+                        sapply(stringr::str_split(x, &quot;__&quot;), &quot;[[&quot;, 2), 0, 3
+                )
+                ctIdx &lt;- which(region == &quot;Cel&quot;)
+                itIdx &lt;- which(region == &quot;Inf&quot;)
+                leIdx &lt;- which(region == &quot;Lea&quot;)
+                mvpIdx &lt;- which(region == &quot;Mic&quot;)
+                panIdx &lt;- which(region == &quot;Pse&quot;)
+        }
+
+        return(list(CT = ctIdx, IT = itIdx, LE = leIdx, MVP = mvpIdx, PAN = panIdx)) 
+}
+
+.getGLASSidx &lt;- function(x, db) {
+        priIdx &lt;- c(); recIdx &lt;- c()
+        claIdx &lt;- c(); mesIdx &lt;- c(); proIdx &lt;- c()
+
+        if (!is.null(x)) {
+                sub &lt;- db[which(rownames(db) %in% x), c(&quot;sample_type&quot;, &quot;Subtype&quot;)]
+                priIdx &lt;- which(sub$sample_type == &quot;Primary&quot;)
+                recIdx &lt;- which(sub$sample_type == &quot;Recurrence&quot;)
+                claIdx &lt;- which(sub$Subtype == &quot;Classical&quot;)
+                mesIdx &lt;- which(sub$Subtype == &quot;Mesenchymal&quot;)
+                proIdx &lt;- which(sub$Subtype == &quot;Proneural&quot;)
+        }
+
+        return(list(
+                &quot;sampleType&quot; = list(Pri = priIdx, Rec = recIdx), 
+                &quot;molecularSubtype&quot; = list(Cla = claIdx, Mes = mesIdx, Pro = proIdx)
+        ))
+}
+
+geoMean &lt;- function(x) exp(mean(log(x)))
+</code></pre>
+<h2 id="community-annotation">Community annotation</h2>
+<ul>
+<li>This section annotates the community-level network using GLASS sample
+  metadata and renders a community-level visualization in which each
+  community node is summarized by the distribution of sample types
+  (Primary versus Recurrence) and molecular subtypes (Classical,
+  Mesenchymal, Proneural).</li>
+<li>The pie encodes standardized residuals from a chi-squared test, defined as <code>residual = (observed - expected) / sqrt(expected)</code>.<ul>
+<li>Larger positive residuals indicate an over-representation of the category relative to the null expectation, whereas larger negative residuals indicate an under-representation.</li>
+<li>The magnitude of the residual reflects the strength of deviation from independence, with values further from zero providing stronger evidence that the observed frequency differs meaningfully from the expected frequency under the Chi-squared model.</li>
+</ul>
+</li>
+</ul>
+<h3 id="glass-primary-vs-recurrence">[GLASS] Primary vs. Recurrence</h3>
+<ul>
+<li>Briefly, the code (i) extracts metagene-to-community assignments from
+  the correlation network, (ii) loads the GLASS annotation table
+  (<code>annot_GLASS.RDS</code>), and (iii) aggregates, for each community, the set
+  of samples associated with its constituent GEPs (via the GLASS
+  metagene-to-sample mapping).</li>
+<li>The helper function <code>.getGLASSidx()</code> is then used to map those samples
+  to metadata-defined groups, and the resulting counts are stored as a
+  per-community "pie" vector.</li>
+<li>Communities with non-zero counts are displayed with appropriately
+  scaled node sizes and labels.</li>
+</ul>
+<pre><code class="language-r">corNetwork &lt;- soObj@corNetwork
+clusterMembership &lt;- soObj@sample2metagene
+community &lt;- c(1:length(soObj@commCols))
+commNetwork &lt;- soObj@commNetwork
+
+allGEPs &lt;- data.frame(
+        Data = sapply(stringr::str_split(igraph::V(corNetwork)$name, &quot;\\$&quot;), &quot;[[&quot;, 1), 
+        GEP = igraph::V(corNetwork)$name,
+        Community = igraph::V(corNetwork)$community
+)
+
+if (file.exists(file.path(download_dir, &quot;annot_GLASS.RDS&quot;))) {
+        glassAnnot &lt;- readRDS(file.path(download_dir, &quot;annot_GLASS.RDS&quot;))
+        message(&quot;annot_GLASS.RDS file imported.&quot;)
+} else {
+        stop(&quot;Please download annot_GLASS.RDS by running 03_download.R.&quot;)
+}
+</code></pre>
+<pre><code>## annot_GLASS.RDS file imported.
+</code></pre>
+<pre><code class="language-r">dName &lt;- &quot;GLASS&quot;
+legend &lt;- names(pieColors[[dName]][[&quot;sampleType&quot;]])
+legendCol &lt;- pieColors[[dName]][[&quot;sampleType&quot;]]
+
+cl &lt;- clusterMembership[[dName]]
+subGEPs &lt;- allGEPs[which(allGEPs$Data == dName),]
+
+# init
+vertexLabel &lt;- rep(&quot;&quot;, length(community)); names(vertexLabel) &lt;- community
+vertexSize &lt;- rep(0.1, length(community)); names(vertexSize) &lt;- community
+vertexPie &lt;- rep_len(list(numeric(length(legend))), length(community))
+names(vertexPie) &lt;- paste0(&quot;Community_&quot;, community)
+
+for (whichComm in community) {
+message(whichComm)
+        commName &lt;- paste0(&quot;Community_&quot;, whichComm)
+        commSpecificGEPs &lt;- subGEPs[which(subGEPs$Community == whichComm),]
+        if (nrow(commSpecificGEPs) &gt; 0) {
+                allSamples &lt;- c()
+                for (gep in commSpecificGEPs$GEP) {
+                        allSamples &lt;- c(allSamples, cl[[gep]])
+                }
+                noSamples &lt;- .getGLASSidx(unique(allSamples), glassAnnot)
+                noSamples &lt;- sapply(noSamples[[&quot;sampleType&quot;]], length)
+
+                if (sum(noSamples) != 0) {
+                        vertexPie[[commName]] &lt;- noSamples
+                        vertexSize[whichComm] &lt;- igraph::V(commNetwork)$size[whichComm]
+                        vertexLabel[whichComm] &lt;- igraph::V(commNetwork)$name[whichComm]
+                } 
+        }
+}
+
+vertexInfo &lt;- list(
+        vertexLabel = vertexLabel, 
+        vertexSize = vertexSize, 
+        vertexPie = vertexPie, 
+        legend = legend, 
+        legendCol = legendCol
+)
+plotCommNetwork(soObj, vertexInfo = vertexInfo, filename = NULL)
+</code></pre>
+<p><img alt="" src="img/12_GLASS_sampleType_community_network.png" /></p>
+<h3 id="glass-molecular-subtypes">[GLASS] Molecular subtypes</h3>
+<pre><code class="language-r">legend &lt;- names(pieColors[[dName]][[&quot;molecularSubtype&quot;]]) # Verhaak
+legendCol &lt;- pieColors[[dName]][[&quot;molecularSubtype&quot;]]
+
+# init
+vertexLabel &lt;- rep(&quot;&quot;, length(community)); names(vertexLabel) &lt;- community
+vertexSize &lt;- rep(0.1, length(community)); names(vertexSize) &lt;- community
+vertexPie &lt;- rep_len(list(numeric(length(legend))), length(community)); names(vertexPie) &lt;- paste0(&quot;Community_&quot;, community)
+
+for (whichComm in community) {
+        commName &lt;- paste0(&quot;Community_&quot;, whichComm)
+        commSpecificGEPs &lt;- subGEPs[which(subGEPs$Community == whichComm),]
+        if (nrow(commSpecificGEPs) &gt; 0) {
+                allSamples &lt;- c()
+                for (gep in commSpecificGEPs$GEP) {
+                        allSamples &lt;- c(allSamples, cl[[gep]])
+                }
+                noSamples &lt;- .getGLASSidx(unique(allSamples), glassAnnot)
+                noSamples &lt;- sapply(noSamples[[&quot;molecularSubtype&quot;]], length)
+
+                if (sum(noSamples) != 0) {
+                        vertexPie[[commName]] &lt;- noSamples
+                        vertexSize[whichComm] &lt;- igraph::V(commNetwork)$size[whichComm]
+                        vertexLabel[whichComm] &lt;- igraph::V(commNetwork)$name[whichComm]
+                } 
+        }
+}
+
+vertexInfo &lt;- list(vertexLabel = vertexLabel, vertexSize = vertexSize, vertexPie = vertexPie, legend = legend, legendCol = legendCol)
+plotCommNetwork(soObj, vertexInfo = vertexInfo, filename = NULL)
+</code></pre>
+<p><img alt="" src="img/13_GLASS_molecularType_community_network.png" /></p>
+<h3 id="ivygap-anatomical-features">[IVYGAP] Anatomical features</h3>
+<ul>
+<li>This section annotates the community-level network using IVYGAP
+  anatomical context derived directly from sample identifiers and
+  generates a community-level plot summarizing the anatomical
+  composition of each community.</li>
+<li>For each community, the script aggregates the set of samples
+  associated with its constituent GEPs (via the IVYGAP
+  metagene-to-sample mapping) and then applies <code>.getIVYGAPidx()</code> to
+  parse sample names into anatomical region categories.</li>
+<li>The resulting category counts are stored as a per-community "pie"
+  vector and used to render pie-chart node annotations, with node size
+  and labels inherited from the community network.</li>
+</ul>
+<pre><code class="language-r">dName &lt;- &quot;IVYGAP&quot;
+legend &lt;- c(&quot;Cellular_Tumor&quot;, &quot;Infiltrating_Tumor&quot;, &quot;Leading_Edge&quot;, &quot;Microvascular_proliferation&quot;, &quot;Pseudopalisading_cells_around_necrosis&quot;)
+legendLbl &lt;- names(pieColors[[dName]])
+legendCol &lt;- pieColors[[dName]]
+
+cl &lt;- clusterMembership[[dName]]
+subGEPs &lt;- allGEPs[which(allGEPs$Data == dName),]
+
+# init
+vertexLabel &lt;- rep(&quot;&quot;, length(community)); names(vertexLabel) &lt;- community
+vertexSize &lt;- rep(0.1, length(community)); names(vertexSize) &lt;- community
+vertexPie &lt;- rep_len(list(numeric(length(legend))), length(community)); names(vertexPie) &lt;- paste0(&quot;Community_&quot;, community)
+
+for (whichComm in community) {
+        commName &lt;- paste0(&quot;Community_&quot;, whichComm)
+        commSpecificGEPs &lt;- subGEPs[which(subGEPs$Community == whichComm),]
+        if (nrow(commSpecificGEPs) &gt; 0) {
+                allSamples &lt;- c()
+                for (gep in commSpecificGEPs$GEP) {
+                        allSamples &lt;- c(allSamples, cl[[gep]])
+                }
+                noSamples &lt;- .getIVYGAPidx(unique(allSamples))
+                noSamples &lt;- sapply(noSamples, length)
+
+                if (sum(noSamples) != 0) {
+                        vertexPie[[commName]] &lt;- noSamples
+                        vertexSize[whichComm] &lt;- igraph::V(commNetwork)$size[whichComm]
+                        vertexLabel[whichComm] &lt;- igraph::V(commNetwork)$name[whichComm]
+                } 
+        }
+}
+vertexInfo &lt;- list(vertexLabel = vertexLabel, vertexSize = vertexSize, vertexPie = vertexPie, legend = legend, legendLbl = legendLbl, legendCol = legendCol)
+plotCommNetwork(soObj, vertexInfo = vertexInfo, filename = NULL)
+</code></pre>
+<p><img alt="" src="img/14_IVYGAP_community_network.png" /></p>
+<h2 id="community-level-nmf-usages">Community-level NMF usages</h2>
+<ul>
+<li>This section quantifies and visualizes community-level activity by
+  summarizing metagene usage patterns derived from the cNMF results.</li>
+<li>For each cohort (GLASS and IVYGAP), the script iterates over inferred
+  communities and performs the following steps:<ol>
+<li>Identifies the set of metagenes assigned to the current community
+  and restricts them to the cohort of interest</li>
+<li>Extracts the corresponding NMF usage profiles (H/coef matrix) from
+  the fitted NMF object</li>
+<li>Normalizes metagene usage across samples to obtain a comparable,
+  compositional usage profile</li>
+<li>Aggregates usage across all community member metagenes by
+  computing the geometric mean per sample.</li>
+<li>The resulting per-sample activity estimates are then stratified by
+  cohort-specific annotations (for example, sample type and
+  molecular subtype in GLASS; anatomical regions in IVYGAP) and
+  visualized using empirical cumulative distribution functions
+  (ECDFs).</li>
+</ol>
+</li>
+<li>Users can compute the geometric mean of metagene usage (from the
+  NMF results) to identify communities with stronger or weaker activity
+  and to reduce the risk of misinterpretation.</li>
+<li>The ECDF plots provide a compact comparison of community activity
+  distributions across annotation groups:<ul>
+<li>They address questions such as how Community #1 and #6 differ when both appear Primary-associated based on Chi-squared residual patterns. In particular, summarizing community activity using the geometric mean of metagene usage reveals that Primary samples exhibit higher usage in Community #1, whereas Recurrence samples exhibit higher usage in Community $6. This divergence indicates that Community 1 is more plausibly interpreted as a Primary-enriched module, while Community 6 may reflect a recurrence-associated or mixed activity pattern despite similar residual-based enrichment profiles.</li>
+</ul>
+</li>
+</ul>
+<h3 id="glass">GLASS</h3>
+<pre><code class="language-r">glass &lt;- readRDS(file.path(download_dir, &quot;nmfRes_GLASS.RDS&quot;))
+ivygap &lt;- readRDS(file.path(download_dir, &quot;nmfRes_IVYGAP.RDS&quot;))
+dataL &lt;- list(GLASS = glass, IVYGAP = ivygap)
+
+dName &lt;- &quot;GLASS&quot;
+nmfObj &lt;- dataL[[dName]]
+nodes &lt;- igraph::V(soObj@corNetwork)
+community &lt;- nodes$community
+names(community) &lt;- nodes$name
+
+for (comm in c(1:length(soObj@commCols))) {
+        metagenes &lt;- names(community)[which(community == comm)]
+        metagenes &lt;- metagenes[which(
+                sapply(stringr::str_split(metagenes, &quot;\\$&quot;), &quot;[[&quot;, 1) == dName)]
+
+        if (length(metagenes) &gt; 0) {
+                usageMat &lt;- c()
+                for (metagene in metagenes) {
+                        buff &lt;- unlist(stringr::str_split(metagene, &quot;\\$&quot;))
+                        k &lt;- as.numeric(buff[3])
+                        rank &lt;- as.numeric(buff[2])
+
+                        usage &lt;- NMF::coef(get(as.character(k), nmfObj$fit))
+
+                        rowSum &lt;- apply(usage, 1, sum)
+                        nUsage &lt;- usage/rowSum
+                        usageMat &lt;- rbind(usageMat, nUsage[rank,])
+                }
+
+                usageMat[usageMat == 0] &lt;- 1E-08
+                rep &lt;- apply(usageMat, 2, geoMean)
+                names(rep) &lt;- colnames(usageMat)
+
+                idx &lt;- .getGLASSidx(names(rep), glassAnnot)
+
+                priIdx &lt;- idx[[&quot;sampleType&quot;]][[&quot;Pri&quot;]]
+                recIdx &lt;- idx[[&quot;sampleType&quot;]][[&quot;Rec&quot;]]
+                claIdx &lt;- idx[[&quot;molecularSubtype&quot;]][[&quot;Cla&quot;]]
+                mesIdx &lt;- idx[[&quot;molecularSubtype&quot;]][[&quot;Mes&quot;]]
+                proIdx &lt;- idx[[&quot;molecularSubtype&quot;]][[&quot;Pro&quot;]]
+
+                pri &lt;- rep[priIdx]; pri &lt;- pri[order(pri)]; priF &lt;- ecdf(rep[priIdx])
+                rec &lt;- rep[recIdx]; rec &lt;- rec[order(rec)]; recF &lt;- ecdf(rep[recIdx])
+                cla &lt;- rep[claIdx]; cla &lt;- cla[order(cla)]; claF &lt;- ecdf(rep[claIdx])
+                mes &lt;- rep[mesIdx]; mes &lt;- mes[order(mes)]; mesF &lt;- ecdf(rep[mesIdx])
+                pro &lt;- rep[proIdx]; pro &lt;- pro[order(pro)]; proF &lt;- ecdf(rep[proIdx])
+
+                plot(pri, priF(pri), col=&quot;chartreuse1&quot;, xlab=&quot;GeoMean(GEPs)&quot;, 
+                        ylab=&quot;ECDF&quot;, main=paste0(&quot;Community #&quot;, comm), 
+                        type=&quot;l&quot;, lwd=3, xlim=c(0, max(rep)), ylim=c(0, 1)
+                )
+                lines(rec, recF(rec), col=&quot;darkgreen&quot;, lwd=3)
+                lines(cla, claF(cla), col=&quot;deepskyblue2&quot;, lwd=3, lty=2)
+                lines(mes, mesF(mes), col=&quot;deeppink3&quot;, lwd=3, lty=2)
+                lines(pro, proF(pro), col=&quot;coral3&quot;, lwd=3, lty=2)
+
+                legend(&quot;bottomright&quot;, 
+                        legend=c(
+                                paste0(&quot;Pri (&quot;, length(priIdx), &quot;)&quot;), 
+                                paste0(&quot;Rec (&quot;, length(recIdx), &quot;)&quot;),
+                                NA, 
+                                paste0(&quot;Classical (&quot;, length(claIdx), &quot;)&quot;),
+                                paste0(&quot;Mesenchymal (&quot;, length(mesIdx), &quot;)&quot;),
+                                paste0(&quot;Proneural (&quot;, length(proIdx), &quot;)&quot;)
+                        ),
+                        col = c(&quot;chartreuse1&quot;, &quot;darkgreen&quot;, NA, 
+                                &quot;deepskyblue2&quot;, &quot;deeppink3&quot;, &quot;coral3&quot;
+                        ), 
+                        pch = 15, pt.cex = 2.8,
+                        bty=&quot;n&quot;, ncol=2
+                )
+        } else {
+                message(paste0(&quot;No metagenes in Community #&quot;, comm))
+        }
+}
+</code></pre>
+<p><img alt="" src="img/15_GLASS_GEP_usage_geomean_community_1.png" />
+<img alt="" src="img/15_GLASS_GEP_usage_geomean_community_2.png" />
+<img alt="" src="img/15_GLASS_GEP_usage_geomean_community_3.png" />
+<img alt="" src="img/15_GLASS_GEP_usage_geomean_community_4.png" />
+<img alt="" src="img/15_GLASS_GEP_usage_geomean_community_5.png" />
+<img alt="" src="img/15_GLASS_GEP_usage_geomean_community_6.png" />
+<img alt="" src="img/15_GLASS_GEP_usage_geomean_community_7.png" />
+<img alt="" src="img/15_GLASS_GEP_usage_geomean_community_8.png" /></p>
+<h3 id="ivygap">IVYGAP</h3>
+<pre><code class="language-r">dName &lt;- &quot;IVYGAP&quot;
+nmfObj &lt;- dataL[[dName]]
+nodes &lt;- igraph::V(soObj@corNetwork)
+community &lt;- nodes$community
+names(community) &lt;- nodes$name
+
+for (comm in c(1:length(soObj@commCols))) {
+        metagenes &lt;- names(community)[which(community == comm)]
+        metagenes &lt;- metagenes[which(
+                sapply(stringr::str_split(metagenes, &quot;\\$&quot;), &quot;[[&quot;, 1) == dName)]
+
+        if (length(metagenes) &gt; 0) {
+                usageMat &lt;- c()
+                for (metagene in metagenes) {
+                        buff &lt;- unlist(stringr::str_split(metagene, &quot;\\$&quot;))
+                        k &lt;- as.numeric(buff[3])
+                        rank &lt;- as.numeric(buff[2])
+
+                        usage &lt;- NMF::coef(get(as.character(k), nmfObj$fit))
+
+                        rowSum &lt;- apply(usage, 1, sum)
+                        nUsage &lt;- usage/rowSum
+                        usageMat &lt;- rbind(usageMat, nUsage[rank,])
+                }
+
+                usageMat[usageMat == 0] &lt;- 1E-08
+                rep &lt;- apply(usageMat, 2, geoMean)
+                names(rep) &lt;- colnames(usageMat)
+
+                idx &lt;- .getIVYGAPidx(names(rep))
+                ctIdx &lt;- idx[[&quot;CT&quot;]]
+                itIdx &lt;- idx[[&quot;IT&quot;]]
+                leIdx &lt;- idx[[&quot;LE&quot;]]
+                mvpIdx &lt;- idx[[&quot;MVP&quot;]]
+                panIdx &lt;- idx[[&quot;PAN&quot;]]
+
+                ct &lt;- rep[ctIdx]; ct &lt;- ct[order(ct)]; ctF &lt;- ecdf(rep[ctIdx])
+                it &lt;- rep[itIdx]; it &lt;- it[order(it)]; itF &lt;- ecdf(rep[itIdx])
+                le &lt;- rep[leIdx]; le &lt;- le[order(le)]; leF &lt;- ecdf(rep[leIdx])
+                mvp &lt;- rep[mvpIdx]; mvp &lt;- mvp[order(mvp)]; mvpF &lt;- ecdf(rep[mvpIdx])
+                pan &lt;- rep[panIdx]; pan &lt;- pan[order(pan)]; panF &lt;- ecdf(rep[panIdx])
+
+                plot(ct, ctF(ct), col=&quot;red&quot;, xlab=&quot;GeoMean(GEPs)&quot;, ylab=&quot;ECDF&quot;, 
+                        main=paste0(&quot;Community #&quot;, comm), 
+                        type=&quot;l&quot;, lwd=3, xlim=c(0, max(rep)), ylim=c(0, 1)
+                )
+                lines(it, itF(it), col=&quot;orange&quot;, lwd=3)
+                lines(le, leF(le), col=&quot;gold&quot;, lwd=3)
+                lines(mvp, mvpF(mvp), col=&quot;darkslategray4&quot;, lwd=3)
+                lines(pan, panF(pan), col=&quot;burlywood4&quot;, lwd=3)
+
+                legend(&quot;bottomright&quot;, 
+                        legend=c(
+                                paste0(&quot;CT (&quot;, length(ctIdx), &quot;)&quot;),  
+                                paste0(&quot;IT (&quot;, length(ctIdx), &quot;)&quot;), 
+                                paste0(&quot;LE (&quot;, length(ctIdx), &quot;)&quot;), 
+                                paste0(&quot;MVP (&quot;, length(ctIdx), &quot;)&quot;), 
+                                paste0(&quot;PAN (&quot;, length(ctIdx), &quot;)&quot;)
+                        ),
+                        col = c(&quot;red&quot;, &quot;orange&quot;, &quot;gold&quot;, &quot;darkslategray4&quot;, &quot;burlywood4&quot;), 
+                        pch = 15, pt.cex = 2.8,
+                        bty=&quot;n&quot;, ncol=1
+                )
+        } else {
+                message(paste0(&quot;No metagenes in Community #&quot;, comm))
+        }
+}
+</code></pre>
+<pre><code>## No metagenes in Community #4
+## No metagenes in Community #8
+</code></pre>
+<p><img alt="" src="img/16_IVYGAP_GEP_usage_geomean_community_1.png" />
+<img alt="" src="img/16_IVYGAP_GEP_usage_geomean_community_2.png" />
+<img alt="" src="img/16_IVYGAP_GEP_usage_geomean_community_3.png" />
+<img alt="" src="img/16_IVYGAP_GEP_usage_geomean_community_5.png" />
+<img alt="" src="img/16_IVYGAP_GEP_usage_geomean_community_6.png" />
+<img alt="" src="img/16_IVYGAP_GEP_usage_geomean_community_7.png" /></p>
+<h2 id="community-assigned-visium-spots">Community-assigned Visium spots</h2>
+<ul>
+<li>The script below illustrates a representative visualization for a single Visium sample (<code>UKF269_T</code>) and generates a two-panel figure:<ol>
+<li>Seurat SNN (shared nearest neighbor) clustering results.</li>
+<li><code>sotk2</code> community annotations, where each spot may be associated with multiple communities.</li>
+</ol>
+</li>
+<li>This section requires the <strong>full</strong> demo dataset from Zenodo, including the Visium object (<code>UKF269_T_Visium.RDS</code>) and the spot-level community assignments (<code>UKF269_T_spots.RDS</code>).</li>
+<li>The workflow proceeds by loading and updating the Seurat object, harmonizing spot identifiers, defining color palettes for both SNN clusters and community labels, and then producing side-by-side spatial plots. Spots without community assignments are explicitly labeled as excluded (“Exc”), and spots assigned to multiple communities are summarized by concatenating community identifiers (with multi-community assignments beyond pairwise combinations collapsed into a single label for visualization).</li>
+</ul>
+<pre><code class="language-r"># download_dir &lt;- &quot;/path/to/download&quot; # where the demo .RDS files are located
+
+library(Seurat)
+library(stringr)
+library(ggplot2)
+library(gridExtra)
+</code></pre>
+<pre><code class="language-r">if (file.exists(file.path(download_dir, &quot;UKF269_T_Visium.RDS&quot;))) {
+        seuratObj &lt;- readRDS(file.path(download_dir, &quot;UKF269_T_Visium.RDS&quot;))
+        seuratObj &lt;- Seurat::UpdateSeuratObject(seuratObj)
+        seuratObj &lt;- Seurat::RenameCells(seuratObj, add.cell.id = &quot;269_T_&quot;)
+        visSpots &lt;- readRDS(file.path(download_dir, &quot;UKF269_T_spots.RDS&quot;)) # Community annotations
+}
+
+snnCol &lt;- c(&quot;#1B9E77&quot;, &quot;#D95F02&quot;, &quot;#7570B3&quot;, &quot;#E7298A&quot;, &quot;#66A61E&quot;, &quot;#E6AB02&quot;, &quot;#A6761D&quot;, &quot;#666666&quot;, &quot;#8DD3C7&quot;, &quot;#FB8072&quot;, &quot;#80B1D3&quot;, &quot;#FDB462&quot;, &quot;#B3DE69&quot;)
+names(snnCol) &lt;- c(&quot;0&quot;, &quot;1&quot;, &quot;2&quot;, &quot;3&quot;, &quot;4&quot;, &quot;5&quot;, &quot;6&quot;, &quot;7&quot;, &quot;8&quot;, &quot;9&quot;, &quot;10&quot;, &quot;11&quot;, &quot;12&quot;) 
+
+commCol &lt;- c(&quot;#A6761D&quot;, &quot;#66A61E&quot;, &quot;#1B9E77&quot;, &quot;#E7298A&quot;, &quot;magenta&quot;, &quot;grey50&quot;, &quot;#D95F02&quot;, &quot;#7570B3&quot;, &quot;#8DD3C7&quot;, &quot;beige&quot;, &quot;#ececec&quot;)
+names(commCol) &lt;- c(&quot;9-10&quot;, &quot;10&quot;, &quot;5-10&quot;, &quot;5&quot;, &quot;2-5&quot;, &quot;Exc&quot;, &quot;2&quot;, &quot;2-10&quot;, &quot;2-9&quot;, &quot;2&quot;, &quot;0&quot;)
+
+SpatialDimPlot(
+                seuratObj, 
+                group.by = &quot;seurat_clusters&quot;, 
+                label = TRUE, label.size = 3, 
+                pt.size.factor = 250) + 
+        theme(legend.position = &quot;right&quot;) + 
+        labs(title = &quot;UKF269_T, SNN&quot;) + 
+        scale_fill_manual(values = snnCol[levels(seuratObj@meta.data$seurat_clusters)]) 
+</code></pre>
+<p><img alt="" src="img/17_Visium_slide_UKF269_T_SNN.png" /></p>
+<pre><code class="language-r">excluded &lt;- c(); community &lt;- c()
+for (spotName in rownames(seuratObj@meta.data)) {
+        if (spotName %in% names(visSpots)) {
+                comm &lt;- paste(sort(unlist(visSpots[spotName])), collapse=&quot;-&quot;)
+                if (str_count(comm, &quot;-&quot;) &gt; 1) comm &lt;- 0
+        } else {
+                comm &lt;- &quot;Exc&quot;
+                excluded &lt;- c(excluded, spotName)
+        }
+        community &lt;- c(community, comm)
+}
+
+community &lt;- factor(community)
+seuratObj@meta.data$community &lt;- community
+
+SpatialDimPlot(seuratObj, 
+                group.by = &quot;community&quot;, 
+                label = TRUE, label.size = 3, 
+                pt.size.factor = 250) + 
+        theme(legend.position = &quot;right&quot;) + 
+        labs(title = &quot;UKF269_T, Community&quot;) + 
+        scale_fill_manual(values = commCol[levels(community)]) 
+</code></pre>
+<p><img alt="" src="img/17_Visium_slide_UKF269_T_Comm.png" /></p>
+              
+            </div>
+          </div><footer>
+    <div class="rst-footer-buttons" role="navigation" aria-label="Footer Navigation">
+        <a href="visualizations.html" class="btn btn-neutral float-left" title="Visualizations"><span class="icon icon-circle-arrow-left"></span> Previous</a>
+        <a href="signature.html" class="btn btn-neutral float-right" title="Signature">Next <span class="icon icon-circle-arrow-right"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <!-- Copyright etc -->
+      <p>&copy; 2025-2026 | <a href='https://Bioinformatics.ucalgary.ca/' target='_blank'>Bioinformatics Hub</a> | All Rights Reserved.</p>
+  </div>
+
+  Built with <a href="https://www.mkdocs.org/">MkDocs</a> using a <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a> provided by <a href="https://readthedocs.org">Read the Docs</a>.
+</footer>
+          
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+
+  <div class="rst-versions" role="note" aria-label="Versions">
+  <span class="rst-current-version" data-toggle="rst-current-version">
+    
+    
+      <span><a href="visualizations.html" style="color: #fcfcfc">&laquo; Previous</a></span>
+    
+    
+      <span><a href="signature.html" style="color: #fcfcfc">Next &raquo;</a></span>
+    
+  </span>
+</div>
+    <script src="js/jquery-3.6.0.min.js"></script>
+    <script>var base_url = ".";</script>
+    <script src="js/theme_extra.js"></script>
+    <script src="js/theme.js"></script>
+      <script src="search/main.js"></script>
+    <script>
+        jQuery(function () {
+            SphinxRtdTheme.Navigation.enable(true);
+        });
+    </script>
+
+</body>
+</html>
