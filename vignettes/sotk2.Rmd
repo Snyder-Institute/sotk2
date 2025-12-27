@@ -19,3 +19,6 @@ knitr::opts_chunk$set(
   comment = "#>"
 )
 ```
+
+# Vignette
+  * The vignette is hosted online and is accessible at [https://Snyder-Institute.github.io/sotk2](https://Snyder-Institute.github.io/sotk2).

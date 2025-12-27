@@ -123,13 +123,14 @@ if (exists("download_dir") && is.character(download_dir) && length(download_dir)
 }
 
 library(Seurat)
+library(stringr)
 library(ggplot2)
 library(gridExtra)
 
 visSpots <- readRDS(file.path(download_dir, "UKF269_T_spots.RDS")) # Community
 seuratObj <- readRDS(file.path(download_dir, "UKF269_T_Visium.RDS"))
 seuratObj <- Seurat::UpdateSeuratObject(seuratObj)
-seuratObj <- Seurat::RenameCells(seuratObj, add.cell.id = "UKF269_T_")
+seuratObj <- Seurat::RenameCells(seuratObj, add.cell.id = "269_T_")
 
 snnCol <- c("#1B9E77", "#D95F02", "#7570B3", "#E7298A", "#66A61E", "#E6AB02", "#A6761D", "#666666", "#8DD3C7", "#FB8072", "#80B1D3", "#FDB462", "#B3DE69")
 names(snnCol) <- c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12") 
@@ -137,7 +138,7 @@ names(snnCol) <- c("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11",
 commCol <- c("#A6761D", "#66A61E", "#1B9E77", "#E7298A", "magenta", "grey50", "#D95F02", "#7570B3", "#8DD3C7", "beige", "#ececec")
 names(commCol) <- c("9-10", "10", "5-10", "5", "2-5", "Exc", "2", "2-10", "2-9", "2", "0")
 
-pdf(file.path(download_dir, "15_Visium_slide_UKF269_T.pdf"), width=14, height=7)
+pdf(file.path(download_dir, "17_Visium_slide_UKF269_T.pdf"), width=14, height=7)
 panels <- vector("list", 2)
 
 panels[[1]] <- SpatialDimPlot(

@@ -1,0 +1,10 @@
+site_name: sotk2
+theme: readthedocs
+nav:
+  - Home: index.md
+  - Vignettes: vignettes.md
+  - Visualizations: visualizations.md
+  - Annotations: annotations.md
+  - Signature: signature.md
+use_directory_urls: false
+copyright: "&copy; 2025-2026 | <a href='https://Bioinformatics.ucalgary.ca/' target='_blank'>Bioinformatics Hub</a> | All Rights Reserved."
