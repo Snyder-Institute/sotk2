@@ -10,7 +10,7 @@
 \arguments{
 \item{object}{A \code{SOTK} object}
 
-\item{filename}{\code{character} Output file name}
+\item{filename}{\code{character} Export stacked bar plot to a file, stdout if NULL}
 
 \item{width}{\code{numeric} Width size for output PDF}
 
@@ -23,6 +23,6 @@ Stacked bar plot and number of Metagenes per community in each dataset
 Generate community network stats
 }
 \examples{
-statComm(object = SOTK)
+statComm(object = soObj)
 
 }

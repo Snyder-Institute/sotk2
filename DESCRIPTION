@@ -1,27 +1,41 @@
-Package: SOTK
-Title: SOTK: Spatial Omics Toolkit
-Version: 0.1.0
-Authors: Heewon Seo 
-Maintainer: Heewon Seo <Heewon.Seo@UCalgary.ca>
-Description: The Spatial Omics Toolkit (SOTK) is an R package containing a comprehensive set of functions to identify biological modules from spatial transcriptomics profiles. Multiple profiles across different cohorts or platforms can be analyzed by constructing a correlation network with the deconvoluted outputs using the community search algorithm as an integrative method. Additionally, SOTK allows users to select the optimal rank (latent factor) from multiple NMF runs in a data-driven way by identifying the minimum rank that encompasses the majority, if not all, of the communities grouped by community search algorithms. It was initially developed to analyze Nanostring GeoMx Digital Spatial Profiler (DSP) data, and SOTK is particularly well-suited for cases where multiple segments (e.g., cell types) are independently profiled from the same tissue samples, allowing for the incorporation of numerous segment profiles per sample/patient.
-License: `use_mit_license()`
+Package: sotk2
+Type: Package
+Title: Spatial omics toolkit for cross-platform module integration
+Version: 0.2.0
+Authors@R: 
+    person(given = "Heewon",
+           family = "Seo",
+           role = c("aut", "cre"),
+           email = "Heewon.Seo@UCalgary.ca")
+Description: sotk2 is an R package for integrating omics datasets using modules derived from
+    non-negative matrix factorization (NMF) or consensus NMF (cNMF). The workflow
+    concatenates basis (W) matrices across ranks and datasets, computes metagene–metagene
+    correlations, constructs a correlation network, and applies community detection to
+    identify integrative biological modules. sotk2 also supports rank inspection through
+    community coverage plots and provides utilities for gene-level interpretation via
+    metagene-associated genes (MAGs) and contributing community genes.
+License: MIT + file LICENSE
 Encoding: UTF-8
 LazyData: true
+Depends: 
+    R (>= 4.3.0)
 Imports:
-	methods,
-	corrr,
-	NMF,
-	igraph,
-	stringr,
-	RColorBrewer,
-	grid
-Depends: R (>= 4.3.0)
-Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
+    EnvStats,
+    ggplot2,
+    igraph,
+    methods,
+    NMF,
+    RColorBrewer,
+    reshape2,
+    scales,
+    stringr
 Suggests:
-	knitr,
-	rmarkdown
-VignetteBuilder: knitr
+    knitr,
+    rmarkdown
+VignetteBuilder: 
+    knitr
+Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.3.3
 Collate: 
     'class-SOSet.R'
     'class-SOTK.R'

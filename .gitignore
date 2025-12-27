@@ -3,9 +3,7 @@
 .ipynb_checkpoints
 *.code-workspace
 .vscode
-inst/testdata/*.pdf
-vignettes/*.html
-vignettes/*.R
+inst/extdata/*.pdf
 vignettes/*.pdf
 /doc/
 /Meta/

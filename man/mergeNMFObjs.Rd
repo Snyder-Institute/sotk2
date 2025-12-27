@@ -7,13 +7,24 @@
 mergeNMFObjs(nmfObjL)
 }
 \arguments{
-\item{nmfObjL}{\code{list} A list of NMF objects}
+\item{nmfObjL}{\code{list}. A non-empty list of NMF fit objects compatible with \code{NMF::compare()} and
+\code{NMF::connectivity()}.}
 }
 \value{
-An NMF object
+An object of class \code{"NMF.rank"} with components:
+\describe{
+\item{measures}{A matrix/data.frame of comparison measures (subset of columns as implemented).}
+\item{consensus}{A list of connectivity matrices (one per input fit).}
+\item{fit}{The original \code{nmfObjL} list.}
+}
 }
 \description{
-Merge multiple NMF objects into one
+Combines multiple NMF fit objects into a single \code{NMF.rank}-like object by:
+\enumerate{
+\item Computing quality measures across the input fits using \code{NMF::compare()}.
+\item Computing consensus connectivity matrices for each fit using \code{NMF::connectivity()}.
+\item Storing the original fits under \code{$fit}.
+}
 }
 \examples{
 nmfObj <- mergeNMFObjs(nmfObjL = objL)
