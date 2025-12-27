@@ -20,8 +20,9 @@ options(rmarkdown.html_vignette.check_title = FALSE)
 ```
 
 # This vignette was originally prepared for sotk1 in October 2024
-  * While _sotk1_ focused on selecting the optimal number of latent factors from spatial transcriptomics data in a data-driven manner, _sotk2_ extends this framework to enable integrative analysis across heterogeneous omics datasets through biologically informed module integration.
-  * _sotk2_ is available at <a href="https://github.com/Snyder-Institute/sotk2" target="_blank">https://github.com/Snyder-Institute/sotk2</a>
+  * While _SOTK_ (a.k.a. sotk1) focused on selecting the optimal number of latent factors from spatial transcriptomics data in a data-driven manner, **sotk2** extends this framework to enable integrative analysis across heterogeneous omics datasets through biologically informed module integration.
+  * This vignette is a revised version of the original _SOTK_ vignette, updated to run reproducibly with **sotk2**.
+  * **sotk2** is available at <a href="https://github.com/Snyder-Institute/sotk2" target="_blank">https://github.com/Snyder-Institute/sotk2</a>
 
 ## 0. Data preparation
 Users can use either [NMF](https://github.com/renozao/NMF) or [cNMF](https://github.com/dylkot/cNMF) to deconvolute transcriptomics profiles to obtain metagenes/GEPs (gene expression programs).
@@ -111,7 +112,7 @@ library(sotk2)
 
 ## Load the NMF object
 pvObjFile <- system.file(
-        "testdata", "PV.RDS",
+        "extdata", "PV.RDS",
         package = "sotk2"
 )
 pvNmfObj <- readRDS(pvObjFile)
@@ -146,7 +147,7 @@ modelCols <- c(
 ### Concat W matrics and calculate pairwise correlations
 ```{r input_correlationMatrix}
 soSet <- SOSet(NMFobjL = dataL, NMFrankL = rankL, dataCol = dataColor, corMet = corMethod)
-plotCorrDensity(soSet, filename = "../inst/testdata/01_Stats_correlation_density.pdf", width = 6, height = 6)
+plotCorrDensity(soSet, filename = "01_Stats_correlation_density.pdf", width = 6, height = 6)
 ```
 
 ### Generate a correlation network and apply community search
@@ -157,14 +158,14 @@ soObj <- SOTK(soSet, coefThre = corrCoefThrehold, seed = seed, niter = iteration
 ### Visualization
 ```{r network_visualization}
 par(mfrow=c(1,1))
-plotNetwork(soObj, annot = "cohort", edgeAlpha = 0.8, weighted = FALSE, filename = "../inst/testdata/02_Network_Unweighted.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
-plotNetwork(soObj, label = TRUE, annot = "cohort", edgeAlpha = 0.8, weighted = FALSE, filename = "../inst/testdata/03_Network_Unweighted_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize) 
-plotNetwork(soObj, annot = "community", edgeAlpha = 0.8, weighted = FALSE, filename = "../inst/testdata/04_Network_Unweighted_Comm.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
-plotNetwork(soObj, label = TRUE, annot = "community", edgeAlpha = 0.8, weighted = FALSE, filename = "../inst/testdata/05_Network_Unweighted_Comm_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
-plotNetwork(soObj, annot = "community", edgeAlpha = 0.8, weighted = TRUE, filename = "../inst/testdata/06_Network_Community.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
-plotNetwork(soObj, label = TRUE, annot = "community", edgeAlpha = 0.8, weighted = TRUE, filename = "../inst/testdata/07_Network_Community_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
-plotNetwork(soObj, annot = "cohort", edgeAlpha = 0.8, weighted = TRUE, filename = "../inst/testdata/08_Network_Weighted.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
-plotNetwork(soObj, label = TRUE, annot = "cohort", edgeAlpha = 0.8, weighted = TRUE, filename = "../inst/testdata/09_Network_Weighted_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+plotNetwork(soObj, label = FALSE, annot = "cohort", edgeAlpha = 0.8, weighted = FALSE, filename = "02_Network_Unweighted.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+plotNetwork(soObj, label = TRUE, annot = "cohort", edgeAlpha = 0.8, weighted = FALSE, filename = "03_Network_Unweighted_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize) 
+plotNetwork(soObj, label = FALSE, annot = "community", edgeAlpha = 0.8, weighted = FALSE, filename = "04_Network_Unweighted_Comm.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+plotNetwork(soObj, label = TRUE, annot = "community", edgeAlpha = 0.8, weighted = FALSE, filename = "05_Network_Unweighted_Comm_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+plotNetwork(soObj, label = FALSE, annot = "community", edgeAlpha = 0.8, weighted = TRUE, filename = "06_Network_Community.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+plotNetwork(soObj, label = TRUE, annot = "community", edgeAlpha = 0.8, weighted = TRUE, filename = "07_Network_Community_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+plotNetwork(soObj, label = FALSE, annot = "cohort", edgeAlpha = 0.8, weighted = TRUE, filename = "08_Network_Weighted.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
+plotNetwork(soObj, label = TRUE, annot = "cohort", edgeAlpha = 0.8, weighted = TRUE, filename = "09_Network_Weighted_lbl.pdf", vertexSize = nodeSize, vertexLabelCex = nodeLabelSize)
 ```
 
 ### Sample annotation on the correlation network
@@ -222,7 +223,7 @@ for (ndx in seq_along(nodes)) {
         }
 }
 
-pdf(paste0("../inst/testdata/10_Model_Annotation_", sample, ".pdf"), width=10, height=10)
+pdf(paste0("10_Model_Annotation_", sample, ".pdf"), width=10, height=10)
 plot(graph,
         layout = layout,
         vertex.label = NA,
@@ -241,7 +242,7 @@ dev.off()
 colComm <- soObj@commCols
 ranks <- sort(as.numeric(unique(sapply(stringr::str_split(nodes, "\\$"), "[[", 3))))
 
-pdf("../inst/testdata/11_coverage.pdf", width = 10, height = 10)
+pdf("11_coverage.pdf", width = 10, height = 10)
 for (rank in ranks) {
         vertexLabel <- paste(
                 sapply(stringr::str_split(nodes, "\\$"), "[[", 2),

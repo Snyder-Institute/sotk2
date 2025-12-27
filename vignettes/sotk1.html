@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+
+<html>
+
+<head>
+
+<meta charset="utf-8" />
+<meta name="generator" content="pandoc" />
+<meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
+
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+<meta name="date" content="2024-10-07" />
+
+<title>sotk</title>
+
+<script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
+// be compatible with the behavior of Pandoc < 2.8).
+document.addEventListener('DOMContentLoaded', function(e) {
+  var hs = document.querySelectorAll("div.section[class*='level'] > :first-child");
+  var i, h, a;
+  for (i = 0; i < hs.length; i++) {
+    h = hs[i];
+    if (!/^h[1-6]$/i.test(h.tagName)) continue;  // it should be a header h1-h6
+    a = h.attributes;
+    while (a.length > 0) h.removeAttribute(a[0].name);
+  }
+});
+</script>
+
+<style type="text/css">
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+span.underline{text-decoration: underline;}
+div.column{display: inline-block; vertical-align: top; width: 50%;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+</style>
+
+
+
+<style type="text/css">
+code {
+white-space: pre;
+}
+.sourceCode {
+overflow: visible;
+}
+</style>
+<style type="text/css" data-origin="pandoc">
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+{ counter-reset: source-line 0; }
+pre.numberSource code > span
+{ position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+{ content: counter(source-line);
+position: relative; left: -1em; text-align: right; vertical-align: baseline;
+border: none; display: inline-block;
+-webkit-touch-callout: none; -webkit-user-select: none;
+-khtml-user-select: none; -moz-user-select: none;
+-ms-user-select: none; user-select: none;
+padding: 0 4px; width: 4em;
+color: #aaaaaa;
+}
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa; padding-left: 4px; }
+div.sourceCode
+{ }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } 
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.at { color: #7d9029; } 
+code span.bn { color: #40a070; } 
+code span.bu { color: #008000; } 
+code span.cf { color: #007020; font-weight: bold; } 
+code span.ch { color: #4070a0; } 
+code span.cn { color: #880000; } 
+code span.co { color: #60a0b0; font-style: italic; } 
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.do { color: #ba2121; font-style: italic; } 
+code span.dt { color: #902000; } 
+code span.dv { color: #40a070; } 
+code span.er { color: #ff0000; font-weight: bold; } 
+code span.ex { } 
+code span.fl { color: #40a070; } 
+code span.fu { color: #06287e; } 
+code span.im { color: #008000; font-weight: bold; } 
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } 
+code span.kw { color: #007020; font-weight: bold; } 
+code span.op { color: #666666; } 
+code span.ot { color: #007020; } 
+code span.pp { color: #bc7a00; } 
+code span.sc { color: #4070a0; } 
+code span.ss { color: #bb6688; } 
+code span.st { color: #4070a0; } 
+code span.va { color: #19177c; } 
+code span.vs { color: #4070a0; } 
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } 
+</style>
+<script>
+// apply pandoc div.sourceCode style to pre.sourceCode instead
+(function() {
+  var sheets = document.styleSheets;
+  for (var i = 0; i < sheets.length; i++) {
+    if (sheets[i].ownerNode.dataset["origin"] !== "pandoc") continue;
+    try { var rules = sheets[i].cssRules; } catch (e) { continue; }
+    var j = 0;
+    while (j < rules.length) {
+      var rule = rules[j];
+      // check if there is a div.sourceCode rule
+      if (rule.type !== rule.STYLE_RULE || rule.selectorText !== "div.sourceCode") {
+        j++;
+        continue;
+      }
+      var style = rule.style.cssText;
+      // check if color or background-color is set
+      if (rule.style.color === '' && rule.style.backgroundColor === '') {
+        j++;
+        continue;
+      }
+      // replace div.sourceCode by a pre.sourceCode rule
+      sheets[i].deleteRule(j);
+      sheets[i].insertRule('pre.sourceCode{' + style + '}', j);
+    }
+  }
+})();
+</script>
+
+<style type="text/css">
+p.abstract{
+text-align: center;
+font-weight: bold;
+}
+div.abstract{
+margin: auto;
+width: 90%;
+}
+</style>
+
+
+
+<style type="text/css">body {
+background-color: #fff;
+margin: 1em auto;
+max-width: 700px;
+overflow: visible;
+padding-left: 2em;
+padding-right: 2em;
+font-family: "Open Sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
+font-size: 14px;
+line-height: 1.35;
+}
+#TOC {
+clear: both;
+margin: 0 0 10px 10px;
+padding: 4px;
+width: 400px;
+border: 1px solid #CCCCCC;
+border-radius: 5px;
+background-color: #f6f6f6;
+font-size: 13px;
+line-height: 1.3;
+}
+#TOC .toctitle {
+font-weight: bold;
+font-size: 15px;
+margin-left: 5px;
+}
+#TOC ul {
+padding-left: 40px;
+margin-left: -1.5em;
+margin-top: 5px;
+margin-bottom: 5px;
+}
+#TOC ul ul {
+margin-left: -2em;
+}
+#TOC li {
+line-height: 16px;
+}
+table {
+margin: 1em auto;
+border-width: 1px;
+border-color: #DDDDDD;
+border-style: outset;
+border-collapse: collapse;
+}
+table th {
+border-width: 2px;
+padding: 5px;
+border-style: inset;
+}
+table td {
+border-width: 1px;
+border-style: inset;
+line-height: 18px;
+padding: 5px 5px;
+}
+table, table th, table td {
+border-left-style: none;
+border-right-style: none;
+}
+table thead, table tr.even {
+background-color: #f7f7f7;
+}
+p {
+margin: 0.5em 0;
+}
+blockquote {
+background-color: #f6f6f6;
+padding: 0.25em 0.75em;
+}
+hr {
+border-style: solid;
+border: none;
+border-top: 1px solid #777;
+margin: 28px 0;
+}
+dl {
+margin-left: 0;
+}
+dl dd {
+margin-bottom: 13px;
+margin-left: 13px;
+}
+dl dt {
+font-weight: bold;
+}
+ul {
+margin-top: 0;
+}
+ul li {
+list-style: circle outside;
+}
+ul ul {
+margin-bottom: 0;
+}
+pre, code {
+background-color: #f7f7f7;
+border-radius: 3px;
+color: #333;
+white-space: pre-wrap; 
+}
+pre {
+border-radius: 3px;
+margin: 5px 0px 10px 0px;
+padding: 10px;
+}
+pre:not([class]) {
+background-color: #f7f7f7;
+}
+code {
+font-family: Consolas, Monaco, 'Courier New', monospace;
+font-size: 85%;
+}
+p > code, li > code {
+padding: 2px 0px;
+}
+div.figure {
+text-align: center;
+}
+img {
+background-color: #FFFFFF;
+padding: 2px;
+border: 1px solid #DDDDDD;
+border-radius: 3px;
+border: 1px solid #CCCCCC;
+margin: 0 5px;
+}
+h1 {
+margin-top: 0;
+font-size: 35px;
+line-height: 40px;
+}
+h2 {
+border-bottom: 4px solid #f7f7f7;
+padding-top: 10px;
+padding-bottom: 2px;
+font-size: 145%;
+}
+h3 {
+border-bottom: 2px solid #f7f7f7;
+padding-top: 10px;
+font-size: 120%;
+}
+h4 {
+border-bottom: 1px solid #f7f7f7;
+margin-left: 8px;
+font-size: 105%;
+}
+h5, h6 {
+border-bottom: 1px solid #ccc;
+font-size: 105%;
+}
+a {
+color: #0033dd;
+text-decoration: none;
+}
+a:hover {
+color: #6666ff; }
+a:visited {
+color: #800080; }
+a:visited:hover {
+color: #BB00BB; }
+a[href^="http:"] {
+text-decoration: underline; }
+a[href^="https:"] {
+text-decoration: underline; }
+
+code > span.kw { color: #555; font-weight: bold; } 
+code > span.dt { color: #902000; } 
+code > span.dv { color: #40a070; } 
+code > span.bn { color: #d14; } 
+code > span.fl { color: #d14; } 
+code > span.ch { color: #d14; } 
+code > span.st { color: #d14; } 
+code > span.co { color: #888888; font-style: italic; } 
+code > span.ot { color: #007020; } 
+code > span.al { color: #ff0000; font-weight: bold; } 
+code > span.fu { color: #900; font-weight: bold; } 
+code > span.er { color: #a61717; background-color: #e3d2d2; } 
+</style>
+
+
+
+
+</head>
+
+<body>
+
+
+
+
+<h1 class="title toc-ignore">sotk</h1>
+<h4 class="author">Heewon Seo</h4>
+<h4 class="date">October 07, 2024</h4>
+<div class="abstract">
+<p class="abstract">Abstract</p>
+<p>The Spatial Omics Toolkit (SOTK) is an R package containing a
+comprehensive set of functions to identify biological modules from
+spatial transcriptomics profiles. Multiple profiles across different
+cohorts or platforms can be analyzed by constructing a correlation
+network with the deconvoluted outputs using the community search
+algorithm as an integrative method. Additionally, SOTK allows users to
+select the optimal rank (latent factor) from multiple NMF runs in a
+data-driven way by identifying the minimum rank that encompasses the
+majority, if not all, of the communities grouped by community search
+algorithms. It was initially developed to analyze Nanostring GeoMx
+Digital Spatial Profiler (DSP) data, and SOTK is particularly
+well-suited for cases where multiple segments (e.g., cell types) are
+independently profiled from the same tissue samples, allowing for the
+incorporation of numerous segment profiles per sample/patient.</p>
+</div>
+
+
+
+<div id="this-vignette-was-originally-prepared-for-sotk1-in-october-2024" class="section level1">
+<h1>This vignette was originally prepared for sotk1 in October 2024</h1>
+<ul>
+<li>While <em>SOTK</em> (a.k.a. sotk1) focused on selecting the optimal
+number of latent factors from spatial transcriptomics data in a
+data-driven manner, <strong>sotk2</strong> extends this framework to
+enable integrative analysis across heterogeneous omics datasets through
+biologically informed module integration.</li>
+<li>This vignette is a revised version of the original <em>SOTK</em>
+vignette, updated to run reproducibly with <strong>sotk2</strong>.</li>
+<li><strong>sotk2</strong> is available at
+<a href="https://github.com/Snyder-Institute/sotk2" target="_blank">https://github.com/Snyder-Institute/sotk2</a></li>
+</ul>
+<div id="data-preparation" class="section level2">
+<h2>0. Data preparation</h2>
+<p>Users can use either <a href="https://github.com/renozao/NMF">NMF</a>
+or <a href="https://github.com/dylkot/cNMF">cNMF</a> to deconvolute
+transcriptomics profiles to obtain metagenes/GEPs (gene expression
+programs).</p>
+<div id="run-nmf" class="section level3">
+<h3>Run NMF</h3>
+<div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># Do not Run</span></span>
+<span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(NMF)</span>
+<span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb1-4"><a href="#cb1-4" tabindex="-1"></a></span>
+<span id="cb1-5"><a href="#cb1-5" tabindex="-1"></a><span class="do">## Test data</span></span>
+<span id="cb1-6"><a href="#cb1-6" tabindex="-1"></a><span class="fu">data</span>(esGolub)</span>
+<span id="cb1-7"><a href="#cb1-7" tabindex="-1"></a>esGolub <span class="ot">&lt;-</span> esGolub[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>), <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)]</span>
+<span id="cb1-8"><a href="#cb1-8" tabindex="-1"></a></span>
+<span id="cb1-9"><a href="#cb1-9" tabindex="-1"></a><span class="do">## NMF options</span></span>
+<span id="cb1-10"><a href="#cb1-10" tabindex="-1"></a>method <span class="ot">&lt;-</span> <span class="st">&quot;brunet&quot;</span>; nr <span class="ot">&lt;-</span> <span class="dv">10</span>; seed <span class="ot">&lt;-</span> <span class="dv">123456</span>; options <span class="ot">&lt;-</span> <span class="st">&quot;tv2p4&quot;</span> <span class="co"># examples</span></span>
+<span id="cb1-11"><a href="#cb1-11" tabindex="-1"></a></span>
+<span id="cb1-12"><a href="#cb1-12" tabindex="-1"></a><span class="do">## Run NMF</span></span>
+<span id="cb1-13"><a href="#cb1-13" tabindex="-1"></a>nmfRes <span class="ot">&lt;-</span> <span class="fu">nmf</span>(esGolub, <span class="at">rank =</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">5</span>), <span class="at">method =</span> method, <span class="at">nrun =</span> nr, <span class="at">seed =</span> seed, <span class="at">.options =</span> options)</span>
+<span id="cb1-14"><a href="#cb1-14" tabindex="-1"></a><span class="fu">saveRDS</span>(nmfRes, <span class="st">&quot;NMF_rank_2_5.RDS&quot;</span>)</span></code></pre></div>
+</div>
+<div id="run-nmf-independently-for-each-rank-and-merge-them-into-a-single-nmf-object" class="section level3">
+<h3>Run NMF independently for each rank and merge them into a single NMF
+object</h3>
+<div class="sourceCode" id="cb2"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" tabindex="-1"></a><span class="co"># Do not Run</span></span>
+<span id="cb2-2"><a href="#cb2-2" tabindex="-1"></a><span class="fu">library</span>(NMF)</span>
+<span id="cb2-3"><a href="#cb2-3" tabindex="-1"></a><span class="fu">library</span>(Biobase)</span>
+<span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a></span>
+<span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a><span class="do">## Test data</span></span>
+<span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a><span class="fu">data</span>(esGolub)</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>esGolub <span class="ot">&lt;-</span> esGolub[<span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">200</span>), <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="dv">20</span>)]</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a></span>
+<span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a><span class="do">## NMF options</span></span>
+<span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>method <span class="ot">&lt;-</span> <span class="st">&quot;brunet&quot;</span>; nr <span class="ot">&lt;-</span> <span class="dv">10</span>; seed <span class="ot">&lt;-</span> <span class="dv">123456</span>; options <span class="ot">&lt;-</span> <span class="st">&quot;tv2p4&quot;</span> <span class="co"># examples</span></span>
+<span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a></span>
+<span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a><span class="do">## Run NMF in parallel</span></span>
+<span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="do">### on Server A</span></span>
+<span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>res2 <span class="ot">&lt;-</span> <span class="fu">nmf</span>(esGolub, <span class="at">rank=</span><span class="dv">2</span>, <span class="at">method=</span>method, <span class="at">nrun=</span>nr, <span class="at">seed=</span>seed, <span class="at">.options=</span>options)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a><span class="fu">saveRDS</span>(res2, <span class="st">&quot;NMF_rank_2.RDS&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a></span>
+<span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a><span class="do">### on Server B</span></span>
+<span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a>res3 <span class="ot">&lt;-</span> <span class="fu">nmf</span>(esGolub, <span class="at">rank=</span><span class="dv">3</span>, <span class="at">method=</span>method, <span class="at">nrun=</span>nr, <span class="at">seed=</span>seed, <span class="at">.options=</span>options)</span>
+<span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a><span class="fu">saveRDS</span>(res3, <span class="st">&quot;NMF_rank_3.RDS&quot;</span>)</span>
+<span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a></span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a><span class="do">### on Server C</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>res4 <span class="ot">&lt;-</span> <span class="fu">nmf</span>(esGolub, <span class="at">rank=</span><span class="dv">4</span>, <span class="at">method=</span>method, <span class="at">nrun=</span>nr, <span class="at">seed=</span>seed, <span class="at">.options=</span>options)</span>
+<span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="fu">saveRDS</span>(res4, <span class="st">&quot;NMF_rank_4.RDS&quot;</span>)</span>
+<span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a></span>
+<span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="do">## User defined function</span></span>
+<span id="cb2-26"><a href="#cb2-26" tabindex="-1"></a>combineNMFObj <span class="ot">&lt;-</span> <span class="cf">function</span>(results) {</span>
+<span id="cb2-27"><a href="#cb2-27" tabindex="-1"></a>    measures <span class="ot">&lt;-</span> <span class="fu">compare</span>(results)</span>
+<span id="cb2-28"><a href="#cb2-28" tabindex="-1"></a>    measures <span class="ot">&lt;-</span> measures[,<span class="fu">c</span>(<span class="dv">5</span><span class="sc">:</span><span class="fu">ncol</span>(measures))]</span>
+<span id="cb2-29"><a href="#cb2-29" tabindex="-1"></a>    <span class="fu">rownames</span>(measures) <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="dv">1</span><span class="sc">:</span><span class="fu">nrow</span>(measures))</span>
+<span id="cb2-30"><a href="#cb2-30" tabindex="-1"></a></span>
+<span id="cb2-31"><a href="#cb2-31" tabindex="-1"></a>    consensus <span class="ot">&lt;-</span> <span class="fu">lapply</span>(results, <span class="cf">function</span>(res) {</span>
+<span id="cb2-32"><a href="#cb2-32" tabindex="-1"></a>        cons <span class="ot">&lt;-</span> <span class="fu">connectivity</span>(res)</span>
+<span id="cb2-33"><a href="#cb2-33" tabindex="-1"></a>        <span class="fu">attr</span>(cons, <span class="st">&quot;model&quot;</span>) <span class="ot">&lt;-</span> <span class="cn">NULL</span></span>
+<span id="cb2-34"><a href="#cb2-34" tabindex="-1"></a>        <span class="fu">return</span>(cons)</span>
+<span id="cb2-35"><a href="#cb2-35" tabindex="-1"></a>    })</span>
+<span id="cb2-36"><a href="#cb2-36" tabindex="-1"></a></span>
+<span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a>    fit <span class="ot">&lt;-</span> results</span>
+<span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a>    </span>
+<span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a>    obj <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">measures =</span> measures, </span>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a>                 <span class="at">consensus =</span> consensus, </span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a>                 <span class="at">fit =</span> fit)</span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a>    <span class="fu">class</span>(obj) <span class="ot">&lt;-</span> <span class="st">&quot;NMF.rank&quot;</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a>    <span class="fu">return</span>(obj)</span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a>}</span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="do">## ---- End of the function</span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a></span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="do">## Load NMF results and combine them</span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a>resRank2 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;NMF_rank_2.RDS&quot;</span>)</span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a>resRank3 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;NMF_rank_3.RDS&quot;</span>)</span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a>resRank4 <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(<span class="st">&quot;NMF_rank_4.RDS&quot;</span>)</span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a>nmfRes <span class="ot">&lt;-</span> <span class="fu">combineNMFObj</span>(<span class="fu">list</span>(<span class="st">`</span><span class="at">2</span><span class="st">`</span> <span class="ot">=</span> resRank2, <span class="st">`</span><span class="at">3</span><span class="st">`</span> <span class="ot">=</span> resRank3, <span class="st">`</span><span class="at">4</span><span class="st">`</span> <span class="ot">=</span> resRank4))</span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="fu">saveRDS</span>(nmfRes, <span class="st">&quot;NMF_outputs.RDS&quot;</span>)</span></code></pre></div>
+</div>
+</div>
+<div id="quick-start" class="section level2">
+<h2>1. Quick start</h2>
+<p>The following set of code is to run SOTK with the Nanostring GeoMx
+DSP data in mouse brains where GeoMx DSP profiled two segments in the
+retrosplenial cortex: parvalbumin interneurons (PV+) and neurons
+(NeuN+). Here, we used the PV segment to reproduce the SOTK results
+below. Or, you can visit <a href="https://shinyapps.ucalgary.ca/SOTK">SOTK-ShinyApps</a> with GUI
+(graphical user interface) to reanalyze the GeoMx data.</p>
+<div id="load-the-package-and-parameter-settings" class="section level3">
+<h3>Load the package and parameter settings</h3>
+<div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="fu">library</span>(sotk2)</span>
+<span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="co">#&gt; Warning: replacing previous import &#39;NMF::compare&#39; by &#39;igraph::compare&#39; when</span></span>
+<span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a><span class="co">#&gt; loading &#39;sotk2&#39;</span></span>
+<span id="cb3-4"><a href="#cb3-4" tabindex="-1"></a><span class="co">#&gt; Warning: replacing previous import &#39;NMF::algorithm&#39; by &#39;igraph::algorithm&#39; when</span></span>
+<span id="cb3-5"><a href="#cb3-5" tabindex="-1"></a><span class="co">#&gt; loading &#39;sotk2&#39;</span></span>
+<span id="cb3-6"><a href="#cb3-6" tabindex="-1"></a><span class="co">#&gt; Warning: replacing previous import &#39;igraph::compare&#39; by &#39;NMF::compare&#39; when</span></span>
+<span id="cb3-7"><a href="#cb3-7" tabindex="-1"></a><span class="co">#&gt; loading &#39;sotk2&#39;</span></span>
+<span id="cb3-8"><a href="#cb3-8" tabindex="-1"></a></span>
+<span id="cb3-9"><a href="#cb3-9" tabindex="-1"></a><span class="do">## Load the NMF object</span></span>
+<span id="cb3-10"><a href="#cb3-10" tabindex="-1"></a>pvObjFile <span class="ot">&lt;-</span> <span class="fu">system.file</span>(</span>
+<span id="cb3-11"><a href="#cb3-11" tabindex="-1"></a>        <span class="st">&quot;extdata&quot;</span>, <span class="st">&quot;PV.RDS&quot;</span>,</span>
+<span id="cb3-12"><a href="#cb3-12" tabindex="-1"></a>        <span class="at">package =</span> <span class="st">&quot;sotk2&quot;</span></span>
+<span id="cb3-13"><a href="#cb3-13" tabindex="-1"></a>)</span>
+<span id="cb3-14"><a href="#cb3-14" tabindex="-1"></a>pvNmfObj <span class="ot">&lt;-</span> <span class="fu">readRDS</span>(pvObjFile)</span>
+<span id="cb3-15"><a href="#cb3-15" tabindex="-1"></a></span>
+<span id="cb3-16"><a href="#cb3-16" tabindex="-1"></a><span class="do">## Parameter settings</span></span>
+<span id="cb3-17"><a href="#cb3-17" tabindex="-1"></a>dataL <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">PV =</span> pvNmfObj)</span>
+<span id="cb3-18"><a href="#cb3-18" tabindex="-1"></a>rankL <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="at">PV =</span> <span class="fu">c</span>(<span class="dv">2</span><span class="sc">:</span><span class="dv">6</span>))</span>
+<span id="cb3-19"><a href="#cb3-19" tabindex="-1"></a>dataColor <span class="ot">&lt;-</span> <span class="fu">c</span>(<span class="st">&quot;PV&quot;</span> <span class="ot">=</span> <span class="st">&quot;#7570B3&quot;</span>)</span>
+<span id="cb3-20"><a href="#cb3-20" tabindex="-1"></a>corMethod <span class="ot">&lt;-</span> <span class="st">&quot;spearman&quot;</span></span>
+<span id="cb3-21"><a href="#cb3-21" tabindex="-1"></a></span>
+<span id="cb3-22"><a href="#cb3-22" tabindex="-1"></a>corrCoefThrehold <span class="ot">&lt;-</span> <span class="fl">0.5</span></span>
+<span id="cb3-23"><a href="#cb3-23" tabindex="-1"></a>seed <span class="ot">&lt;-</span> <span class="dv">1118</span></span>
+<span id="cb3-24"><a href="#cb3-24" tabindex="-1"></a>iteration <span class="ot">&lt;-</span> <span class="dv">1000</span></span>
+<span id="cb3-25"><a href="#cb3-25" tabindex="-1"></a>communityWeight <span class="ot">&lt;-</span> <span class="dv">100</span> <span class="co"># for visualization</span></span>
+<span id="cb3-26"><a href="#cb3-26" tabindex="-1"></a>cohortWeight <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="co"># tweak for multiple cohorts</span></span>
+<span id="cb3-27"><a href="#cb3-27" tabindex="-1"></a></span>
+<span id="cb3-28"><a href="#cb3-28" tabindex="-1"></a>nodeSize <span class="ot">&lt;-</span> <span class="dv">10</span></span>
+<span id="cb3-29"><a href="#cb3-29" tabindex="-1"></a>nodeLabelSize <span class="ot">&lt;-</span> <span class="dv">2</span></span>
+<span id="cb3-30"><a href="#cb3-30" tabindex="-1"></a></span>
+<span id="cb3-31"><a href="#cb3-31" tabindex="-1"></a>modelCols <span class="ot">&lt;-</span> <span class="fu">c</span>(</span>
+<span id="cb3-32"><a href="#cb3-32" tabindex="-1"></a>        <span class="st">&quot;TG1F&quot;</span> <span class="ot">=</span> <span class="st">&quot;#084594&quot;</span>,</span>
+<span id="cb3-33"><a href="#cb3-33" tabindex="-1"></a>        <span class="st">&quot;TG2F&quot;</span> <span class="ot">=</span> <span class="st">&quot;#2171B5&quot;</span>,</span>
+<span id="cb3-34"><a href="#cb3-34" tabindex="-1"></a>        <span class="st">&quot;TG3F&quot;</span> <span class="ot">=</span> <span class="st">&quot;#4292C6&quot;</span>,</span>
+<span id="cb3-35"><a href="#cb3-35" tabindex="-1"></a>        <span class="st">&quot;TG4F&quot;</span> <span class="ot">=</span> <span class="st">&quot;#6BAED6&quot;</span>,</span>
+<span id="cb3-36"><a href="#cb3-36" tabindex="-1"></a>        <span class="st">&quot;WT1F&quot;</span> <span class="ot">=</span> <span class="st">&quot;#99000D&quot;</span>,</span>
+<span id="cb3-37"><a href="#cb3-37" tabindex="-1"></a>        <span class="st">&quot;WT2F&quot;</span> <span class="ot">=</span> <span class="st">&quot;#CB181D&quot;</span>,</span>
+<span id="cb3-38"><a href="#cb3-38" tabindex="-1"></a>        <span class="st">&quot;WT3F&quot;</span> <span class="ot">=</span> <span class="st">&quot;#EF3B2C&quot;</span></span>
+<span id="cb3-39"><a href="#cb3-39" tabindex="-1"></a>)</span></code></pre></div>
+</div>
+<div id="concat-w-matrics-and-calculate-pairwise-correlations" class="section level3">
+<h3>Concat W matrics and calculate pairwise correlations</h3>
+<div class="sourceCode" id="cb4"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" tabindex="-1"></a>soSet <span class="ot">&lt;-</span> <span class="fu">SOSet</span>(<span class="at">NMFobjL =</span> dataL, <span class="at">NMFrankL =</span> rankL, <span class="at">dataCol =</span> dataColor, <span class="at">corMet =</span> corMethod)</span>
+<span id="cb4-2"><a href="#cb4-2" tabindex="-1"></a><span class="co">#&gt; 1 dataset(s) found in the list: PV</span></span>
+<span id="cb4-3"><a href="#cb4-3" tabindex="-1"></a><span class="co">#&gt; Loading: PV [Rank: 2, 3, 4, 5, 6]</span></span>
+<span id="cb4-4"><a href="#cb4-4" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-5"><a href="#cb4-5" tabindex="-1"></a><span class="co">#&gt; Number of genes are the same across datasets.</span></span>
+<span id="cb4-6"><a href="#cb4-6" tabindex="-1"></a><span class="co">#&gt; Calculating: all pairwise correlation coefficients.</span></span>
+<span id="cb4-7"><a href="#cb4-7" tabindex="-1"></a><span class="co">#&gt; Correlation computed with</span></span>
+<span id="cb4-8"><a href="#cb4-8" tabindex="-1"></a><span class="co">#&gt; • Method: &#39;spearman&#39;</span></span>
+<span id="cb4-9"><a href="#cb4-9" tabindex="-1"></a><span class="co">#&gt; • Missing treated using: &#39;pairwise.complete.obs&#39;</span></span>
+<span id="cb4-10"><a href="#cb4-10" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-11"><a href="#cb4-11" tabindex="-1"></a><span class="co">#&gt; Assigned color(s):</span></span>
+<span id="cb4-12"><a href="#cb4-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb4-13"><a href="#cb4-13" tabindex="-1"></a><span class="co">#&gt;  &gt; PV: #7570B3</span></span>
+<span id="cb4-14"><a href="#cb4-14" tabindex="-1"></a><span class="fu">plotCorrDensity</span>(soSet, <span class="at">filename =</span> <span class="st">&quot;01_Stats_correlation_density.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">6</span>, <span class="at">height =</span> <span class="dv">6</span>)</span>
+<span id="cb4-15"><a href="#cb4-15" tabindex="-1"></a><span class="co">#&gt; 01_Stats_correlation_density.pdf was generated.</span></span></code></pre></div>
+</div>
+<div id="generate-a-correlation-network-and-apply-community-search" class="section level3">
+<h3>Generate a correlation network and apply community search</h3>
+<div class="sourceCode" id="cb5"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" tabindex="-1"></a>soObj <span class="ot">&lt;-</span> <span class="fu">SOTK</span>(soSet, <span class="at">coefThre =</span> corrCoefThrehold, <span class="at">seed =</span> seed, <span class="at">niter =</span> iteration, <span class="at">commWeight =</span> communityWeight, <span class="at">cohortWeight =</span> cohortWeight)</span>
+<span id="cb5-2"><a href="#cb5-2" tabindex="-1"></a><span class="co">#&gt; Seed: 1118</span></span>
+<span id="cb5-3"><a href="#cb5-3" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-4"><a href="#cb5-4" tabindex="-1"></a><span class="co">#&gt; Community search algorithm:</span></span>
+<span id="cb5-5"><a href="#cb5-5" tabindex="-1"></a><span class="co">#&gt;  Fast Greedy</span></span>
+<span id="cb5-6"><a href="#cb5-6" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-7"><a href="#cb5-7" tabindex="-1"></a><span class="co">#&gt; Updating weights for</span></span>
+<span id="cb5-8"><a href="#cb5-8" tabindex="-1"></a><span class="co">#&gt;  Community #1</span></span>
+<span id="cb5-9"><a href="#cb5-9" tabindex="-1"></a><span class="co">#&gt;  Community #2</span></span>
+<span id="cb5-10"><a href="#cb5-10" tabindex="-1"></a><span class="co">#&gt;  Community #3</span></span>
+<span id="cb5-11"><a href="#cb5-11" tabindex="-1"></a><span class="co">#&gt;  Community #4</span></span>
+<span id="cb5-12"><a href="#cb5-12" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-13"><a href="#cb5-13" tabindex="-1"></a><span class="co">#&gt; Updating weights for</span></span>
+<span id="cb5-14"><a href="#cb5-14" tabindex="-1"></a><span class="co">#&gt;  Data: PV</span></span>
+<span id="cb5-15"><a href="#cb5-15" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-16"><a href="#cb5-16" tabindex="-1"></a><span class="co">#&gt; Calculating new layout based on new weights.</span></span>
+<span id="cb5-17"><a href="#cb5-17" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb5-18"><a href="#cb5-18" tabindex="-1"></a><span class="co">#&gt; Community-level network generated.</span></span></code></pre></div>
+</div>
+<div id="visualization" class="section level3">
+<h3>Visualization</h3>
+<div class="sourceCode" id="cb6"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow=</span><span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">1</span>))</span>
+<span id="cb6-2"><a href="#cb6-2" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">FALSE</span>, <span class="at">annot =</span> <span class="st">&quot;cohort&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">FALSE</span>, <span class="at">filename =</span> <span class="st">&quot;02_Network_Unweighted.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize)</span>
+<span id="cb6-3"><a href="#cb6-3" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-4"><a href="#cb6-4" tabindex="-1"></a><span class="co">#&gt;                 2</span></span>
+<span id="cb6-5"><a href="#cb6-5" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">annot =</span> <span class="st">&quot;cohort&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">FALSE</span>, <span class="at">filename =</span> <span class="st">&quot;03_Network_Unweighted_lbl.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize) </span>
+<span id="cb6-6"><a href="#cb6-6" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-7"><a href="#cb6-7" tabindex="-1"></a><span class="co">#&gt;                 2</span></span>
+<span id="cb6-8"><a href="#cb6-8" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">FALSE</span>, <span class="at">annot =</span> <span class="st">&quot;community&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">FALSE</span>, <span class="at">filename =</span> <span class="st">&quot;04_Network_Unweighted_Comm.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize)</span>
+<span id="cb6-9"><a href="#cb6-9" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-10"><a href="#cb6-10" tabindex="-1"></a><span class="co">#&gt;                 2</span></span>
+<span id="cb6-11"><a href="#cb6-11" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">annot =</span> <span class="st">&quot;community&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">FALSE</span>, <span class="at">filename =</span> <span class="st">&quot;05_Network_Unweighted_Comm_lbl.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize)</span>
+<span id="cb6-12"><a href="#cb6-12" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-13"><a href="#cb6-13" tabindex="-1"></a><span class="co">#&gt;                 2</span></span>
+<span id="cb6-14"><a href="#cb6-14" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">FALSE</span>, <span class="at">annot =</span> <span class="st">&quot;community&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">TRUE</span>, <span class="at">filename =</span> <span class="st">&quot;06_Network_Community.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize)</span>
+<span id="cb6-15"><a href="#cb6-15" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-16"><a href="#cb6-16" tabindex="-1"></a><span class="co">#&gt;                 2</span></span>
+<span id="cb6-17"><a href="#cb6-17" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">annot =</span> <span class="st">&quot;community&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">TRUE</span>, <span class="at">filename =</span> <span class="st">&quot;07_Network_Community_lbl.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize)</span>
+<span id="cb6-18"><a href="#cb6-18" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-19"><a href="#cb6-19" tabindex="-1"></a><span class="co">#&gt;                 2</span></span>
+<span id="cb6-20"><a href="#cb6-20" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">FALSE</span>, <span class="at">annot =</span> <span class="st">&quot;cohort&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">TRUE</span>, <span class="at">filename =</span> <span class="st">&quot;08_Network_Weighted.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize)</span>
+<span id="cb6-21"><a href="#cb6-21" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-22"><a href="#cb6-22" tabindex="-1"></a><span class="co">#&gt;                 2</span></span>
+<span id="cb6-23"><a href="#cb6-23" tabindex="-1"></a><span class="fu">plotNetwork</span>(soObj, <span class="at">label =</span> <span class="cn">TRUE</span>, <span class="at">annot =</span> <span class="st">&quot;cohort&quot;</span>, <span class="at">edgeAlpha =</span> <span class="fl">0.8</span>, <span class="at">weighted =</span> <span class="cn">TRUE</span>, <span class="at">filename =</span> <span class="st">&quot;09_Network_Weighted_lbl.pdf&quot;</span>, <span class="at">vertexSize =</span> nodeSize, <span class="at">vertexLabelCex =</span> nodeLabelSize)</span>
+<span id="cb6-24"><a href="#cb6-24" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb6-25"><a href="#cb6-25" tabindex="-1"></a><span class="co">#&gt;                 2</span></span></code></pre></div>
+</div>
+<div id="sample-annotation-on-the-correlation-network" class="section level3">
+<h3>Sample annotation on the correlation network</h3>
+<div class="sourceCode" id="cb7"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" tabindex="-1"></a>.getModelStats <span class="ot">&lt;-</span> <span class="cf">function</span>(x) {</span>
+<span id="cb7-2"><a href="#cb7-2" tabindex="-1"></a>        TG1F <span class="ot">&lt;-</span> <span class="dv">0</span>; TG2F <span class="ot">&lt;-</span> <span class="dv">0</span>; TG3F <span class="ot">&lt;-</span> <span class="dv">0</span>; TG4F <span class="ot">&lt;-</span> <span class="dv">0</span>; </span>
+<span id="cb7-3"><a href="#cb7-3" tabindex="-1"></a>        WT1F <span class="ot">&lt;-</span> <span class="dv">0</span>; WT2F <span class="ot">&lt;-</span> <span class="dv">0</span>; WT3F <span class="ot">&lt;-</span> <span class="dv">0</span></span>
+<span id="cb7-4"><a href="#cb7-4" tabindex="-1"></a></span>
+<span id="cb7-5"><a href="#cb7-5" tabindex="-1"></a>        <span class="cf">if</span> (<span class="sc">!</span><span class="fu">is.null</span>(x)) {</span>
+<span id="cb7-6"><a href="#cb7-6" tabindex="-1"></a>                <span class="cf">for</span> (i <span class="cf">in</span> x) {</span>
+<span id="cb7-7"><a href="#cb7-7" tabindex="-1"></a>                        buff <span class="ot">&lt;-</span> <span class="fu">unlist</span>(stringr<span class="sc">::</span><span class="fu">str_split</span>(i, <span class="st">&quot;-&quot;</span>))</span>
+<span id="cb7-8"><a href="#cb7-8" tabindex="-1"></a>                        <span class="cf">if</span> (buff[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;TG1F&quot;</span>) {</span>
+<span id="cb7-9"><a href="#cb7-9" tabindex="-1"></a>                                TG1F <span class="ot">&lt;-</span> TG1F <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-10"><a href="#cb7-10" tabindex="-1"></a>                        } <span class="cf">else</span> <span class="cf">if</span> (buff[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;TG2F&quot;</span>) {</span>
+<span id="cb7-11"><a href="#cb7-11" tabindex="-1"></a>                                TG2F <span class="ot">&lt;-</span> TG2F <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-12"><a href="#cb7-12" tabindex="-1"></a>                        } <span class="cf">else</span> <span class="cf">if</span> (buff[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;TG3F&quot;</span>) {</span>
+<span id="cb7-13"><a href="#cb7-13" tabindex="-1"></a>                                TG3F <span class="ot">&lt;-</span> TG3F <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-14"><a href="#cb7-14" tabindex="-1"></a>                        } <span class="cf">else</span> <span class="cf">if</span> (buff[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;TG4F&quot;</span>) {</span>
+<span id="cb7-15"><a href="#cb7-15" tabindex="-1"></a>                                TG4F <span class="ot">&lt;-</span> TG4F <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-16"><a href="#cb7-16" tabindex="-1"></a>                        } <span class="cf">else</span> <span class="cf">if</span> (buff[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;WT1F&quot;</span>) {</span>
+<span id="cb7-17"><a href="#cb7-17" tabindex="-1"></a>                                WT1F <span class="ot">&lt;-</span> WT1F <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-18"><a href="#cb7-18" tabindex="-1"></a>                        } <span class="cf">else</span> <span class="cf">if</span> (buff[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;WT2F&quot;</span>) {</span>
+<span id="cb7-19"><a href="#cb7-19" tabindex="-1"></a>                                WT2F <span class="ot">&lt;-</span> WT2F <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-20"><a href="#cb7-20" tabindex="-1"></a>                        } <span class="cf">else</span> <span class="cf">if</span> (buff[<span class="dv">1</span>] <span class="sc">==</span> <span class="st">&quot;WT3F&quot;</span>) {</span>
+<span id="cb7-21"><a href="#cb7-21" tabindex="-1"></a>                                WT3F <span class="ot">&lt;-</span> WT3F <span class="sc">+</span> <span class="dv">1</span></span>
+<span id="cb7-22"><a href="#cb7-22" tabindex="-1"></a>                        } <span class="cf">else</span> {</span>
+<span id="cb7-23"><a href="#cb7-23" tabindex="-1"></a>                                <span class="fu">message</span>(<span class="fu">paste0</span>(<span class="st">&quot;WARNING::&quot;</span>, buff[<span class="dv">1</span>], <span class="st">&quot; is uncategorized.&quot;</span>))</span>
+<span id="cb7-24"><a href="#cb7-24" tabindex="-1"></a>                        }</span>
+<span id="cb7-25"><a href="#cb7-25" tabindex="-1"></a>                }</span>
+<span id="cb7-26"><a href="#cb7-26" tabindex="-1"></a>        }</span>
+<span id="cb7-27"><a href="#cb7-27" tabindex="-1"></a>        <span class="fu">return</span>(<span class="fu">c</span>(TG1F, TG2F, TG3F, TG4F,</span>
+<span id="cb7-28"><a href="#cb7-28" tabindex="-1"></a>                WT1F, WT2F, WT3F))</span>
+<span id="cb7-29"><a href="#cb7-29" tabindex="-1"></a>}</span>
+<span id="cb7-30"><a href="#cb7-30" tabindex="-1"></a></span>
+<span id="cb7-31"><a href="#cb7-31" tabindex="-1"></a>sample <span class="ot">&lt;-</span> <span class="st">&quot;TG4F&quot;</span></span>
+<span id="cb7-32"><a href="#cb7-32" tabindex="-1"></a>graph <span class="ot">&lt;-</span> soObj<span class="sc">@</span>corNetwork</span>
+<span id="cb7-33"><a href="#cb7-33" tabindex="-1"></a>layout <span class="ot">&lt;-</span> soObj<span class="sc">@</span>unweightedLay <span class="co"># or @weightedLay</span></span>
+<span id="cb7-34"><a href="#cb7-34" tabindex="-1"></a>nodes <span class="ot">&lt;-</span> igraph<span class="sc">::</span><span class="fu">V</span>(graph)<span class="sc">$</span>name</span>
+<span id="cb7-35"><a href="#cb7-35" tabindex="-1"></a>clusterInfo <span class="ot">&lt;-</span> soObj<span class="sc">@</span>sample2metagene</span>
+<span id="cb7-36"><a href="#cb7-36" tabindex="-1"></a></span>
+<span id="cb7-37"><a href="#cb7-37" tabindex="-1"></a><span class="co"># Initialization</span></span>
+<span id="cb7-38"><a href="#cb7-38" tabindex="-1"></a>vertexPie <span class="ot">&lt;-</span> <span class="fu">as.list</span>(<span class="fu">rep</span>(<span class="dv">1</span>, <span class="fu">length</span>(nodes))); <span class="fu">names</span>(vertexPie) <span class="ot">&lt;-</span> nodes</span>
+<span id="cb7-39"><a href="#cb7-39" tabindex="-1"></a>vertexPieCol <span class="ot">&lt;-</span> <span class="fu">as.list</span>(<span class="fu">rep</span>(<span class="st">&quot;white&quot;</span>, <span class="fu">length</span>(nodes))); <span class="fu">names</span>(vertexPieCol) <span class="ot">&lt;-</span> nodes</span>
+<span id="cb7-40"><a href="#cb7-40" tabindex="-1"></a>vertexSize <span class="ot">&lt;-</span> <span class="fu">rep</span>(<span class="dv">0</span>, <span class="fu">length</span>(nodes)); <span class="fu">names</span>(vertexSize) <span class="ot">&lt;-</span> nodes</span>
+<span id="cb7-41"><a href="#cb7-41" tabindex="-1"></a></span>
+<span id="cb7-42"><a href="#cb7-42" tabindex="-1"></a><span class="cf">for</span> (ndx <span class="cf">in</span> <span class="fu">seq_along</span>(nodes)) {</span>
+<span id="cb7-43"><a href="#cb7-43" tabindex="-1"></a>        node <span class="ot">&lt;-</span> nodes[ndx]</span>
+<span id="cb7-44"><a href="#cb7-44" tabindex="-1"></a>        samples <span class="ot">&lt;-</span> clusterInfo[[<span class="st">&quot;PV&quot;</span>]][[node]]</span>
+<span id="cb7-45"><a href="#cb7-45" tabindex="-1"></a>        sdx <span class="ot">&lt;-</span> <span class="fu">which</span>(<span class="fu">sapply</span>(stringr<span class="sc">::</span><span class="fu">str_split</span>(samples, <span class="st">&quot;-&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">1</span>) <span class="sc">==</span> sample)</span>
+<span id="cb7-46"><a href="#cb7-46" tabindex="-1"></a></span>
+<span id="cb7-47"><a href="#cb7-47" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(samples) <span class="sc">&gt;</span> <span class="dv">0</span> <span class="sc">&amp;&amp;</span> <span class="fu">length</span>(sdx) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb7-48"><a href="#cb7-48" tabindex="-1"></a>                vertexSize[[node]] <span class="ot">&lt;-</span> <span class="dv">5</span></span>
+<span id="cb7-49"><a href="#cb7-49" tabindex="-1"></a>                vertexPie[[node]] <span class="ot">&lt;-</span> <span class="fu">.getModelStats</span>(<span class="fu">unique</span>(samples[sdx]))</span>
+<span id="cb7-50"><a href="#cb7-50" tabindex="-1"></a>                vertexPieCol[[node]] <span class="ot">&lt;-</span> modelCols</span>
+<span id="cb7-51"><a href="#cb7-51" tabindex="-1"></a>        }</span>
+<span id="cb7-52"><a href="#cb7-52" tabindex="-1"></a>}</span>
+<span id="cb7-53"><a href="#cb7-53" tabindex="-1"></a></span>
+<span id="cb7-54"><a href="#cb7-54" tabindex="-1"></a><span class="fu">pdf</span>(<span class="fu">paste0</span>(<span class="st">&quot;10_Model_Annotation_&quot;</span>, sample, <span class="st">&quot;.pdf&quot;</span>), <span class="at">width=</span><span class="dv">10</span>, <span class="at">height=</span><span class="dv">10</span>)</span>
+<span id="cb7-55"><a href="#cb7-55" tabindex="-1"></a><span class="fu">plot</span>(graph,</span>
+<span id="cb7-56"><a href="#cb7-56" tabindex="-1"></a>        <span class="at">layout =</span> layout,</span>
+<span id="cb7-57"><a href="#cb7-57" tabindex="-1"></a>        <span class="at">vertex.label =</span> <span class="cn">NA</span>,</span>
+<span id="cb7-58"><a href="#cb7-58" tabindex="-1"></a>        <span class="at">vertex.size =</span> <span class="fu">as.numeric</span>(vertexSize),</span>
+<span id="cb7-59"><a href="#cb7-59" tabindex="-1"></a>        <span class="at">vertex.shape =</span> <span class="st">&quot;pie&quot;</span>,</span>
+<span id="cb7-60"><a href="#cb7-60" tabindex="-1"></a>        <span class="at">vertex.pie =</span> vertexPie,</span>
+<span id="cb7-61"><a href="#cb7-61" tabindex="-1"></a>        <span class="at">vertex.pie.color =</span> vertexPieCol,</span>
+<span id="cb7-62"><a href="#cb7-62" tabindex="-1"></a>        <span class="at">edge.color =</span> scales<span class="sc">::</span><span class="fu">alpha</span>(<span class="st">&quot;grey80&quot;</span>, <span class="fl">0.3</span>)</span>
+<span id="cb7-63"><a href="#cb7-63" tabindex="-1"></a>)</span>
+<span id="cb7-64"><a href="#cb7-64" tabindex="-1"></a><span class="fu">title</span>(<span class="at">main =</span> sample)</span>
+<span id="cb7-65"><a href="#cb7-65" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb7-66"><a href="#cb7-66" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb7-67"><a href="#cb7-67" tabindex="-1"></a><span class="co">#&gt;                 2</span></span></code></pre></div>
+</div>
+<div id="check-the-metagene-coverage-at-each-rank" class="section level3">
+<h3>Check the metagene coverage at each rank</h3>
+<div class="sourceCode" id="cb8"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" tabindex="-1"></a>colComm <span class="ot">&lt;-</span> soObj<span class="sc">@</span>commCols</span>
+<span id="cb8-2"><a href="#cb8-2" tabindex="-1"></a>ranks <span class="ot">&lt;-</span> <span class="fu">sort</span>(<span class="fu">as.numeric</span>(<span class="fu">unique</span>(<span class="fu">sapply</span>(stringr<span class="sc">::</span><span class="fu">str_split</span>(nodes, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">3</span>))))</span>
+<span id="cb8-3"><a href="#cb8-3" tabindex="-1"></a></span>
+<span id="cb8-4"><a href="#cb8-4" tabindex="-1"></a><span class="fu">pdf</span>(<span class="st">&quot;11_coverage.pdf&quot;</span>, <span class="at">width =</span> <span class="dv">10</span>, <span class="at">height =</span> <span class="dv">10</span>)</span>
+<span id="cb8-5"><a href="#cb8-5" tabindex="-1"></a><span class="cf">for</span> (rank <span class="cf">in</span> ranks) {</span>
+<span id="cb8-6"><a href="#cb8-6" tabindex="-1"></a>        vertexLabel <span class="ot">&lt;-</span> <span class="fu">paste</span>(</span>
+<span id="cb8-7"><a href="#cb8-7" tabindex="-1"></a>                <span class="fu">sapply</span>(stringr<span class="sc">::</span><span class="fu">str_split</span>(nodes, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">2</span>),</span>
+<span id="cb8-8"><a href="#cb8-8" tabindex="-1"></a>                <span class="fu">sapply</span>(stringr<span class="sc">::</span><span class="fu">str_split</span>(nodes, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">3</span>),</span>
+<span id="cb8-9"><a href="#cb8-9" tabindex="-1"></a>                <span class="at">sep =</span> <span class="st">&quot;/&quot;</span></span>
+<span id="cb8-10"><a href="#cb8-10" tabindex="-1"></a>        )</span>
+<span id="cb8-11"><a href="#cb8-11" tabindex="-1"></a>        vertexLabel[<span class="fu">which</span>(<span class="fu">as.numeric</span>(<span class="fu">sapply</span>(stringr<span class="sc">::</span><span class="fu">str_split</span>(nodes, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">3</span>)) <span class="sc">!=</span> rank)] <span class="ot">&lt;-</span> <span class="st">&quot;&quot;</span></span>
+<span id="cb8-12"><a href="#cb8-12" tabindex="-1"></a></span>
+<span id="cb8-13"><a href="#cb8-13" tabindex="-1"></a>        vertexColor <span class="ot">&lt;-</span> colComm[igraph<span class="sc">::</span><span class="fu">V</span>(graph)<span class="sc">$</span>community]</span>
+<span id="cb8-14"><a href="#cb8-14" tabindex="-1"></a>        liveCols <span class="ot">&lt;-</span> <span class="fu">unique</span>(vertexColor[<span class="fu">which</span>(<span class="fu">as.numeric</span>(<span class="fu">sapply</span>(stringr<span class="sc">::</span><span class="fu">str_split</span>(nodes, <span class="st">&quot;</span><span class="sc">\\</span><span class="st">$&quot;</span>), <span class="st">&quot;[[&quot;</span>, <span class="dv">3</span>)) <span class="sc">==</span> rank)])</span>
+<span id="cb8-15"><a href="#cb8-15" tabindex="-1"></a>        <span class="cf">if</span> (<span class="fu">length</span>(liveCols) <span class="sc">&gt;</span> <span class="dv">0</span>) {</span>
+<span id="cb8-16"><a href="#cb8-16" tabindex="-1"></a>                vertexColor[<span class="sc">-</span><span class="fu">which</span>(vertexColor <span class="sc">%in%</span> liveCols)] <span class="ot">&lt;-</span> <span class="st">&quot;white&quot;</span></span>
+<span id="cb8-17"><a href="#cb8-17" tabindex="-1"></a>        }</span>
+<span id="cb8-18"><a href="#cb8-18" tabindex="-1"></a>        vertexColor[<span class="fu">which</span>(vertexLabel <span class="sc">!=</span> <span class="st">&quot;&quot;</span>)] <span class="ot">&lt;-</span> <span class="st">&quot;black&quot;</span></span>
+<span id="cb8-19"><a href="#cb8-19" tabindex="-1"></a>        liveColNode <span class="ot">&lt;-</span> <span class="fu">length</span>(<span class="fu">which</span>(vertexColor <span class="sc">==</span> <span class="st">&quot;black&quot;</span>))</span>
+<span id="cb8-20"><a href="#cb8-20" tabindex="-1"></a></span>
+<span id="cb8-21"><a href="#cb8-21" tabindex="-1"></a>        <span class="fu">plot</span>(graph,</span>
+<span id="cb8-22"><a href="#cb8-22" tabindex="-1"></a>                <span class="at">layout =</span> layout,</span>
+<span id="cb8-23"><a href="#cb8-23" tabindex="-1"></a>                <span class="at">vertex.label =</span> vertexLabel,</span>
+<span id="cb8-24"><a href="#cb8-24" tabindex="-1"></a>                <span class="at">vertex.color =</span> vertexColor,</span>
+<span id="cb8-25"><a href="#cb8-25" tabindex="-1"></a>                <span class="at">vertex.label.color =</span> <span class="st">&quot;white&quot;</span>,</span>
+<span id="cb8-26"><a href="#cb8-26" tabindex="-1"></a>                <span class="at">vertex.size =</span> <span class="dv">8</span>,</span>
+<span id="cb8-27"><a href="#cb8-27" tabindex="-1"></a>                <span class="at">vertex.label.cex =</span> <span class="fl">0.75</span>,</span>
+<span id="cb8-28"><a href="#cb8-28" tabindex="-1"></a>                <span class="at">edge.color =</span> <span class="st">&quot;grey80&quot;</span></span>
+<span id="cb8-29"><a href="#cb8-29" tabindex="-1"></a>        )</span>
+<span id="cb8-30"><a href="#cb8-30" tabindex="-1"></a>        <span class="fu">title</span>(<span class="fu">paste0</span>(<span class="st">&quot;Rank = &quot;</span>, rank), <span class="at">cex.main =</span> <span class="dv">2</span>, <span class="at">col.main =</span> <span class="st">&quot;black&quot;</span>)</span>
+<span id="cb8-31"><a href="#cb8-31" tabindex="-1"></a>        <span class="fu">legend</span>(<span class="st">&quot;bottomleft&quot;</span>,</span>
+<span id="cb8-32"><a href="#cb8-32" tabindex="-1"></a>                <span class="at">legend =</span> <span class="fu">c</span>(</span>
+<span id="cb8-33"><a href="#cb8-33" tabindex="-1"></a>                        <span class="fu">paste0</span>(liveColNode, <span class="st">&quot; metagenes&quot;</span>),</span>
+<span id="cb8-34"><a href="#cb8-34" tabindex="-1"></a>                        <span class="fu">paste0</span>(<span class="fu">length</span>(colComm), <span class="st">&quot; communities&quot;</span>),</span>
+<span id="cb8-35"><a href="#cb8-35" tabindex="-1"></a>                        <span class="fu">paste0</span>(<span class="st">&quot;Ratio = &quot;</span>, <span class="fu">round</span>(<span class="fu">length</span>(colComm) <span class="sc">/</span> liveColNode, <span class="dv">2</span>))</span>
+<span id="cb8-36"><a href="#cb8-36" tabindex="-1"></a>                ),</span>
+<span id="cb8-37"><a href="#cb8-37" tabindex="-1"></a>                <span class="at">bty =</span> <span class="st">&quot;n&quot;</span></span>
+<span id="cb8-38"><a href="#cb8-38" tabindex="-1"></a>        )</span>
+<span id="cb8-39"><a href="#cb8-39" tabindex="-1"></a>}</span>
+<span id="cb8-40"><a href="#cb8-40" tabindex="-1"></a><span class="fu">dev.off</span>()</span>
+<span id="cb8-41"><a href="#cb8-41" tabindex="-1"></a><span class="co">#&gt; quartz_off_screen </span></span>
+<span id="cb8-42"><a href="#cb8-42" tabindex="-1"></a><span class="co">#&gt;                 2</span></span></code></pre></div>
+</div>
+</div>
+</div>
+
+
+
+<!-- code folding -->
+
+
+<!-- dynamically load mathjax for compatibility with self-contained -->
+<script>
+  (function () {
+    var script = document.createElement("script");
+    script.type = "text/javascript";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    document.getElementsByTagName("head")[0].appendChild(script);
+  })();
+</script>
+
+</body>
+</html>

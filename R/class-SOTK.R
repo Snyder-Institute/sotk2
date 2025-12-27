@@ -1,7 +1,24 @@
 setOldClass("igraph")
 
 #' @include class-SOSet.R
-#' @import igraph
+#' @importFrom igraph V
+#' @importFrom igraph E
+#' @importFrom igraph add.edges
+#' @importFrom igraph add.vertices
+#' @importFrom igraph add_edges
+#' @importFrom igraph as.undirected
+#' @importFrom igraph as_edgelist
+#' @importFrom igraph cluster_edge_betweenness
+#' @importFrom igraph cluster_fast_greedy
+#' @importFrom igraph cluster_leading_eigen
+#' @importFrom igraph cluster_leiden
+#' @importFrom igraph cluster_louvain
+#' @importFrom igraph cluster_walktrap
+#' @importFrom igraph components
+#' @importFrom igraph delete_vertices
+#' @importFrom igraph graph.adjacency
+#' @importFrom igraph graph.empty
+#' @importFrom igraph layout.fruchterman.reingold
 #' @rdname SOTK
 #' @export
 #'
@@ -40,7 +57,10 @@ setClass(
 #'
 #' @docType class
 #' @rdname SOTK
-#' @import igraph stringr RColorBrewer NMF
+#' @importFrom stringr str_split
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom RColorBrewer brewer.pal.info
+#' @importFrom NMF coef
 #' @export 
 #'
 SOTK <- function(SOSet, coefThre = 0.5, seed = 123456, niter = 1000, drop = FALSE, searchMet = "greedy", commWeight = 100, cohortWeight = 10) {

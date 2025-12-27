@@ -7,19 +7,26 @@
 getMVGs(profile = NULL, coefVar = 0.1, no = 2000)
 }
 \arguments{
-\item{profile}{code{matrix} The expression profile}
+\item{profile}{A \code{matrix} of expression values where rows are genes and columns are samples.
+Row names must be gene identifiers.}
 
-\item{coefVar}{\code{numeric} A threshold value for the coefficient variation, default is 0.1}
+\item{coefVar}{\code{numeric} Coefficient of variation threshold. Genes with CV strictly lower than
+this value are removed. Default is 0.1.}
 
-\item{no}{\code{numeric} Number of genes to return, default is 2000}
+\item{no}{\code{numeric} Number of genes to return after ranking by standard deviation. Default is 2000.}
 }
 \value{
-A vector of genes
+A character vector of gene identifiers (row names) corresponding to the selected MVGs.
 }
 \description{
-Get the most variable genes (MVGs)
+Selects the most variable genes from an expression matrix using a two-step filter:
+\enumerate{
+\item Remove genes with coefficient of variation (CV) below \code{coefVar}.
+\item Rank remaining genes by standard deviation across samples and return the top \code{no} genes.
+}
 }
 \examples{
-nmfObj <- getMVGs(profile = expr, coefVar = 0.1, no = 2000)
+mvgs <- getMVGs(profile = as.matrix(expr), coefVar = 0.1, no = 2000)
+# create a heatmap with MVGs
 
 }

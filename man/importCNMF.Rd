@@ -2,7 +2,7 @@
 % Please edit documentation in R/utils.R
 \name{importCNMF}
 \alias{importCNMF}
-\title{Import cNMF results then export to an NMF object}
+\title{Import consensus NMF (cNMF) results and convert to an NMF object}
 \usage{
 importCNMF(
   prefix = NULL,
@@ -16,25 +16,37 @@ importCNMF(
 )
 }
 \arguments{
-\item{prefix}{\code{character} The run_name parameter from cNMF run}
+\item{prefix}{\code{character}. The \code{run_name} parameter used in the cNMF run.}
 
-\item{metrics}{\code{character} Either score or TPM, default is score}
+\item{metrics}{\code{character}. Either \code{"score"} or \code{"TPM"} to select which gene spectra file
+is used to construct the basis matrix \code{W}. Default is \code{"score"}.}
 
-\item{minRank}{\code{numeric} The minimum rank from cNMF run}
+\item{minRank}{\code{numeric}. Minimum rank (\code{k}) to import.}
 
-\item{maxRank}{\code{numeric} the maximum rank from cNMF run}
+\item{maxRank}{\code{numeric}. Maximum rank (\code{k}) to import.}
 
-\item{by}{\code{numeric} increment of the sequence}
+\item{by}{\code{numeric}. Increment for the sequence of ranks. Default is 1.}
 
-\item{denThre}{\code{character} The density threshold in string with a underscore}
+\item{denThre}{\code{character}. Density threshold string used by cNMF in file names (e.g., \code{"2_0"}).}
 
-\item{cnmfDir}{\code{character} Directory to the cNMF results}
+\item{cnmfDir}{\code{character}. Directory containing cNMF result files.}
+
+\item{verbose}{\code{logical}. If \code{TRUE}, prints progress and matrix dimensions. Default is \code{TRUE}.}
 }
 \value{
-An NMF object
+An object of class \code{"NMF.rank"} with \code{$fit} containing imported fits indexed by \code{k}.
 }
 \description{
-Import cNMF results then export to an NMF object
+Reads cNMF output files (gene spectra and consensus usages) across a range of factorization ranks
+and converts them into an \code{"NMF.rank"} object compatible with downstream \pkg{NMF} workflows.
+}
+\details{
+The function expects the standard cNMF output file naming convention:
+\itemize{
+\item \code{<prefix>.gene_spectra_tpm.k_<k>.dt_<denThre>.txt}
+\item \code{<prefix>.gene_spectra_score.k_<k>.dt_<denThre>.txt}
+\item \code{<prefix>.usages.k_<k>.dt_<denThre>.consensus.txt}
+}
 }
 \examples{
 nmfObj <- importCNMF(prefix = "PREFIX", metrics = "score", minRank = 2, maxRank = 10, by = 1, denThre = "2_0", cnmfDir = "./cNMF")
