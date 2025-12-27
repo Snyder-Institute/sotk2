@@ -129,19 +129,11 @@ soSet <- SOSet(
 soObj <- SOTK(SOSet = soSet)
 ```
 
-### Notes on thresholds and interpretation
-
-* The default network construction keeps correlations **above a threshold** (positive correlations). If you need to consider anti-correlated structure, you should define and document an alternative thresholding strategy in your analysis.
-* The “weighted layout” is a visualization strategy that encourages nodes from the same community and/or dataset to be closer together. This is intended for readability and does not change the underlying correlation values.
-
 ---
 
-## Practical notes on NMF, cNMF, and integration
-Complete scripts spanning NMF execution through downstream **sotk2** analyses are provided in the `inst/scripts` folder, enabling users to reproduce and explore the full functionality of the package. Users may run either standard NMF (https://github.com/renozao/NMF) or consensus NMF (cNMF, https://github.com/dylkot/cNMF). cNMF was originally developed for single-cell RNA-seq data, where the expression matrix is typically sparse. In this demonstration, we also apply cNMF to bulk RNA-seq because cNMF operates on the full expression profile and yields factorization results across all genes. By contrast, we typically run standard NMF on a reduced feature space, such as a subset of the most variable genes.
+## Vignette
+The vignette is available online and provides step-by-step instructions for downloading the demo data, running sotk2, generating visualizations, and performing annotations to support interpretation. Please visit: <a href="https://Snyder-Institute.github.io/sotk2/" target="_blank">https://Snyder-Institute.github.io/sotk2/</a>
 
-If you have a targeted gene panel of interest (e.g., molecular subtype signatures such as Verhaak and/or cell-state marker genes such as Neftel), you can subset bulk RNA-seq profiles accordingly and run NMF, while applying cNMF to sparse matrices such as single-cell or spatial transcriptomics data. The resulting NMF and cNMF outputs can then be integrated in **sotk2** using correlation-based community detection.
-
-The correlation threshold used to define edges in the integrated network should be determined through exploratory analysis and is a key parameter for successful integration. Finally, integrating NMF and cNMF results is feasible; however, the resulting shared gene set may be smaller because correlations are computed only for genes observed in both datasets, unless NMF is run on the full expression profile, which is computationally expensive.
 
 ## Project provenance
 
