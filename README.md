@@ -99,7 +99,7 @@ Additional packages may be used for plotting and summaries (for example, ggplot2
 
 ### Quick start
 
-Below is a minimal example showing the object flow. For a full end-to-end script, see `inst/scripts/` in this repository and [Zeonodo](https://doi.org/10.5281/zenodo.18063318).
+Below is a minimal example showing the object flow. For a full end-to-end script, see `inst/scripts/` in this repository and [Zenodo](https://doi.org/10.5281/zenodo.18063318).
 
 ```r
 library(sotk2)
