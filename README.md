@@ -36,16 +36,21 @@
 
 **sotk2** extends the original SOTK workflow from “rank selection within a dataset” to **cross-dataset, cross-platform module integration**. The emphasis shifts from choosing an optimal *k* in a single analysis to building a comparable module space across datasets and extracting communities that persist across ranks and cohorts.
 
-| Feature | SOTK | sotk2 |
+| Feature | **sotk2** | SOTK |
 |---|---|---|
-| Primary goal | Data-driven selection of an optimal latent factor number within a dataset | Cross-dataset and cross-modality integration using deconvolution-derived modules |
-| Input data types | Spatial transcriptomics–focused | Any modality with NMF/cNMF outputs (bulk, single-cell, spatial transcriptomics, protein abundance) |
-| Integration scope | Within dataset (single platform) | Across datasets, cohorts, platforms, and modalities via correlation networks |
-| Network representation | Metagene-level networks | Metagene-level networks plus **community-level abstraction** to scale integration and interpretation |
-| Composition assessment | Limited or dataset-specific | **Residual-based overrepresentation** to summarize sample-type composition at the community level |
-| Comparative visualization | Basic plotting | Consistent-layout community networks to support direct cross-dataset comparison |
-| Gene interpretation | Metagene genes (limited) | Built-in extraction of **metagene-associated genes (MAGs)** and selection of **contributing community genes** for annotation |
-| Intended outcome | Choose *k* and interpret metagenes | Identify robust communities/modules and compare their presence and composition across datasets |
+| Primary goal | Cross-dataset and cross-modality integration using deconvolution-derived modules | Data-driven selection of an optimal latent factor number within a dataset |
+| Input data types | Any modality with NMF/cNMF outputs (bulk, single-cell, spatial transcriptomics, protein abundance) | Spatial transcriptomics–focused |
+| Integration scope | Across datasets, cohorts, platforms, and modalities via correlation networks | Within dataset (single platform) |
+| Network representation | Metagene-level networks plus **community-level abstraction** to scale integration and interpretation | Metagene-level networks |
+| Composition assessment | **Residual-based overrepresentation** to summarize sample-type composition at the community level | Limited or dataset-specific |
+| Comparative visualization | Consistent-layout community networks to support direct cross-dataset comparison | Basic plotting |
+| Gene interpretation | Built-in extraction of **metagene-associated genes (MAGs)** and selection of **contributing community genes** for annotation | Metagene genes (limited) |
+| Intended outcome | Identify robust communities/modules and compare their presence and composition across datasets | Choose *k* and interpret metagenes |
+
+## Interactive demo
+Users can explore the functionality of this package using preloaded demo datasets through an interactive Shiny application. The Shiny app allows hands-on exploration of core features and typical workflows without requiring local installation or data preparation.
+
+Access the **sotk2** ShinyApp here: <a href="https://shinyapps.ucalgary.ca/sotk2/" target="_blank">https://shinyapps.ucalgary.ca/sotk2/</a>
 
 ---
 
@@ -99,7 +104,7 @@ Additional packages may be used for plotting and summaries (for example, ggplot2
 
 ### Quick start
 
-Below is a minimal example showing the object flow. For a full end-to-end script, see `inst/scripts/` in this repository and [Zenodo](https://doi.org/10.5281/zenodo.18063318).
+Below is a minimal example showing the object flow. For a full end-to-end script, see `inst/scripts/` in this repository and <a href="https://doi.org/10.5281/zenodo.18063318" target="_blank">Zenodo</a>.
 
 ```r
 library(sotk2)
