@@ -32,7 +32,7 @@
     * Detects communities and stores community membership
     * Computes layouts for plotting and creates an optional community-level aggregated network
 
-### Key differences between SOTK and sotk2
+### Key differences between sotk2 and SOTK
 
 **sotk2** extends the original SOTK workflow from “rank selection within a dataset” to **cross-dataset, cross-platform module integration**. The emphasis shifts from choosing an optimal *k* in a single analysis to building a comparable module space across datasets and extracting communities that persist across ranks and cohorts.
 
@@ -48,7 +48,7 @@
 | Intended outcome | Identify robust communities/modules and compare their presence and composition across datasets | Choose *k* and interpret metagenes |
 
 ## Interactive demo
-Users can explore the functionality of this package using preloaded demo datasets through an interactive Shiny application. The Shiny app allows hands-on exploration of core features and typical workflows without requiring local installation or data preparation.
+Users can explore the functionality of this package using preloaded demo datasets through an interactive ShinyApp. The ShinyApp allows hands-on exploration of core features and typical workflows without requiring local installation or data preparation.
 
 Access the **sotk2** ShinyApp here: <a href="https://shinyapps.ucalgary.ca/sotk2/" target="_blank">https://shinyapps.ucalgary.ca/sotk2/</a>
 
@@ -137,8 +137,9 @@ soObj <- SOTK(SOSet = soSet)
 ---
 
 ## Vignette
-The vignette is available online and provides step-by-step instructions for downloading the demo data, running sotk2, generating visualizations, and performing annotations to support interpretation. Please visit: <a href="https://Snyder-Institute.github.io/sotk2/" target="_blank">https://Snyder-Institute.github.io/sotk2/</a>
+The vignette is available online and provides step-by-step instructions for downloading the demo data, running sotk2, generating visualizations, and performing annotations to support interpretation. 
 
+Access the **sotk2** vignette here: <a href="https://Snyder-Institute.github.io/sotk2/" target="_blank">https://Snyder-Institute.github.io/sotk2/</a>
 
 ## Project provenance
 
