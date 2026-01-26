@@ -145,5 +145,5 @@ Access the **sotk2** vignette here: <a href="https://Snyder-Institute.github.io/
 
 My access to the SOTK repository was revoked. As a result, I did not fork the current SOTK GitHub repository; instead, I developed **sotk2** as an independent codebase that extends the original concepts with additional functionality intended to benefit the broader community.
 
-## Citation
-If you use **sotk2** in your work, please cite the associated manuscript:
+## Manuscript
+The **sotk2** manuscript is available <a href=".github/pdfs/sotk2_ApplicationsNotes.pdf" target="_blank">here</a>.
