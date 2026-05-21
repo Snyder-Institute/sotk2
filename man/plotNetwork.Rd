@@ -3,6 +3,7 @@
 \docType{methods}
 \name{plotNetwork}
 \alias{plotNetwork}
+\alias{plotNetwork,SOTK-method}
 \title{Generate correlation network plot}
 \usage{
 \S4method{plotNetwork}{SOTK}(
@@ -46,6 +47,8 @@ Correlation network plot
 Generate correlation network plot
 }
 \examples{
-plotNetwork(object = SOTK)
+\dontrun{
+plotNetwork(object = soObj)
+}
 
 }

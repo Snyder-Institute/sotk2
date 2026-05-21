@@ -1,7 +1,7 @@
 Package: sotk2
 Type: Package
 Title: Spatial omics toolkit for cross-platform module integration
-Version: 0.2.0
+Version: 1.0.0
 Authors@R: 
     person(given = "Heewon",
            family = "Seo",
@@ -20,6 +20,7 @@ LazyData: true
 Depends: 
     R (>= 4.3.0)
 Imports:
+    corrr,
     EnvStats,
     ggplot2,
     igraph,
@@ -28,17 +29,22 @@ Imports:
     RColorBrewer,
     reshape2,
     scales,
+    stats,
     stringr
 Suggests:
     knitr,
-    rmarkdown
-VignetteBuilder: 
+    rmarkdown,
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3
+VignetteBuilder:
     knitr
 Roxygen: list(markdown = TRUE)
 RoxygenNote: 7.3.3
 Collate: 
     'class-SOSet.R'
     'class-SOTK.R'
+    'download-demo.R'
     'prototypes.R'
+    'sotk2-package.R'
     'utils.R'
     'visualization.R'

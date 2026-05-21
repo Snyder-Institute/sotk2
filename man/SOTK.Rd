@@ -28,11 +28,11 @@ SOTK(
 
 \item{drop}{\code{logical} Whether drop small/isolated island(s) from the correlation network. Default is FALSE.}
 
-\item{searchMet}{\code{character} of the community search method, either greedy (fast greedy), leiden, betweeness, randomwalk (random walk), eigen, or louvain. Default is greedy.}
+\item{searchMet}{\code{character} of the community search method, either greedy (fast greedy), leiden, betweenness, randomwalk (random walk), eigen, or louvain. Default is greedy.}
 
 \item{commWeight}{\code{numeric} of the weight value on community info. If users want to rearrange nodes that identified as the same community closer, set a higher value. Default is 100.}
 
-\item{cohortWeight}{\code{numeric} of the weight value on data/cohort (input). If users want to rearrange nodes closer for each data/cohort, set a higher value. Default is 5.}
+\item{cohortWeight}{\code{numeric} of the weight value on data/cohort (input). If users want to rearrange nodes closer for each data/cohort, set a higher value. Default is 10.}
 }
 \value{
 SOTK object

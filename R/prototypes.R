@@ -11,19 +11,19 @@ setGeneric(
 )
 
 setGeneric(
-        "plotNetwork", 
+        "plotNetwork",
         function(
-                object, 
-                weighted = TRUE, 
+                object,
+                weighted = TRUE,
                 label = FALSE,
-                annot = c("data", "community", "layout"),
-                vertexSize = 5, 
-                vertexLabelCex = 1, 
+                annot = "cohort",
+                vertexSize = 5,
+                vertexLabelCex = 1,
                 edgeAlpha = 0.2,
                 filename = "network.pdf",
-                width = 10, 
+                width = 10,
                 height = 10
-        ) 
+        )
         standardGeneric("plotNetwork")
 )
 

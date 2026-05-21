@@ -32,25 +32,23 @@
     * Detects communities and stores community membership
     * Computes layouts for plotting and creates an optional community-level aggregated network
 
-### Key differences between sotk2 and SOTK
-
-**sotk2** extends the original SOTK workflow from “rank selection within a dataset” to **cross-dataset, cross-platform module integration**. The emphasis shifts from choosing an optimal *k* in a single analysis to building a comparable module space across datasets and extracting communities that persist across ranks and cohorts.
-
-| Feature | **sotk2** | SOTK |
-|---|---|---|
-| Primary goal | Cross-dataset and cross-modality integration using deconvolution-derived modules | Data-driven selection of an optimal latent factor number within a dataset |
-| Input data types | Any modality with NMF/cNMF outputs (bulk, single-cell, spatial transcriptomics, protein abundance) | Spatial transcriptomics–focused |
-| Integration scope | Across datasets, cohorts, platforms, and modalities via correlation networks | Within dataset (single platform) |
-| Network representation | Metagene-level networks plus **community-level abstraction** to scale integration and interpretation | Metagene-level networks |
-| Composition assessment | **Residual-based overrepresentation** to summarize sample-type composition at the community level | Limited or dataset-specific |
-| Comparative visualization | Consistent-layout community networks to support direct cross-dataset comparison | Basic plotting |
-| Gene interpretation | Built-in extraction of **metagene-associated genes (MAGs)** and selection of **contributing community genes** for annotation | Metagene genes (limited) |
-| Intended outcome | Identify robust communities/modules and compare their presence and composition across datasets | Choose *k* and interpret metagenes |
-
 ## Interactive demo
-Users can explore the functionality of this package using preloaded demo datasets through an interactive ShinyApp. The ShinyApp allows hands-on exploration of core features and typical workflows without requiring local installation or data preparation.
 
-Access the **sotk2** ShinyApp here: <a href="https://shinyapps.ucalgary.ca/sotk2/" target="_blank">https://shinyapps.ucalgary.ca/sotk2/</a>
+The previous hosted **sotk2** ShinyApp has been retired and is being relocated to self-hosted infrastructure. A lite-mode Shiny demo and a portable Docker image are both in preparation.
+
+Until those are live, there are two ways to explore the package today:
+
+1. **Install and run the bundled quickstart vignette.** Single cohort, no external downloads, runs on the demo data shipped with the package.
+
+   ```r
+   install.packages("devtools")
+   devtools::install_github("Snyder-Institute/sotk2", build_vignettes = TRUE)
+   vignette("sotk2 quickstart", package = "sotk2")
+   ```
+
+2. **Read the multi-cohort walkthrough online.** The documentation at <a href="https://Snyder-Institute.github.io/sotk2/" target="_blank">https://Snyder-Institute.github.io/sotk2/</a> reproduces the GLASS / IVYGAP / HEILAND integration step by step, including all figures.
+
+This section will be updated with hosted demo and Docker pull instructions when those go live.
 
 ---
 
@@ -68,14 +66,18 @@ devtools::install_github("Snyder-Institute/sotk2")
 ### Dependencies
 The package uses standard R infrastructure plus several common analysis/visualization packages. Exact versions are tracked in `DESCRIPTION`.
 
-Core imports typically include:
+Imports:
+* corrr
+* EnvStats
+* ggplot2
 * igraph
 * methods
 * NMF
 * RColorBrewer
+* reshape2
+* scales
+* stats
 * stringr
-
-Additional packages may be used for plotting and summaries (for example, ggplot2, reshape2, scales) depending on which functions you call.
 
 ## Workflow overview
 
@@ -141,9 +143,9 @@ The vignette is available online and provides step-by-step instructions for down
 
 Access the **sotk2** vignette here: <a href="https://Snyder-Institute.github.io/sotk2/" target="_blank">https://Snyder-Institute.github.io/sotk2/</a>
 
-## Project provenance
+## Background
 
-My access to the SOTK repository was revoked. As a result, I did not fork the current SOTK GitHub repository; instead, I developed **sotk2** as an independent codebase that extends the original concepts with additional functionality intended to benefit the broader community.
+**sotk2** is an independent implementation that extends concepts from earlier deconvolution-based integration toolkits into a cross-dataset, cross-modality framework with community-level abstraction, residual-based composition assessment, and built-in gene-level interpretation.
 
 ## Citation
-If you use **sotk2** in your work, please cite the associated manuscript:
+If you use **sotk2** in your work, please cite the associated manuscript: _to be added_

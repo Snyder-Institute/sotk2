@@ -3,6 +3,7 @@
 \docType{methods}
 \name{plotCorrDensity}
 \alias{plotCorrDensity}
+\alias{plotCorrDensity,SOSet-method}
 \title{Generate correlation coefficient density plot}
 \usage{
 \S4method{plotCorrDensity}{SOSet}(
@@ -16,7 +17,11 @@
 \arguments{
 \item{object}{A \code{SOSet} object}
 
-\item{filename}{\code{character} Output file name}
+\item{filename}{\code{character} Output file name. If \code{NULL}, the plot
+is drawn on the active graphics device.}
+
+\item{breaks}{\code{numeric} vector of histogram break points passed to
+\code{hist()}. Defaults to \code{seq(-1, 1, 0.1)} when \code{NULL}.}
 
 \item{width}{\code{numeric} Width size for output PDF}
 
@@ -29,6 +34,8 @@ Coefficient density plot
 Generate correlation coefficient density plot
 }
 \examples{
-plotCorrDensity(SOSet)
+\dontrun{
+plotCorrDensity(soSet)
+}
 
 }

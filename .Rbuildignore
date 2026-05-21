@@ -1,2 +1,10 @@
 ^doc$
 ^Meta$
+^\.github$
+^\.Rbuildignore$
+^sotk2_.*\.tar\.gz$
+^sotk2\.Rcheck$
+^mkdocs\.yml$
+^docs$
+^site$
+^LICENSE\.md$

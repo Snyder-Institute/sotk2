@@ -12,7 +12,7 @@ setClass(
                 parameters = "list" # Stash parameters
         )
 )
-# TO-DOs: setValidity("SOSet", function(object) {}
+# TO-DOs: setValidity("SOSet", function(object) {})
 
 #' @title SOSet object and contructor
 #'
@@ -30,12 +30,9 @@ setClass(
 #'      NMF results from NMF runs, where users run NMF on each dataset.
 #' @param NMFrankL A \code{list} containing the ranks for each dataset that are
 #'      considered to be included in SOSet, where we recommend to avoid to include
-#'      low rank(s), i.e., rank = {2, 3, 4, ..., 20}
+#'      low rank(s), i.e., rank = \{2, 3, 4, ..., 20\}
 #' @param dataCol A \code{vector} of the colors that represent each dataset/NMF run.
-#' @param basisMat A \code{matrix} that column-wide concatenate W (basis) matrices
-#'      across data, where rows are genes and columns are metagenes
-#'      (Gene Expression Programs).
-#' @param corMet a character string indicating which correlation coefficient 
+#' @param corMet a character string indicating which correlation coefficient
 #'   (or covariance) is to be computed. One of "pearson", "kendall", 
 #'   or "spearman" (default).
 #' @param corUse an optional character string giving a method for computing covariances
@@ -45,14 +42,20 @@ setClass(
 #'
 #' @return SOSet object
 #' 
-#' @examples 
+#' @examples
+#' \dontrun{
 #' dataL <- list(data_A = data_A_nmf_object, data_B = data_B_nmf_object)
-#' rankL <- list(data_A = c(3:10,15,18), data_B = c(3:10,15,20,23))
+#' rankL <- list(data_A = c(3:10, 15, 18), data_B = c(3:10, 15, 20, 23))
 #' col <- c(data_A = "cadetblue1", data_B = "darkgoldenrod1")
-#' corMet <- "pearson"
-#' corUse <- "pairwise.complete.obs"
-#' 
-#' mxInput <- SOSet(NMFobjL = dataL, NMFrankL = rankL, dataCol = col, corMet = corMet, corUse = corUse)
+#'
+#' mxInput <- SOSet(
+#'     NMFobjL  = dataL,
+#'     NMFrankL = rankL,
+#'     dataCol  = col,
+#'     corMet   = "pearson",
+#'     corUse   = "pairwise.complete.obs"
+#' )
+#' }
 #'
 #' @docType class
 #' @rdname SOSet
@@ -90,8 +93,8 @@ SOSet <- function(NMFobjL, NMFrankL = NULL, dataCol = NULL, corMet = "spearman",
                 data <- NMFobjL[[idx]]
                 dataName <- names(NMFobjL)[idx]
                 flag <- FALSE
-                if (class(data) != "NMF.rank") {
-                        stop(paste0("\nERROR::", dataName, " is not in NMF.rank class. You can use the importCNMF or mergeNMFruns function to create a NMF object."))
+                if (!inherits(data, "NMF.rank")) {
+                        stop(paste0("\nERROR::", dataName, " is not in NMF.rank class. You can use the importCNMF or mergeNMFObjs function to create a NMF object."))
                 } else {
                         flag <- TRUE
                 }

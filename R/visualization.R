@@ -101,7 +101,10 @@ plotCorrDensity.SOSet <- function(object,
 #' Generate correlation coefficient density plot
 #'
 #' @param object A \code{SOSet} object
-#' @param filename \code{character} Output file name
+#' @param filename \code{character} Output file name. If \code{NULL}, the plot
+#'   is drawn on the active graphics device.
+#' @param breaks \code{numeric} vector of histogram break points passed to
+#'   \code{hist()}. Defaults to \code{seq(-1, 1, 0.1)} when \code{NULL}.
 #' @param width \code{numeric} Width size for output PDF
 #' @param height \code{numeric} Height size for output PDF
 #'
@@ -112,8 +115,11 @@ plotCorrDensity.SOSet <- function(object,
 #' @rdname plotCorrDensity
 #'
 #' @examples
-#' plotCorrDensity(SOSet)
+#' \dontrun{
+#' plotCorrDensity(soSet)
+#' }
 #'
+#' @aliases plotCorrDensity,SOSet-method
 #' @export
 #'
 setMethod(f = "plotCorrDensity", signature = "SOSet", definition = plotCorrDensity.SOSet)
@@ -140,9 +146,9 @@ plotNetwork.SOTK <- function(object, weighted = TRUE, label = FALSE,
                 stop("ERROR::annot should be either cohort or community.")
         }
 
-        if (class(object) != "SOTK") {
+        if (!inherits(object, "SOTK")) {
                 stop("ERROR::Provide a SOTK object which was created by the SOTK function.")
-        } else {                
+        } else {
                 graph <- object@corNetwork
                 nodes <- igraph::V(graph)$name
                 if (weighted) {
@@ -203,17 +209,6 @@ plotNetwork.SOTK <- function(object, weighted = TRUE, label = FALSE,
                 )
                 title(stringr::str_to_title(object@parameters$searchMet), cex.main = 2, col.main = "black")
                 legend("bottomleft", legend = paste0(max(communityInfo), " communities"), bty = "n")
-        } else {
-                plot(
-                        graph,
-                        layout = layout,
-                        vertex.label = NA,
-                        vertex.color = "white",
-                        vertex.size = vertexSize,
-                        edge.color = scales::alpha("grey80", edgeAlpha)
-                )
-                legend("topleft", legend = names(col), fill = col, bty = "n")
-                legend("bottomleft", legend = paste0(igraph::vcount(graph), " nodes"), bty = "n")
         }
 
         if (!is.null(filename)) dev.off()
@@ -244,8 +239,11 @@ plotNetwork.SOTK <- function(object, weighted = TRUE, label = FALSE,
 #' @rdname plotNetwork
 #'
 #' @examples
-#' plotNetwork(object = SOTK)
+#' \dontrun{
+#' plotNetwork(object = soObj)
+#' }
 #'
+#' @aliases plotNetwork,SOTK-method
 #' @export
 #'
 setMethod(f = "plotNetwork", signature = "SOTK", definition = plotNetwork.SOTK)
@@ -342,8 +340,20 @@ plotCommNetwork.SOTK <- function(object, vertexInfo,
 #' @rdname plotCommNetwork
 #'
 #' @examples
-#' plotCommNetwork(object = SOTK, vertexInfo = list(vertexLabel = vertexLabel, vertexSize = vertexSize, vertexPie = vertexPie, legend = legend, legendCol = legendCol))
+#' \dontrun{
+#' plotCommNetwork(
+#'     object     = soObj,
+#'     vertexInfo = list(
+#'         vertexLabel = vertexLabel,
+#'         vertexSize  = vertexSize,
+#'         vertexPie   = vertexPie,
+#'         legend      = legend,
+#'         legendCol   = legendCol
+#'     )
+#' )
+#' }
 #'
+#' @aliases plotCommNetwork,SOTK-method
 #' @export
 #'
 setMethod(f = "plotCommNetwork", signature = "SOTK", definition = plotCommNetwork.SOTK)
@@ -379,7 +389,7 @@ statComm.SOTK <- function(object, filename = "stats.pdf", width = 10, height = 1
         rownames(commMetagenes) <- paste0("Community_", c(1:max(community)))
         colnames(commMetagenes) <- datasetNames
 
-        pdf(filename, width = width, height = height)
+        if (!is.null(filename)) pdf(filename, width = width, height = height)
         for (dName in datasetNames) {
 
                 ranks <- object@SOSet@NMFrankL[[dName]]
@@ -441,7 +451,7 @@ statComm.SOTK <- function(object, filename = "stats.pdf", width = 10, height = 1
                         )
                 print(stackedBar)
         }
-        dev.off()
+        if (!is.null(filename)) dev.off()
 
         return(list(numberOfMetagenes, commMetagenes))
 }
@@ -460,15 +470,18 @@ statComm.SOTK <- function(object, filename = "stats.pdf", width = 10, height = 1
 #' @rdname statComm
 #'
 #' @examples
+#' \dontrun{
 #' statComm(object = soObj)
+#' }
 #'
+#' @aliases statComm,SOTK-method
 #' @export
 #'
 setMethod(f = "statComm", signature = "SOTK", definition = statComm.SOTK)
 
 selectRank.SOTK <- function(object,
-                           vertexSize = 8, vertexLabelCex = 1, edgeAlpha = 0.2,
-                           filename = "network.pdf",
+                           vertexSize = 8, vertexLabelCex = 0.75, edgeAlpha = 0.2,
+                           filename = "Coverage.pdf",
                            width = 10, height = 10) {
 
         if (!is.numeric(vertexSize) || vertexSize == 0) {
@@ -482,10 +495,10 @@ selectRank.SOTK <- function(object,
         if (!is.numeric(edgeAlpha) || edgeAlpha < 0 || edgeAlpha > 1) {
                 stop("ERROR:edgeAlpha should be greater or equal to 0 and less or equal to 1.")
         }
-        
-        if (class(object) != "SOTK") {
+
+        if (!inherits(object, "SOTK")) {
                 stop("ERROR::Provide a SOTK object.")
-        } else {                
+        } else {
                 ranks <- object@SOSet@NMFrankL[[1]]
                 graph <- object@corNetwork
                 layout <- object@weightedLay
@@ -555,12 +568,13 @@ selectRank.SOTK <- function(object,
 #' @rdname selectRank
 #'
 #' @examples
-#' selectRank(object = SOTK)
+#' \dontrun{
+#' selectRank(object = soObj)
+#' }
 #'
+#' @aliases selectRank,SOTK-method
 #' @export
 #'
 setMethod(f = "selectRank", signature = "SOTK", definition = selectRank.SOTK)
 
-# --- TO-DOs ---
-# geoMean
-# get signature genes
+# TO-DOs: get signature genes

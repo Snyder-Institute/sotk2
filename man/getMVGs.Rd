@@ -26,7 +26,9 @@ Selects the most variable genes from an expression matrix using a two-step filte
 }
 }
 \examples{
+\dontrun{
 mvgs <- getMVGs(profile = as.matrix(expr), coefVar = 0.1, no = 2000)
 # create a heatmap with MVGs
+}
 
 }

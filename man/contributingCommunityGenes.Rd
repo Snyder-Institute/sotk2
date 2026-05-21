@@ -28,7 +28,9 @@ A gene is selected as a contributing community gene if it appears as a MAG in mo
 \code{proportion} of metagenes within that community.
 }
 \examples{
+\dontrun{
 mags <- getMAGs(soObj, list(GLASS = expr))
 commGenes <- contributingCommunityGenes(soObj, mags)
+}
 
 }

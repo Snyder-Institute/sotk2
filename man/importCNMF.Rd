@@ -11,7 +11,7 @@ importCNMF(
   maxRank = NULL,
   by = 1,
   denThre = NULL,
-  cnmfDir = "NULL",
+  cnmfDir = NULL,
   verbose = TRUE
 )
 }
@@ -49,6 +49,16 @@ The function expects the standard cNMF output file naming convention:
 }
 }
 \examples{
-nmfObj <- importCNMF(prefix = "PREFIX", metrics = "score", minRank = 2, maxRank = 10, by = 1, denThre = "2_0", cnmfDir = "./cNMF")
+\dontrun{
+nmfObj <- importCNMF(
+    prefix  = "PREFIX",
+    metrics = "score",
+    minRank = 2,
+    maxRank = 10,
+    by      = 1,
+    denThre = "2_0",
+    cnmfDir = "./cNMF"
+)
+}
 
 }

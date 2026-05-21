@@ -30,10 +30,12 @@ Identifies metagene-associated genes (MAGs) for each metagene using a two-step p
 and the corresponding coefficient (H) usage values (per sample), and keep genes with
 correlation greater than a threshold.
 }
-Source: Tsukahara, T. et al. A transcriptional rheostat couples past activity to future sensory responses. Cell 184, 6326–6343.e32 (2021).
+Source: Tsukahara, T. et al. A transcriptional rheostat couples past activity to future sensory responses. Cell 184, 6326-6343.e32 (2021).
 }
 \examples{
+\dontrun{
 expr <- readRDS("GLASS_exprProfile.RDS")
 mags <- getMAGs(soObj, list(GLASS = expr))
+}
 
 }

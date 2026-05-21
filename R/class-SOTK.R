@@ -36,7 +36,7 @@ setClass(
                 parameters = "list" # Stash parameters
         )
 )
-# TO-DOs: setValidity("SOTK", function(object) {}
+# TO-DOs: setValidity("SOTK", function(object) {})
 
 #' @title SOTK object and constructor
 #' 
@@ -49,9 +49,9 @@ setClass(
 #' @param seed A \code{numeric} of the seed to generate a correlation network. Default is 1118.
 #' @param niter A \code{numeric} of the number of iteration when the igraph package generates a correlation network. Default is 1000.
 #' @param drop \code{logical} Whether drop small/isolated island(s) from the correlation network. Default is FALSE.
-#' @param searchMet \code{character} of the community search method, either greedy (fast greedy), leiden, betweeness, randomwalk (random walk), eigen, or louvain. Default is greedy.
+#' @param searchMet \code{character} of the community search method, either greedy (fast greedy), leiden, betweenness, randomwalk (random walk), eigen, or louvain. Default is greedy.
 #' @param commWeight \code{numeric} of the weight value on community info. If users want to rearrange nodes that identified as the same community closer, set a higher value. Default is 100.
-#' @param cohortWeight \code{numeric} of the weight value on data/cohort (input). If users want to rearrange nodes closer for each data/cohort, set a higher value. Default is 5.
+#' @param cohortWeight \code{numeric} of the weight value on data/cohort (input). If users want to rearrange nodes closer for each data/cohort, set a higher value. Default is 10.
 #' 
 #' @return SOTK object
 #'
@@ -64,7 +64,7 @@ setClass(
 #' @export 
 #'
 SOTK <- function(SOSet, coefThre = 0.5, seed = 123456, niter = 1000, drop = FALSE, searchMet = "greedy", commWeight = 100, cohortWeight = 10) {
-        if (is.null(SOSet) || class(SOSet) != "SOSet") {
+        if (is.null(SOSet) || !inherits(SOSet, "SOSet")) {
                 stop("ERROR::Provide an SOSet object.")
         }
 
@@ -81,9 +81,9 @@ SOTK <- function(SOSet, coefThre = 0.5, seed = 123456, niter = 1000, drop = FALS
         }
 
         if (is.null(searchMet)) {
-                stop("ERROR::Please provide either greedy, leiden, betweeness, randomwalk, eigen, or louvain.")
-        } else if (!searchMet %in% c("greedy", "leiden", "betweeness", "randomwalk", "eigen", "louvain")) {
-                stop("ERROR::Please provide either greedy, leiden, betweeness, randomwalk, eigen, or louvain.")
+                stop("ERROR::Please provide either greedy, leiden, betweenness, randomwalk, eigen, or louvain.")
+        } else if (!searchMet %in% c("greedy", "leiden", "betweenness", "randomwalk", "eigen", "louvain")) {
+                stop("ERROR::Please provide either greedy, leiden, betweenness, randomwalk, eigen, or louvain.")
         }
 
         if (!is.numeric(commWeight)) {
@@ -131,9 +131,9 @@ SOTK <- function(SOSet, coefThre = 0.5, seed = 123456, niter = 1000, drop = FALS
                         } else if (searchMet == "leiden") {
                                 fc <- igraph::cluster_leiden(graph)
                                 message("\tLeiden")
-                        } else if (searchMet == "betweeness") {
+                        } else if (searchMet == "betweenness") {
                                 fc <- igraph::cluster_edge_betweenness(graph)
-                                message("\tBetweeness")
+                                message("\tBetweenness")
                         } else if (searchMet == "randomwalk") {
                                 fc <- igraph::cluster_walktrap(graph)
                                 message("\tRandom Walk")

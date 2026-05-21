@@ -27,6 +27,8 @@ Combines multiple NMF fit objects into a single \code{NMF.rank}-like object by:
 }
 }
 \examples{
+\dontrun{
 nmfObj <- mergeNMFObjs(nmfObjL = objL)
+}
 
 }

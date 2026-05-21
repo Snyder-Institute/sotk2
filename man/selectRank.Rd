@@ -3,14 +3,15 @@
 \docType{methods}
 \name{selectRank}
 \alias{selectRank}
+\alias{selectRank,SOTK-method}
 \title{Generate community network stats}
 \usage{
 \S4method{selectRank}{SOTK}(
   object,
   vertexSize = 8,
-  vertexLabelCex = 1,
+  vertexLabelCex = 0.75,
   edgeAlpha = 0.2,
-  filename = "network.pdf",
+  filename = "Coverage.pdf",
   width = 10,
   height = 10
 )
@@ -37,6 +38,8 @@ Metagene marking at each rank on the community-weighted layout
 Generate community network stats
 }
 \examples{
-selectRank(object = SOTK)
+\dontrun{
+selectRank(object = soObj)
+}
 
 }

@@ -1,9 +1,5 @@
 # Spatial Omics Toolkit 2 (sotk2)
 
-- Last updated: December 27, 2025
-
----
-
 ## What is sotk2
 **sotk2** is an R package for integrating omics datasets using modules derived from non-negative matrix factorization (NMF) or consensus NMF (cNMF). The core idea is to treat each gene expression program (metagene) as a comparable unit across datasets, then integrate programs through a correlation-based network followed by community detection.
 
@@ -31,20 +27,16 @@
     * Detects communities and stores community membership
     * Computes layouts for plotting and creates an optional community-level aggregated network
 
-### Key differences between SOTK and sotk2
+## Try it locally
+The fastest way to see sotk2 in action is the bundled quickstart vignette, which runs on the demo data shipped with the package and requires no external downloads:
 
-**sotk2** extends the original SOTK workflow from “rank selection within a dataset” to **cross-dataset, cross-platform module integration**. The emphasis shifts from choosing an optimal *k* in a single analysis to building a comparable module space across datasets and extracting communities that persist across ranks and cohorts.
+```r
+install.packages("devtools")
+devtools::install_github("Snyder-Institute/sotk2", build_vignettes = TRUE)
+vignette("sotk2 quickstart", package = "sotk2")
+```
 
-| Feature | sotk2 | SOTK | 
-|---|---|---|
-| Primary goal | Cross-dataset and cross-modality integration using deconvolution-derived modules | Data-driven selection of an optimal latent factor number within a dataset | 
-| Input data types | Any modality with NMF/cNMF outputs (bulk, single-cell, spatial transcriptomics, protein abundance) | Spatial transcriptomics–focused | 
-| Integration scope | Across datasets, cohorts, platforms, and modalities via correlation networks | Within dataset (single platform) | 
-| Network representation | Metagene-level networks plus **community-level abstraction** to scale integration and interpretation | Metagene-level networks | 
-| Composition assessment | **Residual-based overrepresentation** to summarize sample-type composition at the community level | Limited or dataset-specific | 
-| Comparative visualization | Consistent-layout community networks to support direct cross-dataset comparison | Basic plotting | 
-| Gene interpretation | Built-in extraction of **metagene-associated genes (MAGs)** and selection of **contributing community genes** for annotation | Metagene genes (limited) | 
-| Intended outcome | Identify robust communities/modules and compare their presence and composition across datasets | Choose *k* and interpret metagenes | 
+A self-hosted ShinyApp and a portable Docker image are in preparation; this page will be updated when they are live.
 
 ## Citation
 If you use **sotk2** in your work, please cite the associated manuscript: _to be added_

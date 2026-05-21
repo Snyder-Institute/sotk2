@@ -3,6 +3,7 @@
 \docType{methods}
 \name{statComm}
 \alias{statComm}
+\alias{statComm,SOTK-method}
 \title{Generate community network stats}
 \usage{
 \S4method{statComm}{SOTK}(object, filename = "stats.pdf", width = 10, height = 10)
@@ -23,6 +24,8 @@ Stacked bar plot and number of Metagenes per community in each dataset
 Generate community network stats
 }
 \examples{
+\dontrun{
 statComm(object = soObj)
+}
 
 }

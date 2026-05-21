@@ -2,7 +2,7 @@
 # Usage: Rscript 01_runNMF.R GLASS $PROJECT_FOLDER/input $PROJECT_FOLDER/output 10
 # You can parallelize NMF runs by executing each rank as an independent job, enabling efficient use of limited computational resources.
 
-# Do not run
+# Reference workflow - adapt paths and parameters before running.
 
 # User inputs
 args <- commandArgs(trailingOnly = TRUE)
@@ -15,7 +15,7 @@ rank <- as.integer(args[4])
 method <- "brunet" # default 
 nr <- 1000
 seed <- 123456
-options <- "tv2p64" # # track + verbose level 2 + 64 threads
+options <- "tv2p64" # track + verbose level 2 + 64 threads
 result_file_name <- paste0("NMF_rank_", rank)
 
 # Loading

@@ -75,7 +75,7 @@ pieColors <- list(
         ))
 }
 
-geoMean <- function(x) exp(mean(log(x)))
+# geoMean() is provided by sotk2 (see ?sotk2::geoMean)
 
 corNetwork <- soObj@corNetwork
 clusterMembership <- soObj@sample2metagene

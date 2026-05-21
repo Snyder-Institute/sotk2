@@ -1,7 +1,7 @@
 #!/usr/bin/env Rscript
 # Then, you can merge the NMF outputs across ranks using the mergeNMFObjs function in sotk2.
 
-# Do not run
+# Reference workflow - adapt paths and rank list before running.
 
 library(NMF)
 library(sotk2)

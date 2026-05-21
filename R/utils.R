@@ -23,14 +23,24 @@
 #' @return An object of class \code{"NMF.rank"} with \code{$fit} containing imported fits indexed by \code{k}.
 #'
 #' @examples
-#' nmfObj <- importCNMF(prefix = "PREFIX", metrics = "score", minRank = 2, maxRank = 10, by = 1, denThre = "2_0", cnmfDir = "./cNMF")
+#' \dontrun{
+#' nmfObj <- importCNMF(
+#'     prefix  = "PREFIX",
+#'     metrics = "score",
+#'     minRank = 2,
+#'     maxRank = 10,
+#'     by      = 1,
+#'     denThre = "2_0",
+#'     cnmfDir = "./cNMF"
+#' )
+#' }
 #'
 #' @export
 #' @importFrom NMF nmfModel
 #' @importFrom methods new
 importCNMF <- function(prefix = NULL, metrics = "score",
                        minRank = NULL, maxRank = NULL, by = 1, denThre = NULL,
-                       cnmfDir = "NULL", verbose = TRUE) {
+                       cnmfDir = NULL, verbose = TRUE) {
         if (is.null(prefix) || is.null(minRank) || is.null(maxRank) || is.null(denThre) || is.null(cnmfDir)) {
                 stop("ERROR::Please provide all required arguments: prefix, minRank, maxRank, denThre, cnmfDir")
         }
@@ -40,7 +50,7 @@ importCNMF <- function(prefix = NULL, metrics = "score",
         }
 
         if (!is.numeric(minRank) || !is.numeric(maxRank) || !is.numeric(by) || by < 1) {
-                stop("ERROR::Please provide integer for both minRank/maxRank/by and/or by should be greater than 1")
+                stop("ERROR::Please provide integer for both minRank/maxRank/by and/or by should be greater than or equal to 1")
         }
 
         resObj <- list()
@@ -75,7 +85,7 @@ importCNMF <- function(prefix = NULL, metrics = "score",
                         if (length(resObj) < 1) {
                                 resObj <- list(fitRes)
                         } else {
-                                resObj <- append(resObj, fitRes)
+                                resObj <- append(resObj, list(fitRes))
                         }
                         hitK <- c(hitK, k)
                 } else {
@@ -115,7 +125,9 @@ importCNMF <- function(prefix = NULL, metrics = "score",
 #' }
 #'
 #' @examples
+#' \dontrun{
 #' nmfObj <- mergeNMFObjs(nmfObjL = objL)
+#' }
 #'
 #' @export
 #' @importFrom NMF compare connectivity
@@ -125,7 +137,12 @@ mergeNMFObjs <- function(nmfObjL) {
         }
 
         measures <- compare(nmfObjL)
-        measures <- measures[, c(5:ncol(measures))]
+        # Drop NMF::compare() run-metadata columns (method/seed/rng/metric);
+        # keep rank + numeric quality measures. Name-based selection is robust
+        # to column order/version changes in the NMF package.
+        metaCols <- c("method", "seed", "rng", "metric")
+        keep <- setdiff(colnames(measures), metaCols)
+        measures <- measures[, keep, drop = FALSE]
         rownames(measures) <- c(1:nrow(measures))
 
         consensus <- lapply(nmfObjL, function(res) {
@@ -155,7 +172,7 @@ mergeNMFObjs <- function(nmfObjL) {
 #'         and the corresponding coefficient (H) usage values (per sample), and keep genes with
 #'         correlation greater than a threshold.
 #' }
-#' Source: Tsukahara, T. et al. A transcriptional rheostat couples past activity to future sensory responses. Cell 184, 6326–6343.e32 (2021).
+#' Source: Tsukahara, T. et al. A transcriptional rheostat couples past activity to future sensory responses. Cell 184, 6326-6343.e32 (2021).
 #'
 #' @param object A \code{SOSet} object.
 #' @param profiles A named list of expression matrices. Each matrix should have genes as rows,
@@ -169,8 +186,10 @@ mergeNMFObjs <- function(nmfObjL) {
 #'   each containing a character vector of retained genes.
 #'
 #' @examples
+#' \dontrun{
 #' expr <- readRDS("GLASS_exprProfile.RDS")
 #' mags <- getMAGs(soObj, list(GLASS = expr))
+#' }
 #'
 #' @export
 #' @importFrom stringr str_split
@@ -259,9 +278,11 @@ getMAGs <- function(object, profiles, noGenes = 200, coefficient = 0.2) {
 #'   Each community element is a named list keyed by dataset name (e.g., \code{dataName}) and
 #'   contains a character vector of contributing genes.
 #' @examples
+#' \dontrun{
 #' mags <- getMAGs(soObj, list(GLASS = expr))
 #' commGenes <- contributingCommunityGenes(soObj, mags)
-#' 
+#' }
+#'
 #' @export
 #' @importFrom igraph V
 contributingCommunityGenes <- function(object, magL, proportion = 0.5) {
@@ -311,6 +332,41 @@ contributingCommunityGenes <- function(object, magL, proportion = 0.5) {
         return(commSignatureGenes)
 }
 
+#' Geometric mean
+#'
+#' Computes the geometric mean of a numeric vector as
+#' \code{exp(mean(log(x)))}. Useful for summarizing compositional or
+#' multiplicative quantities (e.g., normalized metagene usages aggregated
+#' across the metagenes of a community) where the arithmetic mean would be
+#' dominated by large values.
+#'
+#' The function applies \code{log()} directly to \code{x}, so any zero
+#' entries yield \code{-Inf} and will collapse the result to 0. When
+#' aggregating compositional values that may contain exact zeros, replace
+#' zeros with a small pseudocount (for example, \code{x[x == 0] <- 1e-8})
+#' before calling \code{geoMean()}.
+#'
+#' @param x A non-negative \code{numeric} vector.
+#'
+#' @return A single \code{numeric} value: the geometric mean of \code{x}.
+#'
+#' @examples
+#' geoMean(c(0.1, 0.2, 0.3))
+#'
+#' \dontrun{
+#' # Per-sample community activity from normalized metagene usages
+#' usageMat[usageMat == 0] <- 1e-8
+#' perSample <- apply(usageMat, 2, geoMean)
+#' }
+#'
+#' @export
+geoMean <- function(x) {
+        if (!is.numeric(x)) {
+                stop("ERROR::'x' must be a numeric vector.")
+        }
+        exp(mean(log(x)))
+}
+
 #' Get the most variable genes (MVGs)
 #'
 #' Selects the most variable genes from an expression matrix using a two-step filter:
@@ -328,8 +384,10 @@ contributingCommunityGenes <- function(object, magL, proportion = 0.5) {
 #' @return A character vector of gene identifiers (row names) corresponding to the selected MVGs.
 #'
 #' @examples
+#' \dontrun{
 #' mvgs <- getMVGs(profile = as.matrix(expr), coefVar = 0.1, no = 2000)
 #' # create a heatmap with MVGs
+#' }
 #'
 #' @export
 #' @importFrom EnvStats cv

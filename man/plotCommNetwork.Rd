@@ -3,6 +3,7 @@
 \docType{methods}
 \name{plotCommNetwork}
 \alias{plotCommNetwork}
+\alias{plotCommNetwork,SOTK-method}
 \title{Generate community network plot}
 \usage{
 \S4method{plotCommNetwork}{SOTK}(
@@ -31,6 +32,17 @@ Correlation network plot
 Generate community network plot
 }
 \examples{
-plotCommNetwork(object = SOTK, vertexInfo = list(vertexLabel = vertexLabel, vertexSize = vertexSize, vertexPie = vertexPie, legend = legend, legendCol = legendCol))
+\dontrun{
+plotCommNetwork(
+    object     = soObj,
+    vertexInfo = list(
+        vertexLabel = vertexLabel,
+        vertexSize  = vertexSize,
+        vertexPie   = vertexPie,
+        legend      = legend,
+        legendCol   = legendCol
+    )
+)
+}
 
 }
