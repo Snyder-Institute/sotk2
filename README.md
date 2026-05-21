@@ -34,11 +34,19 @@
 
 ## Interactive demo
 
-The previous hosted **sotk2** ShinyApp has been retired and is being relocated to self-hosted infrastructure. A lite-mode Shiny demo and a portable Docker image are both in preparation.
+The Shiny app is distributed as a portable Docker image. The image bundles the demo data, so a single `docker run` is sufficient to explore the package end-to-end without local R setup. It is multi-arch (`linux/amd64` + `linux/arm64`), so the right binary is selected automatically on Intel/AMD Linux, Apple Silicon, and AWS Graviton hosts.
 
-Until those are live, there are two ways to explore the package today:
+```bash
+docker pull thebiohub/sotk2:1.0.0
+docker run --rm -p 11630:11630 thebiohub/sotk2:1.0.0
+open http://localhost:11630
+```
 
-1. **Install and run the bundled quickstart vignette.** Single cohort, no external downloads, runs on the demo data shipped with the package.
+Image registry: <a href="https://hub.docker.com/r/thebiohub/sotk2" target="_blank">hub.docker.com/r/thebiohub/sotk2</a>. The companion Dockerfile and launcher script live at <a href="https://github.com/Snyder-Institute/sotk2-docker" target="_blank">Snyder-Institute/sotk2-docker</a>.
+
+If you prefer not to use Docker, two alternatives:
+
+1. **Bundled quickstart vignette.** Single cohort, no external downloads, runs on the demo data shipped with the R package:
 
    ```r
    install.packages("devtools")
@@ -46,9 +54,9 @@ Until those are live, there are two ways to explore the package today:
    vignette("sotk2 quickstart", package = "sotk2")
    ```
 
-2. **Read the multi-cohort walkthrough online.** The documentation at <a href="https://Snyder-Institute.github.io/sotk2/" target="_blank">https://Snyder-Institute.github.io/sotk2/</a> reproduces the GLASS / IVYGAP / HEILAND integration step by step, including all figures.
+2. **Online walkthrough.** The documentation at <a href="https://Snyder-Institute.github.io/sotk2/" target="_blank">https://Snyder-Institute.github.io/sotk2/</a> reproduces the GLASS / IVYGAP / HEILAND multi-cohort integration step by step, including all figures.
 
-This section will be updated with hosted demo and Docker pull instructions when those go live.
+A hosted, self-managed ShinyApp deployment is in preparation; this section will be updated when it goes live.
 
 ---
 
