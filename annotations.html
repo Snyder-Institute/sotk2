@@ -222,11 +222,13 @@ if (file.exists(file.path(download_dir, &quot;soObj.RDS&quot;))) {
   categories using an external metadata table (<code>db</code>), returning
   indices for sample type (Primary versus Recurrence) and molecular
   subtype (Classical, Mesenchymal, Proneural).</li>
-<li><code>geoMean()</code> computes the geometric mean and can be used to
-  summarize metagene usage (or other positive-valued quantities) at
-  the sample, community, or cohort level. This summary is often
-  useful for comparing relative activity across communities while
-  reducing sensitivity to extreme values.</li>
+<li><code>sotk2::geoMean()</code> (exported by the package) computes the
+  geometric mean and can be used to summarize metagene usage (or
+  other positive-valued quantities) at the sample, community, or
+  cohort level. This summary is often useful for comparing relative
+  activity across communities while reducing sensitivity to extreme
+  values. Replace exact zeros with a small pseudocount before calling
+  (the demo uses <code>1e-8</code>).</li>
 </ol>
 </li>
 </ul>
@@ -266,7 +268,7 @@ if (file.exists(file.path(download_dir, &quot;soObj.RDS&quot;))) {
         ))
 }
 
-geoMean &lt;- function(x) exp(mean(log(x)))
+# geoMean() is provided by sotk2 (see ?sotk2::geoMean)
 </code></pre>
 <h2 id="community-annotation">Community annotation</h2>
 <ul>
@@ -275,9 +277,10 @@ geoMean &lt;- function(x) exp(mean(log(x)))
   community node is summarized by the distribution of sample types
   (Primary versus Recurrence) and molecular subtypes (Classical,
   Mesenchymal, Proneural).</li>
-<li>The pie encodes standardized residuals from a chi-squared test, defined as <code>residual = (observed - expected) / sqrt(expected)</code>.<ul>
-<li>Larger positive residuals indicate an over-representation of the category relative to the null expectation, whereas larger negative residuals indicate an under-representation.</li>
-<li>The magnitude of the residual reflects the strength of deviation from independence, with values further from zero providing stronger evidence that the observed frequency differs meaningfully from the expected frequency under the Chi-squared model.</li>
+<li>The pie encodes <strong>positive</strong> Pearson residuals from a chi-squared test, defined as <code>residual = (observed - expected) / sqrt(expected)</code>.<ul>
+<li>Larger positive residuals indicate an over-representation of the category relative to the null expectation. Under-representation (negative residuals) is suppressed (set to 0) so that pie wedges always read as "enrichment" rather than "deviation."</li>
+<li>The magnitude of a positive residual reflects the strength of enrichment, with values further from zero providing stronger evidence that the observed frequency exceeds the expected frequency under the Chi-squared model of independence.</li>
+<li>If a category has zero observed counts across all communities, its residual is undefined (NA) and is treated as 0.</li>
 </ul>
 </li>
 </ul>

@@ -49,10 +49,8 @@
         </ul>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#concepts">Concepts</a>
-        <ul>
-    <li class="toctree-l3"><a class="reference internal" href="#key-differences-between-sotk-and-sotk2">Key differences between SOTK and sotk2</a>
     </li>
-        </ul>
+    <li class="toctree-l2"><a class="reference internal" href="#try-it-locally">Try it locally</a>
     </li>
     <li class="toctree-l2"><a class="reference internal" href="#citation">Citation</a>
     </li>
@@ -99,10 +97,6 @@
             <div class="section" itemprop="articleBody">
               
                 <h1 id="spatial-omics-toolkit-2-sotk2">Spatial Omics Toolkit 2 (sotk2)</h1>
-<ul>
-<li>Last updated: December 27, 2025</li>
-</ul>
-<hr />
 <h2 id="what-is-sotk2">What is sotk2</h2>
 <p><strong>sotk2</strong> is an R package for integrating omics datasets using modules derived from non-negative matrix factorization (NMF) or consensus NMF (cNMF). The core idea is to treat each gene expression program (metagene) as a comparable unit across datasets, then integrate programs through a correlation-based network followed by community detection.</p>
 <p><strong>sotk2</strong> is designed to be self-contained and independent: it does not require any prior packages or objects outside this repository. Inputs may come from any platform or modality (for example, bulk RNA-seq, single-cell RNA-seq, spatial transcriptomics, or protein abundance), as long as NMF/cNMF outputs are available (or can be imported).</p>
@@ -136,59 +130,13 @@
 </ul>
 </li>
 </ul>
-<h3 id="key-differences-between-sotk-and-sotk2">Key differences between SOTK and sotk2</h3>
-<p><strong>sotk2</strong> extends the original SOTK workflow from “rank selection within a dataset” to <strong>cross-dataset, cross-platform module integration</strong>. The emphasis shifts from choosing an optimal <em>k</em> in a single analysis to building a comparable module space across datasets and extracting communities that persist across ranks and cohorts.</p>
-<table>
-<thead>
-<tr>
-<th>Feature</th>
-<th>sotk2</th>
-<th>SOTK</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td>Primary goal</td>
-<td>Cross-dataset and cross-modality integration using deconvolution-derived modules</td>
-<td>Data-driven selection of an optimal latent factor number within a dataset</td>
-</tr>
-<tr>
-<td>Input data types</td>
-<td>Any modality with NMF/cNMF outputs (bulk, single-cell, spatial transcriptomics, protein abundance)</td>
-<td>Spatial transcriptomics–focused</td>
-</tr>
-<tr>
-<td>Integration scope</td>
-<td>Across datasets, cohorts, platforms, and modalities via correlation networks</td>
-<td>Within dataset (single platform)</td>
-</tr>
-<tr>
-<td>Network representation</td>
-<td>Metagene-level networks plus <strong>community-level abstraction</strong> to scale integration and interpretation</td>
-<td>Metagene-level networks</td>
-</tr>
-<tr>
-<td>Composition assessment</td>
-<td><strong>Residual-based overrepresentation</strong> to summarize sample-type composition at the community level</td>
-<td>Limited or dataset-specific</td>
-</tr>
-<tr>
-<td>Comparative visualization</td>
-<td>Consistent-layout community networks to support direct cross-dataset comparison</td>
-<td>Basic plotting</td>
-</tr>
-<tr>
-<td>Gene interpretation</td>
-<td>Built-in extraction of <strong>metagene-associated genes (MAGs)</strong> and selection of <strong>contributing community genes</strong> for annotation</td>
-<td>Metagene genes (limited)</td>
-</tr>
-<tr>
-<td>Intended outcome</td>
-<td>Identify robust communities/modules and compare their presence and composition across datasets</td>
-<td>Choose <em>k</em> and interpret metagenes</td>
-</tr>
-</tbody>
-</table>
+<h2 id="try-it-locally">Try it locally</h2>
+<p>The fastest way to see sotk2 in action is the bundled quickstart vignette, which runs on the demo data shipped with the package and requires no external downloads:</p>
+<pre><code class="language-r">install.packages(&quot;devtools&quot;)
+devtools::install_github(&quot;Snyder-Institute/sotk2&quot;, build_vignettes = TRUE)
+vignette(&quot;sotk2 quickstart&quot;, package = &quot;sotk2&quot;)
+</code></pre>
+<p>A self-hosted ShinyApp and a portable Docker image are in preparation; this page will be updated when they are live.</p>
 <h2 id="citation">Citation</h2>
 <p>If you use <strong>sotk2</strong> in your work, please cite the associated manuscript: <em>to be added</em></p>
               
@@ -240,5 +188,5 @@
 
 <!--
 MkDocs version : 1.6.1
-Build Date UTC : 2025-12-27 18:53:17.534379+00:00
+Build Date UTC : 2026-05-21 04:32:32.095055+00:00
 -->
