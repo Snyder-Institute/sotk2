@@ -156,4 +156,7 @@ Access the **sotk2** vignette here: <a href="https://Snyder-Institute.github.io/
 **sotk2** is an independent implementation that extends concepts from earlier deconvolution-based integration toolkits into a cross-dataset, cross-modality framework with community-level abstraction, residual-based composition assessment, and built-in gene-level interpretation.
 
 ## Citation
-If you use **sotk2** in your work, please cite the associated manuscript: _to be added_
+If you use **sotk2** in your work, please cite:
+> Reproducible transcriptional modules define glioblastoma ecosystems across independent cohorts. *bioRxiv* (2026). 
+> https://doi.org/10.64898/2026.05.20.726700
+ 
